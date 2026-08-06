@@ -22,6 +22,10 @@
   align-items: center;
 }
 
+.wrapper:first-child {
+  padding: 2rem 0;
+}
+
 .wrapper:last-child {
   align-items: start;
   gap: 1rem;
@@ -125,7 +129,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(20vh, 80vh);
+    grid-template-rows: minmax(20vh, 50vh);
     align-items: stretch;
     gap: 0.8px;
     background-color: #121212;
@@ -147,7 +151,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(20vh, 70vh);
+    grid-template-rows: minmax(20vh, 50vh);
     align-items: stretch;
     gap: 0.8px;
     background-color: #121212;
