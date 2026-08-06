@@ -1,0 +1,45 @@
+.learnMoreText {
+  height: fit-content;
+  max-width: 640px;
+  text-align: center;
+  font-weight: 400;
+  line-height: 1.1;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.learnMoreText:hover {
+  opacity: 1;
+}
+
+.wrapper {
+  margin: 1rem 0rem 0rem 0rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrowDownImg {
+  width: 1rem;
+  height: 1rem;
+  filter: invert(1);
+  animation: floatUpDown 1.6s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

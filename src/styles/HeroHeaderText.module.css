@@ -1,0 +1,75 @@
+.heroHeadingText {
+  font-family: instrumentSerifFont, "Inter", interFont, sans-serif;
+  text-align: center;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0.95;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+
+.spanImgBg {
+  display: inline-block;
+  background-color: white;
+  border-radius: clamp(0.4rem, 1vw, 0.5rem);
+  width: clamp(2rem, 5vw, 2.5rem);
+  aspect-ratio: 1 / 1;
+  margin: 0 clamp(0.2rem, 1vw, 0.5rem);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0rem);
+  transition: all 0.3s ease-in-out;
+}
+
+.spanImgBg:last-child {
+  background-color: transparent;
+  background: linear-gradient(to top, pink, orangered, blueviolet);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: clamp(0rem, 1vw, 0.5rem);
+}
+
+.spanImg {
+  width: 100%;
+  height: 100%;
+  filter: invert(0);
+  opacity: 0.8;
+}
+
+.spanImgBg:last-child .spanImg {
+  filter: invert(1);
+}
+
+.spanImgBg::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: clamp(0.4rem, 1vw, 0.6rem);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.wrapper::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  background-color: red;
+  bottom: 0;
+  right: 0;
+}
+
+.spanStyle {
+  color: inherit;
+}

@@ -1,0 +1,232 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.rowWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.arrowImg {
+  width: 100%;
+  height: 100%;
+  filter: invert(1);
+}
+
+.bentoWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.bento {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  border: none;
+  padding: 1.5rem;
+  padding-top: 4rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1rem;
+}
+
+.bento:first-child {
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+  background: linear-gradient(to top, pink, orangered, blueviolet);
+}
+
+.developerImageWrapper::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  border-radius: 1rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.developerImageWrapper::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.developerImageWrapper {
+  width: 12rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  position: absolute;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+
+.developerImageWrapper:hover {
+  transform: scale(1.2);
+}
+
+.developerImageWrapper:hover + .myText {
+  transform: translateY(10rem);
+}
+
+.myText {
+  font-family: instrumentSerifFont;
+  font-size: 2rem;
+  position: absolute;
+  margin-top: 35%;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.developerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bentoSubtext {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: auto;
+}
+
+.bentoTitle {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statError {
+  background-color: transparent;
+  border: 1px solid #1a1a1a;
+  color: 21;
+  height: 2rem;
+  padding: 0.4rem 0.4rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.errorImg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.reloadImg {
+  width: 0.9rem;
+  height: 0.9rem;
+  filter: invert(1);
+}
+
+.miniLoaderWrapper {
+  width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.miniLoader {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0rem;
+  background-color: transparent;
+  border: 3.5px solid white;
+  border-right: 3.5px solid #282828;
+  border-radius: 16rem;
+  animation: spin 1.4s infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.refreshButton {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.refreshButton:hover {
+  opacity: 1;
+}
+
+.bentoSummary {
+  width: 90%;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  opacity: 0.5;
+}
+
+.bentoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: invert(1);
+}
+
+.bentoIcon1 {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media (max-width: 768px) {
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+}

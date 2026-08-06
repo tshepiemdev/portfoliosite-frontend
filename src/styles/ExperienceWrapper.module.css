@@ -1,0 +1,21 @@
+.experienceWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.wrapAllExperience {
+  background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
+  border-radius: 1.4rem;
+  overflow: hidden;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 0rem;
+}

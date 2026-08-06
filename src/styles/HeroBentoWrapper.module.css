@@ -1,0 +1,234 @@
+.bentoWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.sliderTrackLeft,
+.sliderTrackLeft2,
+.sliderTrackRight {
+  display: flex;
+  gap: 0.4rem;
+  width: max-content;
+}
+
+.sliderTrackLeft {
+  animation: scrollLeft 90s linear infinite;
+}
+
+.sliderTrackRight {
+  animation: scrollRight 120s linear infinite;
+}
+
+.sliderTrackLeft2 {
+  animation: scrollLeft 180s linear infinite;
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scrollRight {
+  0% {
+    transform: translateX(-40%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.bentoImageWrapper {
+  flex-shrink: 0;
+  width: clamp(60px, 18vw, 240px);
+  height: 12rem;
+  aspect-ratio: 1 / 1;
+  background-color: #1a1a1a;
+  border: none;
+  border-radius: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.bentoImageWrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.2rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.bentoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bentoImageWrapperm {
+  flex-shrink: 0;
+  width: clamp(180px, 18vw, 240px);
+  height: 9rem;
+
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.bentoImageWrapperm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.2rem;
+  box-shadow: inset 0 0 0 0px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  border: 0;
+  right: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, black, rgba(0, 0, 0, 0.6), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding-bottom: 2rem;
+ transform: translateY(0.2rem);
+}
+
+.bestSkillsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.bestSkillsWrapper.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bestSkillsWrapper.hide {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.skillCategory {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+  opacity: 0.5;
+}
+
+.skillsRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bestSkillImg {
+  width: 1.8rem;
+  height: 1.8rem;
+  object-fit: contain;
+}
+
+.skillImgWrapper {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: skillSlideIn 0.5s ease forwards;
+}
+
+@keyframes skillSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.label {
+  font-size: 1.5rem;
+  font-family: instrumentSerifFont, "Inter", interFont, sans-serif;
+  text-align: center;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: #6a6a6a;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.labelSpan {
+  color: whitesmoke;
+}
+
+.spanImg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .bentoImageWrapper {
+    width: clamp(80px, 35vw, 140px);
+    height: 100px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .bestSkillImg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .bentoImageWrapper {
+    width: clamp(60px, 35vw, 180px);
+    height: 140px;
+    aspect-ratio: 1 / 1;
+  }
+}

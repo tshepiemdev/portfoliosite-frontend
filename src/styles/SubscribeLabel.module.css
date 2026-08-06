@@ -1,0 +1,59 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 0px solid #1a1a1a;
+  position: relative;
+}
+
+.logo {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.text {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btnSubscribe {
+  font-size: inherit;
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+  align-items: center;
+}
+
+.btnSubscribe:hover {
+  color: orange;
+}
+
+.btnSubscribe span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.textsWrapper {
+  width: fit-content;
+}
+
+.arrowUpIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+  filter: invert(1);
+  transform: translateX(-0.1rem);
+}
+
+@media (max-width: 768px) {
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+}

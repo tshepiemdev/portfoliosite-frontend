@@ -1,0 +1,141 @@
+.errorView {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(20vh, 50vh);
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  padding: 1rem;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper:last-child {
+  align-items: start;
+  gap: 1rem;
+}
+
+.troubleshootBtn {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.chevron {
+  width: 1.2rem;
+  height: 1.2rem;
+  filter: invert(1);
+  transition: transform 0.25s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.troubleshootList {
+  list-style: decimal;
+  width: 100%;
+  border: none;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 1rem;
+  padding-left: 1.2rem;
+  color: #6a6a6a;
+}
+
+.supportLink {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.supportLink:hover {
+  color: orange;
+}
+
+.errorSubtext {
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #7d7d7d;
+  font-size: 0.9rem;
+  width: 25%;
+  text-align: center;
+}
+
+.errorHead {
+  width: 32%;
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  text-align: center;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin-bottom: 0.5rem;
+}
+
+.errorImgWrapper {
+  width: 2.5rem;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 1rem;
+}
+
+.errorImg {
+  width: 100%;
+  height: 100%;
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .errorSubtext {
+    width: 80%;
+  }
+
+  .errorHead {
+    width: 80%;
+  }
+
+  .errorView {
+    height: 50vh;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .errorSubtext {
+    width: 40%;
+  }
+
+  .errorHead {
+    width: 50%;
+  }
+
+  .errorView {
+    height: 50vh;
+  }
+}

@@ -1,0 +1,178 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap: 0.1rem;
+  width: 100%;
+  height: fit-content;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 8rem;
+}
+
+.section {
+  scroll-margin-top: 3rem;
+  width: 80.8%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 4rem 1rem;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.landingSectionWrapper {
+  scroll-margin-top: 3rem;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  position: relative;
+}
+
+.bentoImagesSectionWrapper {
+  height: fit-content;
+  width: 100%;
+  margin-bottom: 8rem;
+}
+
+.meetSection {
+  scroll-margin-top: 3rem;
+  width: 80.8%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 4rem 1rem;
+  margin-top: 5rem;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.reviewsSection {
+  scroll-margin-top: 3rem;
+  width: 80.8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 50vh;
+  margin: 2rem 0;
+  margin-bottom: 0;
+  border-radius: 3rem;
+
+}
+
+.subFooterSectionWrapper {
+  scroll-margin-top: 3rem;
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: end;
+}
+
+.titlesWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin-right: auto;
+}
+
+.actionsWrapper {
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .landingSectionWrapper, .meetSection {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .reviewsSection {
+    padding: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .reviewsSection {
+    scroll-margin-top: 3rem;
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 50vh;
+    margin: 2rem 0;
+    border-radius: 3rem;
+    padding: 2rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 4rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .landingSectionWrapper, .meetSection {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .reviewsSection {
+    padding: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .landingSectionWrapper, .meetSection {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .reviewsSection {
+    padding: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
+}

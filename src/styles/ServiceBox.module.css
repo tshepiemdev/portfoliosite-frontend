@@ -1,0 +1,80 @@
+.serviceBoxLink,
+.compact {
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 5vw, 1rem);
+  display: flex;
+  justify-content: start;
+  align-items: end;
+  gap: 1rem;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  background-color: black;
+  border: none;
+  padding: 1rem;
+  padding-top: 2rem;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.featured {
+  background: linear-gradient(to top, pink, orangered, blueviolet);
+}
+
+.featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.featured .nextImg {
+  filter: invert(0);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.2rem;
+}
+
+.serviceName {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: 1.4rem;
+  transition: all 0.2s ease-in-out;
+  margin-top: 0.5rem;
+}
+
+.compact:hover {
+  background-color: #1a1a1a;
+}
+
+.subHeader {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #707070;
+  display: none;
+}
+
+.nextImg {
+  width: 2rem;
+  aspect-ratio: 1 / 1;
+  filter: invert(1);
+  margin-left: auto;
+}
+
+.nextWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16rem;
+}

@@ -1,0 +1,133 @@
+.blogs {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.blogsWrapper {
+  width: 80.8%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 2rem 1rem;
+  padding-top: 0;
+  position: relative;
+}
+
+.blogSections {
+  width: 100%;
+}
+
+.featuredBlogsList {
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(400px, auto);
+  align-items: stretch;
+  gap: 1rem;
+  position: relative;
+}
+
+.latestBlogsList {
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-rows: minmax(200px, auto);
+  align-items: stretch;
+  gap: 2rem;
+  position: relative;
+}
+
+.fullSpan {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.blogControls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.sectionBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #161616;
+}
+
+.blogSections > .sectionBlock:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+.sectionHeader {
+  width: fit-content;
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  .blogs {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .blogsWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .featuredBlogsList {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(200px, auto);
+    align-items: stretch;
+    gap: 2rem;
+    position: relative;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .blogs {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .blogsWrapper {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 6rem;
+  }
+
+  .featuredBlogsList {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(200px, auto);
+    align-items: stretch;
+    gap: 2rem;
+    position: relative;
+  }
+}

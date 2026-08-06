@@ -1,0 +1,74 @@
+.mainWrapper {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #1a1a1a;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.heading {
+  font-size: 1rem;
+  font-weight: 550;
+}
+
+.countLbl {
+  font-size: 0.8rem;
+  font-weight: 550;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 550;
+}
+
+.bigheading {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.countLbl {
+  color: #6a6a6a;
+  margin-right: auto;
+  margin-left: 0.2rem;
+}
+
+.topWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.noCommentsView {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 1rem;
+}
+
+.commentsList {
+  width: 100%;
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 2rem;
+  margin-top: 1rem;
+}

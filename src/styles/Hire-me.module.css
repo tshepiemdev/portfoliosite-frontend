@@ -1,0 +1,73 @@
+.hireMe {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.boxWrapper {
+  width: 80.8%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  padding: 2rem 1rem;
+  padding-top: 0;
+}
+
+.minititle {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin-top: 5rem;
+  margin-bottom: 1rem;
+}
+
+.hireThruOptions {
+  margin-top: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-rows: minmax(260px, 1fr);
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
+.whileHereOptions {
+  margin-top: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-rows: minmax(260px, 1fr);
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .hireMe {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .boxWrapper {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .boxWrapper {
+    width: 100%;
+  }
+}

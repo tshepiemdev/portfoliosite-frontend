@@ -1,0 +1,32 @@
+.altLbl {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: #7d7d7d;
+}
+
+.altLink {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.altLink:hover {
+  color: #ff9604;
+}

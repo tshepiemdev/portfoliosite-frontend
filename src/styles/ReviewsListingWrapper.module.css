@@ -1,0 +1,50 @@
+.ListingWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.reviewsList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.fullSpan {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapAll {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .ListingWrapper {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ListingWrapper {
+    width: 100%;
+    padding: 0;
+  }
+}

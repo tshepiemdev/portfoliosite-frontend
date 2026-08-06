@@ -1,0 +1,86 @@
+.legalPage {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.legalWrapper {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 1rem;
+  padding: 0rem 1rem;
+  margin: 2rem 0rem;
+  margin-top: 0;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.markdownWrapper {
+  width: 100%;
+  border-radius: 1rem;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sectionBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding-bottom: 1rem;
+  border-bottom: 2px dotted #1a1a1a;
+  margin-top: 1rem;
+}
+
+.miniHeader {
+  font-size: clamp(0.8rem, 5vw, 0.9rem);
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+}
+
+.text {
+  font-size: 0.8rem;
+  font-weight: 400;
+  width: 100%;
+  opacity: 0.4;
+  margin-bottom: 1rem;
+}
+
+.dateSpan {
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .legalPage {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .legalWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .legalPage {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .legalWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}

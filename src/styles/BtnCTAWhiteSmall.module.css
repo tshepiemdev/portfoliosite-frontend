@@ -1,0 +1,56 @@
+.btnCTA {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
+  border: 1px solid white;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.8rem;
+  width: fit-content;
+  height: 1.95rem;
+  font-size: 0.8rem;
+  font-weight: 550;
+  text-align: center;
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+
+.full {
+  width: 100%;
+}
+
+.auto {
+  width: fit-content;
+}
+
+.nextImg {
+  width: 1.1rem;
+  height: 1.1rem;
+  filter: invert(1);
+  transform: rotate(-90deg);
+}
+
+.btnCTA:hover {
+  background-color: #ff9604;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: 0.1s ease-in-out;
+}
+
+.desktopOnly {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .desktopOnly {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .desktopOnly {
+    display: none;
+  }
+}

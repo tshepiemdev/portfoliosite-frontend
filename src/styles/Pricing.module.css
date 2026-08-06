@@ -1,0 +1,77 @@
+.pricing {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.pricingWrapper {
+  width: 80.8%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 2rem 1rem;
+  padding-top: 0;
+}
+
+.hr {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+/*  */
+
+.pricingGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.fullSpan {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+  .pricing {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .pricingWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .pricing {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .pricingWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}

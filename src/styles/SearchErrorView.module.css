@@ -1,0 +1,80 @@
+.errorView {
+  background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
+  border-radius: 1rem;
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.errorSubtext {
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #7d7d7d;
+  font-size: 0.9rem;
+  width: 25%;
+  text-align: center;
+  margin-bottom: auto;
+}
+
+.errorHead {
+  width: 25%;
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: clamp(1.5rem, 5vw, 1.8rem);
+  margin-bottom: 0.5rem;
+}
+
+.errorImgWrapper {
+  width: 8rem;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1rem;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.6rem;
+  background: linear-gradient(to bottom, pink, orangered, blueviolet);
+}
+
+.errorImg {
+  width: 2rem;
+  height: 2rem;
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .errorSubtext {
+    width: 80%;
+  }
+
+  .errorHead {
+    width: 80%;
+  }
+
+  .errorView {
+    height: 50vh;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .errorSubtext {
+    width: 40%;
+  }
+
+  .errorHead {
+    width: 50%;
+  }
+
+  .errorView {
+    height: 50vh;
+  }
+}

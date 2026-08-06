@@ -1,0 +1,197 @@
+.markdownTextContent {
+  background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
+  width: 100%;
+  max-width: 100%;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #767171;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  padding: 1rem;
+}
+
+.markdownTextContent > *:first-child {
+  margin-top: 0;
+}
+
+.markdownTextContent > *:last-child {
+  margin-bottom: 0;
+}
+
+.markdownTextContent h1,
+.markdownTextContent h2,
+.markdownTextContent h3,
+.markdownTextContent h4,
+.markdownTextContent h5,
+.markdownTextContent h6 {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0rem;
+  font-size: 1rem;
+}
+
+.markdownTextContent h1 {
+  font-size: 1rem;
+  
+}
+
+.markdownTextContent h2 {
+  font-size: 1rem;
+}
+
+.markdownTextContent h3 {
+  font-size: 1rem;
+}
+
+.markdownTextContent h4 {
+  font-size: 1.25rem;
+}
+
+.markdownTextContent h5 {
+  font-size: 1.1rem;
+}
+
+.markdownTextContent h6 {
+  font-size: 1rem;
+}
+
+.markdownTextContent p {
+  font-size: 1rem;
+  margin: 0;
+  color: inherit;
+}
+
+.markdownTextContent strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.markdownTextContent em {
+  font-style: italic;
+}
+
+.markdownTextContent del {
+  text-decoration: line-through;
+}
+
+.markdownTextContent a {
+  color: #4ea8ff;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.markdownTextContent a:hover {
+  opacity: 0.8;
+}
+
+.markdownTextContent ul,
+.markdownTextContent ol {
+  height: fit-content;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.markdownTextContent li {
+  margin: 0rem 0;
+  color: inherit;
+}
+
+.markdownTextContent li > ul,
+.markdownTextContent li > ol {
+  margin-top: 0.5rem;
+}
+
+.markdownTextContent blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.markdownTextContent hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 2rem 0;
+}
+
+.markdownTextContent code {
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.3rem;
+  color: #ffffff;
+}
+
+.markdownTextContent pre {
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+  border-radius: 0.6rem;
+  background: #1a1a1a;
+}
+
+.markdownTextContent pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.markdownTextContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.markdownTextContent th,
+.markdownTextContent td {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.markdownTextContent th {
+  color: #ffffff;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.markdownTextContent td {
+  color: inherit;
+}
+
+.markdownTextContent img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.markdownTextContent kbd {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.9em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.3rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.markdownTextContent sup,
+.markdownTextContent sub {
+  font-size: 0.75em;
+}
+
+.markdownTextContent mark {
+  background: #ffe066;
+  color: #000000;
+  padding: 0.05rem 0.2rem;
+}

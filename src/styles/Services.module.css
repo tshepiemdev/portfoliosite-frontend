@@ -1,0 +1,78 @@
+.services {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.servicesWrapper {
+  width: 80.8%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 2rem 1rem;
+  padding-top: 0;
+}
+
+.contentWrapper {
+  width: 100%;
+}
+
+.topWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterWrapper {
+  width: fit-content;
+}
+
+.servicesGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+  gap: 0.8px;
+  background-color: #121212;
+  border: 1px solid #121212;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.fullSpan {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .servicesWrapper,
+  .contentWrapper {
+    width: 100%;
+  }
+
+  .filterWrapper {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .servicesWrapper {
+    width: 100%;
+  }
+
+  .filterWrapper {
+    width: fit-content;
+  }
+}

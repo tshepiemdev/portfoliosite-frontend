@@ -1,0 +1,84 @@
+.menuWrapper {
+  width: fit-content;
+  height: fit-content;
+  background-color: rgb(23, 23, 23);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0px 0px 16px rgb(0, 0, 0);
+  border-radius: 1.4rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 998;
+  transform: translateX(-0%) translateY(30%);
+  overflow: hidden;
+}
+
+.ul {
+  background-color: transparent;
+  list-style: none;
+  width: fit-content;
+  height: fit-content;
+  font-size: 0.8rem;
+}
+
+.linkToButton {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  min-width: 12rem;
+  height: 2.8rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.linkToButton:hover {
+  height: 3rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.linkTo {
+  color: inherit;
+  text-decoration: none;
+  min-width: 12rem;
+  height: 2.8rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.linkTo:hover {
+  height: 3rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.li {
+  width: fit-content;
+  height: fit-content;
+}
+
+.li:last-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.linkToButton:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.linkTo:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.icon {
+  width: 0.9rem;
+  height: 0.9rem;
+}

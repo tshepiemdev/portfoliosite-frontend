@@ -1,0 +1,191 @@
+.commentBox {
+  width: fit-content;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 0.4rem;
+  position: relative;
+}
+
+.metaWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.6rem;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: #6a6a6a;
+}
+
+.commentText {
+  width: 100%;
+  color: #808080;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.textWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
+  padding: 0.5rem;
+  border-radius: 0.8rem;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.iconWrapper {
+  width: 1.4rem;
+  aspect-ratio: 1 / 1;
+  background-color: #0a0a0a;
+  border: none;
+  border-radius: 16rem;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform: translateY(-8%);
+}
+
+.iconWrapper::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border-radius: 16rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.btnLike {
+  width: 1rem;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btnLike:hover {
+  transform: scale(1.1);
+}
+
+.likeImg {
+  width: 100%;
+  height: 100%;
+}
+
+.controlsWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statsWrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.1rem;
+  font-size: 0.7rem;
+  color: #505050;
+  font-weight: 600;
+  margin-right: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+.imageWrapper {
+  width: 8rem;
+  aspect-ratio: 1 / 1;
+  background-color: #0a0a0a;
+  border: none;
+  border-radius: 0.8rem;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.imageWrapper::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border-radius: 0.8rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.optionsBtn {
+  background-color: transparent;
+  border: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+  margin-left: 0.5rem;
+}
+
+.optionsImg {
+  filter: invert(1);
+  width: 1.1rem;
+  aspect-ratio: 1 / 1;
+  transition: opacity 0.2s ease;
+  opacity: 0.6;
+}
+
+.optionsImg:hover {
+  opacity: 1;
+}

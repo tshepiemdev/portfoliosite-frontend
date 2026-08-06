@@ -1,0 +1,57 @@
+.contact {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.contactWrapper {
+  width: 60%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 2rem 1rem;
+  padding-top: 0;
+}
+
+.hr {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+.icons {
+  width: 1.6rem;
+  height: 1.6rem;
+  filter: invert(0);
+  margin-right: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contactWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .contact {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contactWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}

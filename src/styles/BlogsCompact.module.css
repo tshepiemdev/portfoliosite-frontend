@@ -1,0 +1,119 @@
+.mainWrapper {
+  width: 100%;
+  border-radius: 0.6rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.commentsList {
+  width: 100%;
+}
+
+.blogsList {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(50px, auto);
+  align-items: stretch;
+  gap: 2rem;
+  position: relative;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.topWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.fullSpan {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.blogControls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-top: 3rem;
+  }
+
+  .blogsWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .subtitle {
+    width: 70%;
+  }
+
+  .title {
+    width: 90%;
+  }
+
+  .blogsList {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(50px, auto);
+    align-items: stretch;
+    gap: 2rem;
+    position: relative;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .contentWrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-top: 0rem;
+  }
+
+  .blogsWrapper {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 6rem;
+  }
+
+  .subtitle {
+    width: 100%;
+  }
+
+  .subtitle {
+    width: 70%;
+  }
+
+  .title {
+    width: 90%;
+  }
+}

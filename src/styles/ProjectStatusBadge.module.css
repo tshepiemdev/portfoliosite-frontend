@@ -1,0 +1,32 @@
+.badgeChip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.badgeChipText {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.building {
+  color: #6a6a6a;
+  font-weight: 600;
+}
+
+.shipped {
+  color: greenyellow;
+}
+
+.discontinued {
+  color: #6a6a6a;
+  font-weight: 600;
+}
+
+.statusImg {
+  width: 0.7rem;
+  height: 0.7rem;
+  filter: invert(0);
+}

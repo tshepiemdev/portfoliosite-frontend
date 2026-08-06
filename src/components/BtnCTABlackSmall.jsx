@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "../styles/BtnCTABlackSmall.module.css";
+
+export default function BtnCTABlackSmall({
+  buttonText,
+  openDialog = false,
+  onClick,
+  href,
+  focusTo,
+  download = false,
+  fullWidth = false,
+}) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (openDialog) {
+      setIsDialogOpen(true);
+    }
+
+    if (focusTo) {
+      const element = document.getElementById(focusTo);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+        if (
+          !["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(
+            element.tagName,
+          )
+        ) {
+          element.setAttribute("tabindex", "-1");
+        }
+
+        element.focus({ preventScroll: true });
+      }
+    }
+
+    if (href) {
+      if (download) {
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = "";
+        link.click();
+        return;
+      }
+
+      if (href.startsWith("http")) {
+        window.open(href, "_blank", "noopener,noreferrer");
+      } else {
+        navigate(href);
+      }
+    }
+
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  return (
+    <button
+      className={`${styles.btnCTA} ${fullWidth ? styles.full : styles.auto}`}
+      type="button"
+      onClick={handleClick}
+    >
+      {buttonText}
+    </button>
+  );
+}

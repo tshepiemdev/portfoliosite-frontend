@@ -1,0 +1,64 @@
+.titlesWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.name {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  text-align: center;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-top: 0.5rem;
+  width: 80%;
+  
+}
+
+.rowWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.category {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #454545;
+}
+
+.type {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .name {
+    width: 100%;
+  }
+
+  .shortDescription {
+    width: 90%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .name {
+    width: 80%;
+  }
+
+  .shortDescription {
+    width: 60%;
+  }
+}

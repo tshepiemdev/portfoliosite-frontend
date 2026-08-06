@@ -1,0 +1,62 @@
+.countWrapper {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #1a1a1a;
+  border: 1px solid #161616;
+  border-radius: 16rem;
+  height: 2.6rem;
+  padding: 0.7rem 1rem;
+  opacity: 1;
+  transition: 0.1s ease-in-out;
+  font-optical-sizing: auto;
+  font-style: normal;
+  width: fit-content;
+}
+
+.count {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.text {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.iconImg {
+  width: 0.8rem;
+  height: 0.8rem;
+  filter: invert(1);
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .iconImg {
+    display: flex;
+  }
+
+  .text {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .iconImg {
+    display: none;
+  }
+
+  .text {
+    display: flex;
+  }
+}

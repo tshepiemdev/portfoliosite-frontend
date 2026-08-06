@@ -1,0 +1,25 @@
+.logoImg {
+  width: 1rem;
+  height: 1rem;
+  aspect-ratio: 1 / 1;
+}
+
+.wordmarkText {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  text-align: start;
+  line-height: 1.2;
+  font-size: 1.1rem;
+}
+
+.logoWrapper {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}

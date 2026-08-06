@@ -1,0 +1,17 @@
+.socialIconsSWrapper {
+  width: fit-content;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: #6a6a6a;
+}
+
+.icons {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}

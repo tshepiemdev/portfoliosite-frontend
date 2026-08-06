@@ -1,0 +1,165 @@
+.requestServiceOptionBox {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 0px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.4rem;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.5rem;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.requestServiceOptionBox::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  border-radius: 1.4rem;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.iconWrapper {
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: #101010;
+  border: 1px solid #121212;
+  border-radius: 16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconsWrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  filter: invert(1);
+}
+
+.bentoName {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 0.9;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  margin-bottom: auto;
+}
+
+.description {
+  font-weight: 550;
+  line-height: 1.1;
+  font-size: 1rem;
+  text-decoration: none;
+  color: #6a6a6a;
+}
+
+.subHeader {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #707070;
+}
+
+.nextImg {
+  width: 1.6rem;
+  height: 1.6rem;
+  filter: invert(1);
+  transform: rotate(180deg);
+  opacity: 0.4;
+}
+
+.controlWrapper {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 0;
+}
+
+.optionsList {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: start;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.optionItem {
+  flex: 1 1 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: white;
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 16rem;
+  padding: 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.1s ease-in-out;
+}
+
+.optionItem:hover {
+  background-color: greenyellow;
+  border: 1px solid greenyellow;
+  color: black;
+  transform: scale(1.05);
+}
+
+.optionItem:hover .optionImg {
+  filter: invert(0);
+}
+
+.optionImg {
+  width: 0.7rem;
+  height: 0.7rem;
+  filter: invert(1);
+}
+
+@media (max-width: 768px) {
+  .requestServiceOptionBox {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 11;
+  }
+
+  .bentoName {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .requestServiceOptionBox {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1.2;
+  }
+
+  .bentoName {
+    font-size: 2rem;
+  }
+}

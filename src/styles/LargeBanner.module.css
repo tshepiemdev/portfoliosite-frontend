@@ -1,0 +1,23 @@
+.bannerWrapper {
+  width: 100%;
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .bannerWrapper {
+    min-height: 50vh;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .bannerWrapper {
+    min-height: 50vh;
+  }
+}

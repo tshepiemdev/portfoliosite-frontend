@@ -1,0 +1,26 @@
+.imgIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0rem;
+  filter: invert(1);
+}
+
+.imgButton {
+  background-color: #1a1a1a;
+  border: 1px solid #121212;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.6rem;
+  border-radius: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.6;
+  margin: 0rem;
+}
+
+.imgButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 1;
+}

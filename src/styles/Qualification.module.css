@@ -1,0 +1,77 @@
+.qualificationBox {
+  background-color: black;
+  border: none;
+  padding: 1.4rem 1.2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qualificationBoxMeta {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  margin-right: auto;
+  gap: 0.8rem;
+}
+
+.type {
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: 0.8rem;
+  color: rgb(188, 188, 188);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.starImg {
+  width: 0.7rem;
+  height: 0.7rem;
+  opacity: 0.3;
+}
+
+.name {
+  font-family: instrumentSerifFont;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: start;
+  line-height: 0.9;
+  font-size: 2rem;
+}
+
+.institute {
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-align: start;
+  line-height: 0.9;
+  font-size: 0.8rem;
+  color: #ff9604;
+}
+
+.year {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-align: start;
+  line-height: 0.9;
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.qualificationBox:hover .year {
+  opacity: 1;
+}

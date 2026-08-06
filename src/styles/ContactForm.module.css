@@ -1,0 +1,72 @@
+.form {
+  width: 100%;
+  height: fit-content;
+  background-color: transparent;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 1.4rem;
+  position: relative;
+}
+
+.recaptchaWrapper {
+  min-width: 6rem;
+  min-height: 3rem;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
+  border-radius: 0.6rem;
+  overflow: hidden;
+}
+
+.inputsWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.terms {
+  color: #6a6a6a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 70%;
+}
+
+.termsLink {
+  color: inherit;
+}
+
+.termsLink:hover {
+  color: #ff9604;
+}
+
+@media (max-width: 768px) {
+  .terms {
+    width: 100%;
+  }
+
+  .inputsWrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .terms {
+    width: 80%;
+  }
+
+  .inputsWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+}

@@ -1,0 +1,17 @@
+.wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+.title {
+  font-family:
+    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
