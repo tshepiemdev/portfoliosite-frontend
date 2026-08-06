@@ -100,8 +100,8 @@
 }
 
 .errorImgWrapper {
-  width: 2.5rem;
-  aspect-ratio: 1 / 1;
+  width: 2rem;
+  height: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -122,7 +122,15 @@
   }
 
   .errorView {
-    height: 50vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(20vh, 80vh);
+    align-items: stretch;
+    gap: 0.8px;
+    background-color: #121212;
+    border: 1px solid #121212;
+    overflow: hidden;
   }
 }
 
@@ -136,6 +144,14 @@
   }
 
   .errorView {
-    height: 50vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(20vh, 70vh);
+    align-items: stretch;
+    gap: 0.8px;
+    background-color: #121212;
+    border: 1px solid #121212;
+    overflow: hidden;
   }
 }
