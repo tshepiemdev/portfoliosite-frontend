@@ -273,7 +273,7 @@ export default function HelpCenter() {
         image={ogImages.helpCenter}
         url={typeof window !== "undefined" ? window.location.href : ""}
         keywords="help center, documentation, support, tshepiem.dev"
-        siteName="Help Center"
+        siteName=""
       />
 
       <div className={styles.helpCenterWrapper}>
