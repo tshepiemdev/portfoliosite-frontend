@@ -27,10 +27,13 @@
   color-scheme: light dark;
 }
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -38,20 +41,38 @@ html {
 }
 
 body {
+  font-family: "Inter", interFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-button,
 a,
+button,
+input,
+textarea,
+select,
 img,
 svg,
-.icon,
-.logoImg {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  user-select: none;
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  outline: none;
+}
+
+::selection {
+  background: transparent;
+  color: inherit;
 }
 
 .layout {
