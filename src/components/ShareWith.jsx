@@ -8,7 +8,7 @@ export default function ShareWith({ options = [], views }) {
         <CounterView count={views} text={"Viewed times"} />
       )}
 
-      <ul>
+      <ul className={styles.shareWithUl}>
         {options
           .filter((item) => item.icon)
           .map((item) => (
