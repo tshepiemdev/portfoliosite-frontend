@@ -10,11 +10,10 @@
 }
 
 .title {
-  font-family:
-    "Bricolage Grotesque", "Inter", interFont, sans-serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 650;
-  line-height: 0.9;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1;
 }
 
 .miniTitle {
@@ -35,8 +34,8 @@
 }
 
 .iconWrapper {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
   padding: 0rem;
   flex-shrink: 0;
   display: flex;

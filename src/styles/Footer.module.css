@@ -118,14 +118,13 @@
 }
 
 .title {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: instrumentSerifFont, "Inter", interFont, sans-serif;
   text-align: start;
   font-optical-sizing: auto;
-  font-weight: 600;
+  font-weight: 500;
   font-style: normal;
   line-height: 0.9;
-  font-size: clamp(2rem, 14vw, 12.4rem);
+  font-size: clamp(4.5rem, 17vw, 18rem);
   transition: all 0.2s ease-in-out;
   width: 100%;
   margin: 1rem 0;

@@ -71,8 +71,7 @@
 }
 
 .title {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: 600;
   font-optical-sizing: auto;
@@ -86,8 +85,7 @@
 }
 
 .miniHeader {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: 1rem;
   font-weight: 500;
   font-optical-sizing: auto;
@@ -202,8 +200,7 @@
 
 .bentoTitle {
   font-size: clamp(1.4rem, 5vw, 1.8rem);
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   height: fit-content;
   font-weight: 600;
   line-height: 1.1;

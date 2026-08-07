@@ -45,8 +45,7 @@
 }
 
 .serviceName {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-weight: 600;
   line-height: 1.1;
   font-size: 1.4rem;

@@ -256,8 +256,7 @@
 .smallTitle {
   color: #6a6a6a;
   font-size: 0.8rem;
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   height: fit-content;
   font-weight: 600;
   line-height: 1.1;
@@ -402,8 +401,7 @@
 }
 
 .headerlabelPro {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.2rem, 5vw, 1.5rem);
   line-height: 1.1;
   font-weight: 500;
@@ -475,8 +473,7 @@
 }
 
 .miniHeader {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.2rem, 5vw, 1.4rem);
   font-weight: 700;
   line-height: 1.1;

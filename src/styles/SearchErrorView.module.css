@@ -23,8 +23,7 @@
 
 .errorHead {
   width: 25%;
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   text-align: center;
   font-weight: 600;
   line-height: 1.1;

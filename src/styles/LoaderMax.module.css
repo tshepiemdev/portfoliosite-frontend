@@ -12,8 +12,8 @@
 
 .loadingCircle {
   background-color: transparent;
-  border: 6px solid #1a1a1a;
-  border-top: 6px solid #ffffff;
+  border: 8px solid #1a1a1a;
+  border-top: 8px solid #ffffff;
   border-radius: 16rem;
   width: 3rem;
   aspect-ratio: 1 / 1;
@@ -32,8 +32,7 @@
 .loaderText {
   color: whitesmoke;
   font-size: 1rem;
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-optical-sizing: auto;
   font-weight: 550;
   font-style: normal;

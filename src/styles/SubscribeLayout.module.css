@@ -11,8 +11,8 @@
 
 .title {
   font-family:
-    instrumentSerifFont, "Bricolage Grotesque", bricolageFont, "Inter",
-    interFont, sans-serif;
+    instrumentSerifFont, "Host Grotesk", hostGroteskFont, "Inter", interFont,
+    sans-serif;
   font-size: clamp(2rem, 5vw, 2.5rem);
   line-height: 1;
   font-optical-sizing: auto;

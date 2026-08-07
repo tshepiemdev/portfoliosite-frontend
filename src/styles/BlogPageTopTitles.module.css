@@ -9,8 +9,7 @@
 }
 
 .name {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.8rem, 5vw, 2.8rem);
   text-align: center;
   font-optical-sizing: auto;
@@ -19,7 +18,6 @@
   line-height: 1.1;
   margin-top: 0.5rem;
   width: 80%;
-  
 }
 
 .rowWrapper {

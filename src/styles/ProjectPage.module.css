@@ -198,8 +198,7 @@
 }
 
 .projectName {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 1;

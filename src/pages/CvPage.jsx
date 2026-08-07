@@ -171,28 +171,27 @@ export default function CvPage() {
               title={
                 <>
                   Get my comprehensive, <br />
-                  ATS optimized and ready cv
+                  ATS optimized resume
                 </>
               }
             />
-
-            <div className={styles.ctaButtonsWrapper}>
-              {!loading && !errorType && cv && (
+            {!loading && !errorType && cv && (
+              <div className={styles.ctaButtonsWrapper}>
                 <BtnCTAWhite
                   buttonText="Download CV"
                   onClick={handleDownloadCv}
                 />
-              )}
 
-              <BtnCTABlack buttonText="Get in touch" href="/contact" />
-              <p className={styles.linkyText}>
-                First time here?{" "}
-                <Link className={styles.linkyTextLink} to={"/"}>
-                  Explore my portfolio
-                  <img className={styles.chevronImg} src={NextImg} alt="/" />
-                </Link>
-              </p>
-            </div>
+                <BtnCTABlack buttonText="Get in touch" href="/contact" />
+                <p className={styles.linkyText}>
+                  First time here?{" "}
+                  <Link className={styles.linkyTextLink} to={"/"}>
+                    Explore my portfolio
+                    <img className={styles.chevronImg} src={NextImg} alt="/" />
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
 
           {loading && <LoaderView />}

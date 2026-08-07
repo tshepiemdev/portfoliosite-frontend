@@ -59,8 +59,7 @@
 }
 
 .items {
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   width: fit-content;
   height: fit-content;
   font-size: 2.1rem;

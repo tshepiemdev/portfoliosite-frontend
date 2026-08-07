@@ -84,8 +84,7 @@
 }
 .sectionHeader {
   width: fit-content;
-  font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: 700;
   line-height: 1.1;

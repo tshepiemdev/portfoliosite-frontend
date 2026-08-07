@@ -138,7 +138,7 @@ export default function Home() {
         />
 
         <BtnCTAWhite
-          buttonText={"Leave a thought"}
+          buttonText={"Leave a review"}
           href={"/contact?reason=review"}
         />
         <ReviewsListingWrapper />
