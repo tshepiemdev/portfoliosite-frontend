@@ -41,38 +41,32 @@ html {
 }
 
 body {
-  font-family: "Inter", interFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
-a,
 button,
-input,
-textarea,
-select,
+a,
 img,
 svg,
-div,
-span,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+.icon,
+.logoImg,
+[role="button"],
+.clickable {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
   outline: none;
 }
 
-::selection {
-  background: transparent;
-  color: inherit;
+button:focus,
+button:active,
+a:focus,
+a:active,
+[role="button"]:focus,
+[role="button"]:active {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .layout {
