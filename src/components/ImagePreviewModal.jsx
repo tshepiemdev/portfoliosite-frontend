@@ -23,6 +23,8 @@ export default function ImagePreviewModal({
   onNext,
   onPrev,
 }) {
+  const lastDistance = useRef(null);
+  const lastTouch = useRef(null);
   const imgRef = useRef(null);
 
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -98,6 +100,72 @@ export default function ImagePreviewModal({
     });
   };
 
+  const getDistance = (touches) => {
+    const [a, b] = touches;
+
+    return Math.sqrt(
+      Math.pow(b.clientX - a.clientX, 2) + Math.pow(b.clientY - a.clientY, 2),
+    );
+  };
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      lastDistance.current = getDistance(e.touches);
+      return;
+    }
+
+    if (e.touches.length === 1 && scale > 1) {
+      lastTouch.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+
+    if (e.touches.length === 2) {
+      const distance = getDistance(e.touches);
+
+      if (lastDistance.current) {
+        const difference = distance - lastDistance.current;
+
+        setScale((prev) => {
+          const newScale = Math.min(Math.max(prev + difference * 0.01, 1), 4);
+
+          if (newScale === 1) {
+            setPosition({ x: 0, y: 0 });
+          }
+
+          return newScale;
+        });
+      }
+
+      lastDistance.current = distance;
+      return;
+    }
+
+    if (e.touches.length === 1 && lastTouch.current && scale > 1) {
+      const touch = e.touches[0];
+
+      setPosition((prev) => ({
+        x: prev.x + touch.clientX - lastTouch.current.x,
+        y: prev.y + touch.clientY - lastTouch.current.y,
+      }));
+
+      lastTouch.current = {
+        x: touch.clientX,
+        y: touch.clientY,
+      };
+    }
+  };
+
+  const handleTouchEnd = () => {
+    lastDistance.current = null;
+    lastTouch.current = null;
+  };
+
   const handleMouseDown = (e) => {
     if (scale === 1) return;
 
@@ -166,6 +234,9 @@ export default function ImagePreviewModal({
         }}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         draggable={false}
         onError={(e) => {
           e.target.onerror = null;

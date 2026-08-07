@@ -13,11 +13,12 @@
 }
 
 .testimony {
+  width: 100%;
   font-family: instrumentSerifFont;
   text-align: start;
   font-weight: 400;
   line-height: 1.1;
-  font-size: clamp(1rem, 5vw, 1.5rem);
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
   color: #bcbcbc;
 }
 

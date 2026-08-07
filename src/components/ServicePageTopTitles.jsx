@@ -1,5 +1,6 @@
 import styles from "../styles/ServicePageTopTitles.module.css";
 import BtnCTAWhite from "./BtnCTAWhite";
+import BtnCTABlack from "./BtnCTABlack";
 import fallbackIcon from "../assets/icons/logo-black.svg";
 import ShareWith from "../components/ShareWith";
 import serviceIcons from "../utils/serviceIcons";
@@ -10,9 +11,11 @@ export default function ServicePageTopTitlesView({
   name,
   shortDescription,
   buttonText,
+  shareButtonText,
   linkTo,
   isFeatured = false,
   shareOptions,
+  onShareClick,
 }) {
   const capitalizeFirstLetter = (text) => {
     if (!text) return "";
@@ -43,7 +46,15 @@ export default function ServicePageTopTitlesView({
       <p className={styles.shortDescription}>{shortDescription}</p>
 
       <div className={styles.rowWrapperControls}>
-        <BtnCTAWhite buttonText={buttonText} href={linkTo} />
+        <div className={styles.buttonsWrapper}>
+          <BtnCTAWhite buttonText={buttonText} href={linkTo} fullWidth />
+          <BtnCTABlack
+            buttonText={shareButtonText}
+            onClick={onShareClick}
+            fullWidth
+          />
+        </div>
+
         <ShareWith options={shareOptions} />
       </div>
     </div>

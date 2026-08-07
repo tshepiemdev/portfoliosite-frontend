@@ -11,9 +11,9 @@
 
 .title {
   font-family:
-    "Bricolage Grotesque", bricolageFont, "Inter", interFont, sans-serif;
+    "Bricolage Grotesque", "Inter", interFont, sans-serif;
   font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 600;
+  font-weight: 650;
   line-height: 0.9;
 }
 

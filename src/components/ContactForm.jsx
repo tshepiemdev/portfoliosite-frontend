@@ -103,6 +103,10 @@ export default function ContactForm() {
       label: "Website / Service Feedback",
     },
     {
+      value: "report",
+      label: "Report a Problem",
+    },
+    {
       value: "support",
       label: "Technical Support",
     },
@@ -114,6 +118,7 @@ export default function ContactForm() {
       value: "business_inquiry",
       label: "Business Inquiry",
     },
+
     {
       value: "other",
       label: "Other",

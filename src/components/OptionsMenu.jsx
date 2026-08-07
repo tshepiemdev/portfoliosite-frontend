@@ -88,6 +88,11 @@ export default function OptionsMenu({
       action: onShareClick,
     },
     {
+      name: "Copy Image Url",
+      icon: CopyIcon,
+      action: handleCopyLink,
+    },
+    {
       name: "Help",
       icon: HelpIcon,
       link: "/help-center",
@@ -95,12 +100,7 @@ export default function OptionsMenu({
     {
       name: "Report",
       icon: ReportIcon,
-      link: "/contact",
-    },
-    {
-      name: "Copy Image Url",
-      icon: CopyIcon,
-      action: handleCopyLink,
+      link: "/contact?reason=report",
     },
   ];
 

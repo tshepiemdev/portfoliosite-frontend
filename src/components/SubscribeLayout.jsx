@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "../styles/SubscribeLayout.module.css";
 import LogoIcon from "./LogoIcon";
 import mailIcon from "../assets/icons/envelope.svg";
@@ -115,9 +116,18 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
   };
 
   const footerText =
-    subscriberCount > 50 && showCount
-      ? `${subscriberCount}+ subscribers`
-      : "No spam. Unsubscribe anytime.";
+    subscriberCount > 50 && showCount ? (
+      `${subscriberCount}+ subscribers`
+    ) : (
+      <>
+        No spam. Unsubscribe anytime.
+        <br />
+        <Link to="/legal/tshepiemdev-website-blog-subscription-terms" className={styles.termsLink}>
+          Subscription terms
+        </Link>{" "}
+        apply.
+      </>
+    );
 
   return (
     <div className={styles.layout}>
@@ -131,7 +141,8 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
           </h4>
 
           <p className={styles.label}>
-            Get articles delivered right into your inbox.
+            Get new articles delivered <br />
+            right into your inbox.
           </p>
         </div>
       )}

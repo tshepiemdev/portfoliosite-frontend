@@ -3,18 +3,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
 
 @font-face {
-  font-family: interFont;
-  src: url("../assets/fonts/Inter-VariableFont_opsz,wght.ttf");
+  font-family: "interFont";
+  src: url("/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: bricolageFont;
-  src: url("../assets/fonts/BricolageGrotesqueRegular.otf");
+  font-family: "bricolageFont";
+  src: url("/fonts/BricolageGrotesqueRegular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: instrumentSerifFont;
-  src: url("../assets/fonts/InstrumentSerif-Regular.ttf");
+  font-family: "instrumentSerifFont";
+  src: url("/fonts/InstrumentSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
 
 :root {
@@ -25,6 +31,7 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .layout {
@@ -35,6 +42,7 @@
   font-style: normal;
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: start;

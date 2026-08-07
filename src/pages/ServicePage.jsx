@@ -141,10 +141,7 @@ export default function ServicePage() {
     siteUrl,
     siteName: service?.name,
     handleCopyLink,
-    openShareModal: () => setIsShareModalOpen(true),
     icons: {
-      copyLink: copyLinkImg,
-      share: shareImg,
       threads: threadsImg,
       x: xImg,
       linkedIn: linkedInImg,
@@ -169,9 +166,11 @@ export default function ServicePage() {
           name={service.name}
           shortDescription={service.shortDescription}
           buttonText={service.cta?.text || "Request Service"}
+          shareButtonText={"Share service"}
           linkTo={`/pricing?service=${service.pricingAlias}`}
           isFeatured={service.isFeatured}
           shareOptions={shareOptions}
+          onShareClick={() => setIsShareModalOpen(true)}
         />
 
         <div className={styles.metaWrapper}>
@@ -190,11 +189,7 @@ export default function ServicePage() {
                 <p className={styles.label}>Pricing</p>
 
                 <p className={styles.startingFromLbl}>
-                  <img
-                    className={styles.textIcon}
-                    src={logoImg}
-                    alt=""
-                  />
+                  <img className={styles.textIcon} src={logoImg} alt="" />
                   Starting from
                 </p>
 

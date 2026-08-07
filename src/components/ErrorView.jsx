@@ -62,7 +62,7 @@ export default function ErrorView({
     }
 
     return {
-      title: "Something went wrong",
+      title: <>Something <br/>went wrong</>,
       subtext: <>Please try again later.</>,
     };
   };
