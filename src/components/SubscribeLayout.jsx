@@ -232,7 +232,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
             </p>
           )}
 
-          <p className={styles.label}>{footerText}</p>
+          <p className={styles.termsLabelWrapper}>{footerText}</p>
         </div>
       )}
     </div>

@@ -47,11 +47,11 @@ export default function ServicePageTopTitlesView({
 
       <div className={styles.rowWrapperControls}>
         <div className={styles.buttonsWrapper}>
-          <BtnCTAWhite buttonText={buttonText} href={linkTo} fullWidth />
+          <BtnCTAWhite buttonText={buttonText} href={linkTo} />
           <BtnCTABlack
             buttonText={shareButtonText}
             onClick={onShareClick}
-            fullWidth
+            
           />
         </div>
 
