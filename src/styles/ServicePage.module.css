@@ -205,6 +205,16 @@
   line-height: 1.1;
 }
 
+.serviceSubjectsUlmini {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding-left: 1.4rem;
+}
+
 .serviceSpecLiminiSubject {
   font-size: 1rem;
   font-weight: 500;
@@ -216,9 +226,8 @@
   border-bottom: 2px dotted rgba(255, 255, 255, 0.1);
 }
 
-.spanBullet {
+.serviceSpecLiminiSubject::marker {
   color: orange;
-  margin-right: 0.5rem;
 }
 
 .serviceSpecLiminiSubject:last-child {
@@ -253,6 +262,16 @@
   aspect-ratio: 1 / 1;
   margin-right: 0.2rem;
   object-fit: contain;
+}
+
+.linker {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.linker:hover {
+  color: orange;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

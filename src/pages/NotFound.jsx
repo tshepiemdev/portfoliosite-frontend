@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles/NotFound.module.css";
-import ErrorImg from "../assets/icons/logo-black.svg";
 import PageHelmet from "../components/PageHelmet";
 import SectionDevider from "../components/SectionDevider";
-import BtnCTAWhite from "../components/BtnCTAWhite";
+import PageTopHeading from "../components/PageTopHeading";
+import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
+import LogoImg from "../assets/icons/logo-black.svg";
 import BackArrowImg from "../assets/icons/back_arrow.svg";
 import ogImages from "../config/ogImages";
 
@@ -22,26 +23,30 @@ export default function NotFound() {
       />
 
       <div className={styles.errorContentWrapper}>
-        <div className={styles.wrapper}>
-          <div className={styles.errorImgWrapper}>
-            <img className={styles.notFoundImg} src={ErrorImg} alt="error" />
-          </div>
-        </div>
+        <PageTopHeading
+          icon={LogoImg}
+          title={
+            <>
+              Not found: <br />
+              error: 404
+            </>
+          }
+          textAlign="start"
+          centerContent="start"
+        />
 
-        <div className={styles.wrapper}>
-          <h1 className={styles.h1}>Oops!</h1>
-          <h2 className={styles.h2}>
-            I couldn't find the page
-            <br />
-            you were looking for
-          </h2>
-          <p className={styles.p}>
+        <div className={styles.card}>
+          <p
+            className={styles.label}
+            style={{
+              color: "#ff8d8d",
+            }}
+          >
             The page you were looking for might not <br />
-            exist or has been temporarly removed. <br />
-            Error code [404]
+            exist or has been temporarly removed.
           </p>
 
-          <BtnCTAWhite buttonText={"Go home"} href={"/"} />
+          <BtnCTAWhiteSmall buttonText={"Back to home"} href={"/"} />
         </div>
       </div>
     </div>

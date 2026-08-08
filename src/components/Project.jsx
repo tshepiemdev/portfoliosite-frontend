@@ -60,7 +60,6 @@ function Project({
 
       <div className={styles.metaWrapper}>
         <h2 className={styles.name}>
-          
           {projectName || "Untitled"}
           {isProjNew && <span className={styles.chip}>New</span>}
         </h2>

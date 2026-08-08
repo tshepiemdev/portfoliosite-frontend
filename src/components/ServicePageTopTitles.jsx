@@ -34,7 +34,9 @@ export default function ServicePageTopTitlesView({
           />
         </div>
         <div className={styles.columnWrapper}>
-          <h1 className={styles.name}>{name}</h1>
+          <h1 className={styles.name}>
+            {name} {isFeatured && <span className={styles.chip}>New</span>}
+          </h1>
 
           <div className={styles.rowWrapper}>
             <p className={styles.category}>{capitalizeFirstLetter(category)}</p>
@@ -47,15 +49,13 @@ export default function ServicePageTopTitlesView({
 
       <div className={styles.rowWrapperControls}>
         <div className={styles.buttonsWrapper}>
-          <BtnCTAWhite buttonText={buttonText} href={linkTo} />
+          <BtnCTAWhite buttonText={buttonText} href={linkTo} fullWidth />
           <BtnCTABlack
             buttonText={shareButtonText}
             onClick={onShareClick}
-            
+            fullWidth
           />
         </div>
-
-        {/* <ShareWith options={shareOptions} /> */}
       </div>
     </div>
   );

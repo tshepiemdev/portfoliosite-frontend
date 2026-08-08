@@ -41,7 +41,7 @@
   width: 40%;
   font-weight: 600;
   line-height: 1.1;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #4e4b4b;
   display: -webkit-box;
   line-clamp: 1;
@@ -54,7 +54,7 @@
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-weight: 500;
   line-height: 1.1;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: -webkit-box;
   line-clamp: 1;
   -webkit-line-clamp: 1;

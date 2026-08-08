@@ -276,10 +276,9 @@ export default function ServicePage() {
                   />
                   Subjects
                 </h3>
-                <ul className={styles.serviceSpecsUlmini}>
+                <ul className={styles.serviceSubjectsUlmini}>
                   {service.subjects?.map((item, index) => (
                     <li className={styles.serviceSpecLiminiSubject} key={index}>
-                      <span className={styles.spanBullet}>•</span>
                       {item}
                     </li>
                   ))}
@@ -363,13 +362,21 @@ export default function ServicePage() {
                 )}
 
                 {service.legal.length === 0 && (
-                  <div className={styles.sectionBlockNotice}>
-                    <NoticeLbl
-                      text={
-                        "Couln't find any listed legal guidelines & regulations. You may contact the developer."
-                      }
-                    />
-                  </div>
+                  <NoticeLbl
+                    text={
+                      <>
+                        Couln't find listed legal guidelines or regulations
+                        regarding this service. You may{" "}
+                        <Link
+                          className={styles.linker}
+                          to={"/contact?reason=support"}
+                        >
+                          contact support
+                        </Link>
+                        .
+                      </>
+                    }
+                  />
                 )}
               </div>
             )}

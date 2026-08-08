@@ -15,8 +15,8 @@
   border: 8px solid #1a1a1a;
   border-top: 8px solid #ffffff;
   border-radius: 16rem;
-  width: 3rem;
-  aspect-ratio: 1 / 1;
+  width: 4rem;
+  height: 4rem;
   animation: spin 1.4s infinite;
 }
 

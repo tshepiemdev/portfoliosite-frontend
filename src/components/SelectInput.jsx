@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 
 const SelectInput = forwardRef(function SelectInput(
   {
-  
     label,
     name,
     value,
@@ -24,7 +23,7 @@ const SelectInput = forwardRef(function SelectInput(
     <div className={styles.selectWrapper}>
       {label && (
         <label htmlFor={inputId} className={styles.selectLabel}>
-          {label}  {required && <span className={styles.requiredStar}>*</span>}
+          {label} {required && <span className={styles.requiredStar}>*</span>}
         </label>
       )}
 

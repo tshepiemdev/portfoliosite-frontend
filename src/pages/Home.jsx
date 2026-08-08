@@ -89,7 +89,7 @@ export default function Home() {
           </div>
 
           <div className={styles.actionsWrapper}>
-            <BtnCTAWhite buttonText="Browse all" href={"/projects"} />
+            <BtnCTABlack buttonText="Browse all" href={"/projects"} />
           </div>
         </div>
 

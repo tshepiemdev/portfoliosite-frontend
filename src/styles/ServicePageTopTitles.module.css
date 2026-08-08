@@ -44,8 +44,22 @@
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: clamp(1.2rem, 4vw, 1.5rem);
   font-weight: 600;
-  line-height: 1;
-  width: 35%;
+  line-height: 1.1;
+  width: 34%;
+}
+
+.chip {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: white;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.3rem;
+  transform: translateY(-0.3rem);
 }
 
 .shortDescription {
@@ -55,7 +69,7 @@
   font-style: normal;
   text-align: start;
   line-height: 0.9;
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-size: clamp(1.8rem, 5vw, 2rem);
   margin-bottom: 1rem;
   width: 75%;
 }
@@ -97,7 +111,7 @@
 }
 
 .buttonsWrapper {
-  width: 100%;
+  width: 40%;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -147,5 +161,17 @@
 
   .shortDescription {
     width: 80%;
+  }
+
+  .buttonsWrapper {
+    width: 50%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chip {
+    margin: 0;
   }
 }

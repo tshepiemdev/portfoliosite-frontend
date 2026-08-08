@@ -113,10 +113,9 @@ export default function ProjectsWrapper({
           />
         )}
 
-        <div className={styles.wrapAllProjects}>
-          {!loading &&
-            !errorType &&
-            filteredProjects
+        {!loading && !errorType && !filteredProjects.length === 0 && (
+          <div className={styles.wrapAllProjects}>
+            {filteredProjects
               .slice(0, limit ?? filteredProjects.length)
               .map((project, index) => (
                 <Project
@@ -131,7 +130,8 @@ export default function ProjectsWrapper({
                   projectLink={`/projects/${slugify(project.projectName)}`}
                 />
               ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

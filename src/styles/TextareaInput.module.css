@@ -20,7 +20,7 @@
   width: 100%;
   height: 100%;
   background-color: #1a1a1a;
-  border: 1.5px solid #1f1f1f;
+  border: 2px solid #1f1f1f;
   border-radius: 0.6rem;
   padding: 0.8rem;
   text-align: start;
@@ -42,7 +42,7 @@
 }
 
 .textareaFieldError:focus {
-  border: 1.5px solid rgb(255, 0, 0);
+  border: 2px solid #ff3b3b;
 }
 
 .inputErrorWrapper {
@@ -59,8 +59,9 @@
 }
 
 .inputErrorText {
-  font-size: 0.8rem;
-  color: rgb(255, 0, 0);
+   font-size: 0.8rem;
+  font-weight: 500;
+  color: #ff3b3b;
 }
 
 @media (max-width: 768px) {

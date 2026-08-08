@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/ErrorView.module.css";
-import BtnCTAWhite from "./BtnCTAWhite";
+import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import ErrorImg from "../assets/icons/triangle-warning-black.svg";
-import InternetErrorImg from "../assets/icons/broken-link.svg";
+import InternetErrorImg from "../assets/icons/no-network.svg";
 import ServerErrorImg from "../assets/icons/thunderstorm-risk (1).svg";
 import chevronImg from "../assets/icons/chevron-down.svg";
 
@@ -128,7 +128,7 @@ export default function ErrorView({
           {errorSubtext || defaults.subtext}
         </p>
 
-        {onRetry && <BtnCTAWhite buttonText="Try again" onClick={onRetry} />}
+        {onRetry && <BtnCTAWhiteSmall buttonText="Try again" onClick={onRetry} />}
       </div>
 
       <div className={styles.wrapper}>

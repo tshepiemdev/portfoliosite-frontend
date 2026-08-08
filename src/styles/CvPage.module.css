@@ -59,7 +59,7 @@
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem;
   margin: 0;
 }
 
@@ -78,10 +78,16 @@
   text-decoration: underline;
 }
 
+.logoImg {
+  width: 0.8rem;
+  height: 0.8rem;
+  filter: invert(1);
+  margin-right: 0.1rem;
+}
+
 .chevronImg {
   width: 1.2rem;
   height: 1.2rem;
-  aspect-ratio: 1 / 1;
   filter: invert(1);
 }
 
@@ -493,8 +499,8 @@
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: 0.2rem;
-    margin-top: 0.5rem;
+    gap: 0rem;
+    margin-top: 1.5rem;
   }
 }
 

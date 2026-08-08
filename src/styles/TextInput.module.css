@@ -24,7 +24,7 @@
   width: 100%;
   height: 2.8rem;
   background-color: #1a1a1a;
-  border: 1.5px solid #1f1f1f;
+  border: 2px solid #1f1f1f;
   border-radius: 0.6rem;
   padding: 0.8rem;
   text-align: start;
@@ -44,11 +44,11 @@
 }
 
 .inputFieldError {
-  border: 1.5px solid #ff3b3b !important;
+  border: 2px solid #ff3b3b !important;
 }
 
 .inputFieldError:focus {
-  border: 1.5px solid #ff3b3b !important;
+  border: 2px solid #ff3b3b !important;
 }
 
 .inputErrorWrapper {
@@ -66,6 +66,7 @@
 
 .inputErrorText {
   font-size: 0.8rem;
+  font-weight: 500;
   color: #ff3b3b;
 }
 

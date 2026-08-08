@@ -25,6 +25,7 @@ import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
 import ChevronImg from "../assets/icons/chevron-right.svg";
 import NextImg from "../assets/icons/arrow-small-right.svg";
 import ogImages from "../config/ogImages";
+import LogoImg from "../assets/icons/logo-black.svg";
 
 export default function CvPage() {
   const navigate = useNavigate();
@@ -186,6 +187,7 @@ export default function CvPage() {
                 <p className={styles.linkyText}>
                   First time here?{" "}
                   <Link className={styles.linkyTextLink} to={"/"}>
+                    <img className={styles.logoImg} src={LogoImg} alt="/" />
                     Explore my portfolio
                     <img className={styles.chevronImg} src={NextImg} alt="/" />
                   </Link>

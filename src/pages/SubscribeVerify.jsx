@@ -113,7 +113,7 @@ export default function SubscribeVerify({ onSuccess }) {
           icon={LogoImg}
           title={
             <>
-              Blog subscription <br />
+              Blog subscription: <br />
               {isUnsubscribe ? "unsubscribe" : "verification"}
             </>
           }
