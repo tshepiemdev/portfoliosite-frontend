@@ -71,7 +71,7 @@
 }
 
 .wordmarkSubtext {
-  font-family: instrumentSerifFont;
+  font-family: "Instrument Serif", instrumentSerifFont;
   text-align: start;
   font-optical-sizing: auto;
   font-weight: 500;
@@ -99,14 +99,14 @@
 }
 
 .copyrightText {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
-  color: #6a6a6a;
+  color: #999999;
   margin-left: auto;
 }
 
 .copyrightText span {
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .lastWrapper {
@@ -115,10 +115,14 @@
   justify-content: start;
   align-items: center;
   gap: 1rem;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
 
 .title {
-  font-family: instrumentSerifFont, "Inter", interFont, sans-serif;
+  font-family:
+    "Instrument Serif", instrumentSerifFont, "Inter", interFont, sans-serif;
   text-align: start;
   font-optical-sizing: auto;
   font-weight: 500;
@@ -242,14 +246,14 @@
   }
 
   .copyrightText {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 550;
-    color: #6a6a6a;
+    color: #999999;
     margin-left: auto;
   }
 
   .copyrightText span {
-    color: #6a6a6a;
+    color: #999999;
   }
 
   .lastWrapper {

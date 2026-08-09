@@ -1,13 +1,18 @@
+import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "../styles/ErrorView.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "../styles/ErrorMaxView.module.css";
+import PageHelmet from "./PageHelmet";
+import SectionDevider from "./SectionDevider";
+import PageTopHeading from "./PageTopHeading";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
+import LogoImg from "../assets/icons/logo-black.svg";
 import ErrorImg from "../assets/icons/triangle-warning-black.svg";
 import InternetErrorImg from "../assets/icons/no-network.svg";
 import ServerErrorImg from "../assets/icons/thunderstorm-risk (1).svg";
 import chevronImg from "../assets/icons/chevron-down.svg";
 
-export default function ErrorView({
+export default function ErrorMaxView({
   errType,
   errorText,
   errorSubtext,
@@ -117,56 +122,39 @@ export default function ErrorView({
   const troubleshootingSteps = getTroubleshootingSteps();
 
   return (
-    <div className={styles.errorView}>
-      <div className={styles.wrapper}>
-        <div className={styles.errorImgWrapper}>
-          <img
-            className={styles.errorImg}
-            src={icon}
-            alt={errorText || defaults.title}
-          />
+    <div className={styles.errorMaxView}>
+      <div className={styles.errorContentWrapper}>
+        <PageTopHeading
+          icon={icon}
+          title={errorText || defaults.title}
+          textAlign="start"
+          centerContent="start"
+        />
+
+        <div className={styles.card}>
+          <p
+            className={styles.label}
+            style={{
+              color: "#ff8d8d",
+            }}
+          >
+            {errorSubtext || defaults.subtext}
+          </p>
+
+          {onRetry && (
+            <BtnCTAWhiteSmall buttonText="Try again" onClick={onRetry} />
+          )}
         </div>
 
-        <h2 className={styles.errorHead}>{errorText || defaults.title}</h2>
+        <div className={styles.wrapper}>
+          <span className={styles.spanText}>Troubleshooting</span>
 
-        <p className={styles.errorSubtext}>
-          {errorSubtext || defaults.subtext}
-        </p>
-
-        {onRetry && (
-          <BtnCTAWhiteSmall buttonText="Try again" onClick={onRetry} />
-        )}
-      </div>
-
-      <div className={styles.wrapper}>
-        <button
-          className={styles.troubleshootBtn}
-          onClick={() => setShowTroubleshooting(!showTroubleshooting)}
-        >
-          <span
-            className={`${styles.spanText} ${
-              showTroubleshooting ? styles.spanTextOpen : ""
-            }`}
-          >
-            Troubleshooting
-          </span>
-
-          <img
-            src={chevronImg}
-            alt=""
-            className={`${styles.chevron} ${
-              showTroubleshooting ? styles.chevronOpen : ""
-            }`}
-          />
-        </button>
-
-        {showTroubleshooting && (
           <ol className={styles.troubleshootList}>
             {troubleshootingSteps.map((step, index) => (
               <li key={index}>{step}</li>
             ))}
           </ol>
-        )}
+        </div>
       </div>
     </div>
   );

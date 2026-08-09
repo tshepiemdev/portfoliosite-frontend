@@ -69,11 +69,12 @@ export default function Legal() {
 
       <div className={styles.legalWrapper}>
         <PageTopHeading
-          title={<>Legal Resources</>}
+          title={<>Legal</>}
           subtext={
             <>
-              Explore legal information resources <br />
-              concerning products, provided services <br />
+              Browse legal information resources <br />
+              concerning products, provided services
+              <br />
               and affiliated partners.
             </>
           }

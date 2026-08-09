@@ -75,7 +75,7 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #161616;
+  border-top: none;
 }
 
 .blogSections > .sectionBlock:first-child {
@@ -85,9 +85,9 @@
 .sectionHeader {
   width: fit-content;
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 @media (max-width: 768px) {

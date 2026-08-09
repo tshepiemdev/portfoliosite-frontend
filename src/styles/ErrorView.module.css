@@ -4,9 +4,9 @@
   grid-template-columns: 1fr;
   grid-template-rows: minmax(20vh, 50vh);
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   overflow: hidden;
 }
 
@@ -35,6 +35,7 @@
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
+  color: #999999;
   width: 100%;
   display: flex;
   align-items: center;
@@ -56,6 +57,15 @@
   transform: rotate(180deg);
 }
 
+.spanText {
+  color: #999999;
+  transition: all 0.2s ease-in-out;
+}
+
+.spanTextOpen {
+  color: white;
+}
+
 .troubleshootList {
   list-style: decimal;
   width: 100%;
@@ -63,7 +73,7 @@
   border-top: 1px solid #1a1a1a;
   padding-top: 1rem;
   padding-left: 1.2rem;
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .supportLink {

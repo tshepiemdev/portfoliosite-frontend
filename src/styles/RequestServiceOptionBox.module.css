@@ -68,7 +68,7 @@
   line-height: 1.1;
   font-size: 1rem;
   text-decoration: none;
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .subHeader {
@@ -117,7 +117,7 @@
   border: 1px solid black;
   border-radius: 16rem;
   padding: 0.8rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   transition: all 0.1s ease-in-out;
 }

@@ -21,9 +21,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 1rem;
   overflow: hidden;
 }

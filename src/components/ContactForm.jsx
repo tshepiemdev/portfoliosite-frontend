@@ -457,11 +457,14 @@ export default function ContactForm() {
           .
         </p>
 
-        <BtnCTAWhite
-          type="submit"
-          icon={SubmitIcon}
-          buttonText="Submit message"
-        />
+        <div className={styles.controlWrapper}>
+          <BtnCTAWhite
+            type="submit"
+            icon={SubmitIcon}
+            buttonText="Submit message"
+            fullWidth
+          />
+        </div>
 
         <input name="website" style={{ display: "none" }} />
       </form>

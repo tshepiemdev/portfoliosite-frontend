@@ -32,15 +32,16 @@
 }
 
 .errorImgWrapper {
-  width: 8rem;
-  aspect-ratio: 16 / 9;
+  width: 4rem;
+  height: 4rem;
   margin-bottom: 1rem;
   margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0.6rem;
-  background: linear-gradient(to bottom, pink, orangered, blueviolet);
+ background-color: #1a1a1a;
+  border: 1px solid #1f1f1f;
 }
 
 .errorImg {

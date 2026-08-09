@@ -17,13 +17,13 @@
 }
 
 .count {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
 .text {
   opacity: 0.6;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
   display: -webkit-box;
   line-clamp: 1;

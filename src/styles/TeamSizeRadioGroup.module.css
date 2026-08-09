@@ -23,14 +23,14 @@
 }
 
 .heading {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
 
 .subHeading {
   color: #686868;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
   margin-bottom: 0.5rem;
   display: none;
@@ -50,6 +50,6 @@
 }
 
 .inputErrorText {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: rgb(255, 0, 0);
 }

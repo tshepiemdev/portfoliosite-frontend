@@ -10,6 +10,7 @@ import { slugify } from "../utils/slugify";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 import SubscribeLabel from "../components/SubscribeLabel";
+import SearchBar from "../components/SearchBar";
 
 export default function Blogs() {
   const [myBlogs, setMyBlogs] = useState([]);
@@ -121,13 +122,21 @@ export default function Blogs() {
         title={<>Blog</>}
         subtext={
           <>
-            Fresh tutorials, engineering insights, <br />
-            tech news and personal vlogs.
+            Fresh news, engineering, <br />
+            tech and personal vlogs.
           </>
         }
         textAlign="center"
         centerContent="center"
       />
+      {myBlogs.length > 0 && (
+        <SearchBar
+          value={""}
+          onChange={""}
+          placeholder="Search"
+          setMarginBottom={4}
+        />
+      )}
 
       <div className={styles.blogsWrapper}>
         {myBlogs.length > 0 && (

@@ -23,7 +23,7 @@ export default function Home() {
     <main className={styles.home}>
       <PageHelmet
         title="tshepiem.dev"
-        description="Creative, skilled, and qualified developer dedicated to creating scalable, high-performance digital solutions that combine clean design and efficient engineering."
+        description="Creative developer building scalable, high-performance digital solutions with clean design and efficient engineering.mbine clean design and efficient engineering."
         image={ogImages.home}
         url={window.location.href}
         keywords="hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa"

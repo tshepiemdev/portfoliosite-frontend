@@ -28,15 +28,3 @@
     transform: rotate(360deg);
   }
 }
-
-.loaderText {
-  color: whitesmoke;
-  font-size: 1rem;
-  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 550;
-  font-style: normal;
-  text-align: center;
-
-  display: none;
-}

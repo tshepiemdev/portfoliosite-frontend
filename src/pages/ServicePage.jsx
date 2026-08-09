@@ -1,36 +1,26 @@
-import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/ServicePage.module.css";
 import ServicePageTopTitlesView from "../components/ServicePageTopTitles";
-import BtnDial from "../components/BtnDial";
 import LoaderMaxView from "../components/LoaderMax";
 import NotFound from "./NotFound";
-import shareImg from "../assets/icons/share.svg";
-import copyLinkImg from "../assets/icons/link.svg";
-import linkedInImg from "../assets/icons/linkedin (2).svg";
-import xImg from "../assets/icons/twitter-alt.svg";
 import threadsImg from "../assets/icons/threads.svg";
-import phoneImg from "../assets/icons/phone-flip.svg";
-import emailImg from "../assets/icons/envelope.svg";
+import xImg from "../assets/icons/twitter-alt.svg";
+import linkedInImg from "../assets/icons/linkedin (2).svg";
 import logoImg from "../assets/icons/logo.svg";
-import noticeIcon from "../assets/icons/exclamation3.svg";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import contactInfo from "../config/contactInfo";
 import fileIcon from "../assets/icons/folder.svg";
 import nextIcon from "../assets/icons/arrow-up-right.svg";
-import SectionDevider from "../components/SectionDevider";
-import smallFallbackImg from "../assets/images/fallback_img_16_9.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
-import BtnCTAWhite from "../components/BtnCTAWhite";
-import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
-import BadgeImg from "../assets/icons/spark.svg";
+import BadgeImg from "../assets/icons/logo-white.svg";
 import NoticeLbl from "../components/NoticeLbl";
-import ImagePreviewModal from "../components/ImagePreviewModal";
 import { getShareOptions } from "../utils/shareOptions";
 import { useToast } from "../components/ToastContext";
 import ogImages from "../config/ogImages";
+import PageHelmet from "../components/PageHelmet";
+import ErrorMaxView from "../components/ErrorMaxView";
 
 export default function ServicePage() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -40,20 +30,23 @@ export default function ServicePage() {
   const [pricing, setPricing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState(null);
   const { showToast } = useToast();
-
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const fetchService = async () => {
     try {
       setLoading(true);
       setNotFound(false);
+      setError(null);
 
       const [servicesRes, pricingRes] = await Promise.all([
         fetch(`${API_URL}/api/services`),
         fetch(`${API_URL}/api/pricings`),
       ]);
+
+      if (!servicesRes.ok || !pricingRes.ok) {
+        throw new Error("server");
+      }
 
       const servicesData = await servicesRes.json();
       const pricingData = await pricingRes.json();
@@ -82,7 +75,13 @@ export default function ServicePage() {
       setService(found);
       setPricing(matchedPricing);
     } catch (err) {
-      setNotFound(true);
+      console.error("Failed to fetch service:", err);
+
+      if (!navigator.onLine) {
+        setError("network");
+      } else {
+        setError("server");
+      }
     } finally {
       setLoading(false);
     }
@@ -128,7 +127,16 @@ export default function ServicePage() {
   };
 
   if (loading) return <LoaderMaxView />;
+
   if (notFound) return <NotFound />;
+
+  if (error) {
+    return <ErrorMaxView errType={error} onRetry={fetchService} />;
+  }
+
+  if (!service) {
+    return <ErrorMaxView errType="default" onRetry={fetchService} />;
+  }
 
   const starterPackage = pricing?.packages?.find(
     (item) => item.package === "Starter" && item.isActive,
@@ -139,7 +147,7 @@ export default function ServicePage() {
 
   const shareOptions = getShareOptions({
     siteUrl,
-    siteName: service?.name,
+    siteName: service.name,
     handleCopyLink,
     icons: {
       threads: threadsImg,
@@ -151,7 +159,7 @@ export default function ServicePage() {
   return (
     <div className={styles.servicePage}>
       <PageHelmet
-        title={`${service.name}`}
+        title={service.name}
         description={service.shortDescription}
         image={ogImages.services}
         url={siteUrl}
@@ -166,107 +174,112 @@ export default function ServicePage() {
           name={service.name}
           shortDescription={service.shortDescription}
           buttonText={service.cta?.text || "Request Service"}
-          shareButtonText={"Share service"}
+          shareButtonText="Share service"
           linkTo={`/pricing?service=${service.pricingAlias}`}
           isFeatured={service.isFeatured}
           shareOptions={shareOptions}
           onShareClick={() => setIsShareModalOpen(true)}
         />
 
-        <div className={styles.metaWrapper}>
-          <p className={styles.miniHeader}>
-            <img
-              className={styles.badgeImg}
-              src={BadgeImg}
-              alt={"Service overview specifications"}
-            />
-            Overview specifications
-          </p>
-
-          <ul className={styles.serviceSpecsUl}>
-            {startingPrice && (
-              <li className={styles.serviceSpecLi}>
-                <p className={styles.label}>Pricing</p>
-
-                <p className={styles.startingFromLbl}>
-                  <img className={styles.textIcon} src={logoImg} alt="" />
-                  Starting from
-                </p>
-
-                <p className={styles.currency}>R</p>
-
-                <p className={styles.rate}>
-                  {new Intl.NumberFormat("en-ZA").format(startingPrice)}
-                </p>
-
-                {pricingUnit && <p className={styles.unit}>/{pricingUnit}</p>}
-              </li>
-            )}
-
-            {service.availability?.operatingDays?.length > 0 && (
-              <li className={styles.serviceSpecLi}>
-                <p className={styles.label}>Operational days</p>
-                <p className={styles.rate}>
-                  {service.availability.operatingDays.join(", ")}
-                </p>
-              </li>
-            )}
-
-            {service.availability?.hours && (
-              <li className={styles.serviceSpecLi}>
-                <p className={styles.label}>Operational hours</p>
-                <p className={styles.rate}>{service.availability.hours}</p>
-
-                {service.availability.timezone && (
-                  <p className={styles.unit}>{service.availability.timezone}</p>
-                )}
-              </li>
-            )}
-
-            {service.timeline && (
-              <li className={styles.serviceSpecLi}>
-                <p className={styles.label}>Timeline</p>
-                <p className={styles.rate}>{service.timeline}</p>
-              </li>
-            )}
-          </ul>
-        </div>
-
-        <section className={styles.detailedSection}>
-          <div className={styles.sectionBlock}>
-            <h3 className={styles.miniHeader}>
+        <div className={styles.serviceGridWrapper}>
+          <div className={styles.bento}>
+            <p className={styles.miniHeader}>
               <img
                 className={styles.badgeImg}
                 src={BadgeImg}
-                alt={"Service overview specifications"}
+                alt="Service overview specifications"
               />
-              Detailed specifications
-            </h3>
-            <p className={styles.descriptionlabel}>
-              {service?.longDescription}
+              Overview specifications
             </p>
+
+            <ul className={styles.serviceSpecsUl}>
+              {startingPrice && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Pricing</p>
+
+                  <p className={styles.startingFromLbl}>
+                    <img className={styles.textIcon} src={logoImg} alt="" />
+                    Starting from
+                  </p>
+
+                  <p className={styles.currency}>R</p>
+
+                  <p className={styles.rate}>
+                    {new Intl.NumberFormat("en-ZA").format(startingPrice)}
+                  </p>
+
+                  {pricingUnit && <p className={styles.unit}>/{pricingUnit}</p>}
+                </li>
+              )}
+
+              {service.availability?.operatingDays?.length > 0 && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Operational days</p>
+                  <p className={styles.rate}>
+                    {service.availability.operatingDays.join(", ")}
+                  </p>
+                </li>
+              )}
+
+              {service.availability?.hours && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Operational hours</p>
+                  <p className={styles.rate}>{service.availability.hours}</p>
+
+                  {service.availability.timezone && (
+                    <p className={styles.unit}>
+                      {service.availability.timezone}
+                    </p>
+                  )}
+                </li>
+              )}
+
+              {service.timeline && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Timeline</p>
+                  <p className={styles.rate}>{service.timeline}</p>
+                </li>
+              )}
+            </ul>
           </div>
 
-          <div className={styles.sectionBentoWrapper}>
-            {service.technologies?.length > 0 && (
-              <div className={styles.sectionBentoBox}>
-                <h3 className={styles.bentoHeader}>
-                  <img
-                    className={styles.badgeImg}
-                    src={BadgeImg}
-                    alt="Technologies"
-                  />
-                  Technologies
-                </h3>
-                <ul className={styles.serviceSpecsUlmini}>
-                  <li className={styles.serviceSpecLimini}>
-                    {service.technologies.join(", ")}.
-                  </li>
-                </ul>
-              </div>
-            )}
+          <div className={styles.bento}>
+            <div className={styles.sectionBlock}>
+              <h3 className={styles.miniHeader}>
+                <img
+                  className={styles.badgeImg}
+                  src={BadgeImg}
+                  alt="Detailed specifications"
+                />
+                Detailed specifications
+              </h3>
+              <p className={styles.descriptionlabel}>
+                {service.longDescription}
+              </p>
+            </div>
+          </div>
 
-            {service.subjects?.length > 0 && (
+          {service.technologies?.length > 0 && (
+            <div className={styles.bento}>
+              <h3 className={styles.bentoHeader}>
+                <img
+                  className={styles.badgeImg}
+                  src={BadgeImg}
+                  alt="Technologies"
+                />
+                Technologies
+              </h3>
+
+              <ul className={styles.serviceSpecsUlmini}>
+                <li className={styles.serviceSpecLimini}>
+                  {service.technologies.join(", ")}.
+                </li>
+              </ul>
+            </div>
+          )}
+
+          {service.subjects?.length > 0 && (
+            <div className={styles.bento}>
               <div className={styles.sectionBentoBox}>
                 <h3 className={styles.bentoHeader}>
                   <img
@@ -276,26 +289,30 @@ export default function ServicePage() {
                   />
                   Subjects
                 </h3>
+
                 <ul className={styles.serviceSubjectsUlmini}>
-                  {service.subjects?.map((item, index) => (
+                  {service.subjects.map((item, index) => (
                     <li className={styles.serviceSpecLiminiSubject} key={index}>
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-            )}
+            </div>
+          )}
 
+          <div className={styles.bento}>
             {service.features?.length > 0 && (
               <div className={styles.sectionBentoBox}>
                 <h3 className={styles.bentoHeader}>
                   <img
                     className={styles.badgeImg}
                     src={BadgeImg}
-                    alt={"Service overview specifications"}
+                    alt="Service overview specifications"
                   />
                   Features
                 </h3>
+
                 <ul className={styles.serviceSpecsUlmini}>
                   <li className={styles.serviceSpecLimini}>
                     {service.features.join(", ")}.
@@ -303,17 +320,20 @@ export default function ServicePage() {
                 </ul>
               </div>
             )}
+          </div>
 
+          <div className={styles.bento}>
             {service.deliverables?.length > 0 && (
               <div className={styles.sectionBentoBox}>
                 <h3 className={styles.bentoHeader}>
                   <img
                     className={styles.badgeImg}
                     src={BadgeImg}
-                    alt={"Service overview specifications"}
+                    alt="Service overview specifications"
                   />
                   Deliverables
                 </h3>
+
                 <ul className={styles.serviceSpecsUlmini}>
                   <li className={styles.serviceSpecLimini}>
                     {service.deliverables.join(", ")}.
@@ -321,28 +341,26 @@ export default function ServicePage() {
                 </ul>
               </div>
             )}
+          </div>
 
+          <div className={styles.bento}>
             {service.legal && (
               <div className={styles.sectionBentoBox}>
                 <h3 className={styles.bentoHeader}>
-                  <img
-                    className={styles.badgeImg}
-                    src={BadgeImg}
-                    alt={"Legal"}
-                  />
+                  <img className={styles.badgeImg} src={BadgeImg} alt="Legal" />
                   Legal
                 </h3>
 
                 <li className={styles.serviceSpecLimini}>
-                  Service binding legal guidelines & regulations
+                  Legal documentation
                 </li>
 
-                {service.legal && (
+                {service.legal.length > 0 && (
                   <ul className={styles.serviceSpecsUlmini}>
-                    {service.legal?.map((item, index) => (
+                    {service.legal.map((item, index) => (
                       <Link
                         key={index}
-                        className={styles.serviceSpecLimini}
+                        className={styles.serviceSpecLiLegal}
                         to={item.link}
                       >
                         <img
@@ -351,11 +369,6 @@ export default function ServicePage() {
                           alt={item.name}
                         />
                         {item.name}
-                        <img
-                          className={styles.nextIcon}
-                          src={nextIcon}
-                          alt={item.name}
-                        />
                       </Link>
                     ))}
                   </ul>
@@ -363,17 +376,18 @@ export default function ServicePage() {
 
                 {service.legal.length === 0 && (
                   <NoticeLbl
+                    title="Note"
                     text={
                       <>
                         Couln't find listed legal guidelines or regulations
                         regarding this service. You may{" "}
                         <Link
                           className={styles.linker}
-                          to={"/contact?reason=support"}
+                          to="/contact?reason=support"
                         >
                           contact support
-                        </Link>
-                        .
+                        </Link>{" "}
+                        for more information.
                       </>
                     }
                   />
@@ -381,7 +395,7 @@ export default function ServicePage() {
               </div>
             )}
           </div>
-        </section>
+        </div>
       </div>
 
       <ShareSiteModal

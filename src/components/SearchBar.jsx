@@ -6,9 +6,17 @@ export default function SearchBar({
   value,
   onChange,
   placeholder = "Search...",
+  setMarginTop = 0,
+  setMarginBottom = 0,
 }) {
   return (
-    <div className={styles.searchWrapper}>
+    <div
+      className={styles.searchWrapper}
+      style={{
+        marginTop: `${setMarginTop}rem`,
+        marginBottom: `${setMarginBottom}rem`,
+      }}
+    >
       <img className={styles.searchImg} src={searchImg} alt="search" />
 
       <input

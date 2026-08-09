@@ -679,11 +679,14 @@ export default function ServiceRequestForm() {
           .
         </p>
 
-        <BtnCTAWhite
-          type="submit"
-          icon={SubmitIcon}
-          buttonText="Submit request"
-        />
+        <div className={styles.controlWrapper}>
+          <BtnCTAWhite
+            type="submit"
+            icon={SubmitIcon}
+            buttonText="Submit request"
+            fullWidth
+          />
+        </div>
 
         <input
           name="website"

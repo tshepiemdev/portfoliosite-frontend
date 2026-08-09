@@ -108,7 +108,7 @@
   justify-content: start;
   align-items: start;
   gap: 2rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .box {
@@ -132,7 +132,7 @@
   font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 500;
   line-height: 1.1;
-  font-family: instrumentSerifFont;
+  font-family: "Instrument Serif", instrumentSerifFont;
   width: 100%;
 }
 
@@ -181,13 +181,13 @@
 
 .author {
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .label {
   font-weight: 600;
-  color: #6a6a6a;
-  font-size: 0.8rem;
+  color: #999999;
+  font-size: 0.9rem;
 }
 
 .miniHeader {

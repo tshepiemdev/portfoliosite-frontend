@@ -83,7 +83,7 @@
 }
 
 .description {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   opacity: 0.8;
   margin-bottom: 1rem;
   max-width: 70%;
@@ -131,7 +131,7 @@
 }
 
 p {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .menuBtn {
@@ -186,7 +186,7 @@ p {
 }
 
 .optionItem {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #828282;
   cursor: pointer;
 }

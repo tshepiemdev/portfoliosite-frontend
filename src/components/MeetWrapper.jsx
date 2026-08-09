@@ -72,7 +72,7 @@ export default function MeetWrapper() {
       label: "+",
       subtext: "Tech Stack",
       summary:
-        "Frameworks, languages, cloud services, and tools used to build modern software.",
+        "Frameworks, languages, cloud services, and tools I use to build modern software.",
     },
     {
       icon: BuildsImg,

@@ -24,14 +24,14 @@
 }
 
 .label {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .timestamp {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .commentText {

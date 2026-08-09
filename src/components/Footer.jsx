@@ -107,7 +107,7 @@ export default function Footer({}) {
 
         <h2 className={styles.title}>tshepiem.dev</h2>
 
-        <SectionDevider />
+       
 
         <div className={styles.lastWrapper}>
           <SocialIconsWrapper

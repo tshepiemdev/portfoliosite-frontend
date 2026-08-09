@@ -17,12 +17,12 @@
 }
 
 .countLbl {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
 }
 
 .label {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 550;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .countLbl {
-  color: #6a6a6a;
+  color: #999999;
   margin-right: auto;
   margin-left: 0.2rem;
 }

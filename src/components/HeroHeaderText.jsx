@@ -9,14 +9,26 @@ export default function HeroHeaderText() {
       write code
       <span className={styles.spanImgBg}>
         <div className={styles.wrapper}>
-          <img className={styles.spanImg} src={WriteImg} alt="" />
+          <img
+            className={styles.spanImg}
+            src={WriteImg}
+            alt=""
+            decoding="async"
+            fetchPriority="high"
+          />
         </div>
       </span>
       . I build <br />
       efficient solutions
       <span className={styles.spanImgBg}>
         <div className={styles.wrapper}>
-          <img className={styles.spanImg} src={EngineerImg} alt="" />
+          <img
+            className={styles.spanImg}
+            src={EngineerImg}
+            alt=""
+            decoding="async"
+            fetchPriority="high"
+          />
         </div>
       </span>
     </h1>

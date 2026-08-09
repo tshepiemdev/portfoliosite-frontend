@@ -92,8 +92,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
             title={<>Services</>}
             subtext={
               <>
-                Building solutions for start-ups, medium <br />
-                and large-scale enterprise clients.
+                Building solutions for startup <br/>and enterprise clients.
               </>
             }
             textAlign="center"

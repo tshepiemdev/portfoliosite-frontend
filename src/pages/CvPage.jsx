@@ -172,7 +172,7 @@ export default function CvPage() {
               title={
                 <>
                   Get my comprehensive, <br />
-                  ATS optimized resume
+                  ATS optimized resume.
                 </>
               }
             />
@@ -208,7 +208,16 @@ export default function CvPage() {
 
           {!loading && !errorType && cv && (
             <div className={styles.cvGrid}>
-              <div className={styles.wrapper}>
+              <div
+                className={styles.wrapper}
+                style={{
+                  background: `url(${
+                    cv.profileImage?.trim()
+                      ? cv.profileImage
+                      : myDefaultProfileImage
+                  })`,
+                }}
+              >
                 <div className={styles.boxFlexP}>
                   <div className={styles.cvIconWrapper}>
                     <img

@@ -16,11 +16,9 @@ import ShareSiteModal from "../components/ShareSiteModal";
 import ImagePreviewModal from "../components/ImagePreviewModal";
 import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
-import NoticeImg from "../assets/icons/triangle-warning.svg";
 import CloudCodeImg from "../assets/icons/cloud-data.svg";
 import TechStackImg from "../assets/icons/square-terminal.svg";
 import FeaturesImg from "../assets/icons/spark.svg";
-import CounterView from "../components/CounterView";
 import ShippedImg from "../assets/icons/cloud.svg";
 import DiscontinuedImg from "../assets/icons/ban.svg";
 import BuildingImg from "../assets/icons/logo.svg";
@@ -29,18 +27,20 @@ import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
 import NoticeLbl from "../components/NoticeLbl";
 import liveprodImg from "../assets/icons/globe (1).svg";
+import ErrorMaxView from "../components/ErrorMaxView";
 
 export default function ProjectPage() {
   const { showToast } = useToast();
   const { slug } = useParams();
+
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  const [views, setViews] = useState(0);
   const hasViewed = useRef(false);
 
   const addView = async (projectSlug) => {
@@ -66,14 +66,20 @@ export default function ProjectPage() {
     try {
       setLoading(true);
       setNotFound(false);
+      setError(null);
 
       const res = await fetch(`${API_URL}/api/projects`);
 
+      if (!res.ok) {
+        throw new Error("server");
+      }
+
       let data;
+
       try {
         data = await res.json();
       } catch {
-        throw new Error("Invalid server response");
+        throw new Error("server");
       }
 
       const projects = Array.isArray(data) ? data : data?.data || [];
@@ -89,8 +95,13 @@ export default function ProjectPage() {
 
       setProject(found);
     } catch (err) {
-      console.error(err);
-      setNotFound(true);
+      console.error("Failed to fetch project:", err);
+
+      if (!navigator.onLine) {
+        setError("network");
+      } else {
+        setError("server");
+      }
     } finally {
       setLoading(false);
     }
@@ -119,7 +130,16 @@ export default function ProjectPage() {
   }, [project]);
 
   if (loading) return <LoaderMaxView />;
+
   if (notFound) return <NotFound />;
+
+  if (error) {
+    return <ErrorMaxView errType={error} onRetry={fetchProject} />;
+  }
+
+  if (!project) {
+    return <ErrorMaxView errType="default" onRetry={fetchProject} />;
+  }
 
   const siteUrl = typeof window !== "undefined" ? window.location.href : "";
 
@@ -143,7 +163,7 @@ export default function ProjectPage() {
     }
   };
 
-  const status = project?.projectStatus || "";
+  const status = project.projectStatus || "";
 
   const finalBadgeText = status
     ? status.charAt(0).toUpperCase() + status.slice(1)
@@ -161,14 +181,14 @@ export default function ProjectPage() {
 
   const activeImage =
     selectedIndex !== null
-      ? project?.projectImages?.[selectedIndex]
+      ? project.projectImages?.[selectedIndex]
       : selectedImage;
 
   const isModalOpen = !!activeImage;
 
   const shareOptions = getShareOptions({
     siteUrl,
-    projectName: project?.projectName,
+    projectName: project.projectName,
     handleCopyLink,
     openShareModal: () => setIsShareModalOpen(true),
     icons: {
@@ -183,11 +203,11 @@ export default function ProjectPage() {
   return (
     <div className={styles.projectPage}>
       <PageHelmet
-        title={`${project?.projectName}`}
-        description={project?.projectShortDescription}
-        image={project?.projectIcon}
+        title={project.projectName}
+        description={project.projectShortDescription}
+        image={project.projectIcon}
         url={siteUrl}
-        keywords={`${project?.projectName}, ${project?.projectType}, ${project?.projectCategory}, software development, portfolio project`}
+        keywords={`${project.projectName}, ${project.projectType}, ${project.projectCategory}, software development, portfolio project`}
         siteName="Project"
       />
 
@@ -197,10 +217,10 @@ export default function ProjectPage() {
             <div className={styles.projectIconWrapper}>
               <img
                 className={styles.projectIcon}
-                src={project?.projectIcon || bigFallbackImg}
-                alt={project?.projectName}
+                src={project.projectIcon || bigFallbackImg}
+                alt={project.projectName}
                 onClick={() => {
-                  if (!project?.projectIcon) return;
+                  if (!project.projectIcon) return;
                   setSelectedIndex(null);
                   setSelectedImage(project.projectIcon);
                 }}
@@ -214,7 +234,7 @@ export default function ProjectPage() {
 
             <div className={styles.boxFlexT}>
               <h4 className={styles.projectName}>
-                {project?.projectName} Project
+                {project.projectName} Project
               </h4>
 
               <div className={styles.boxFlexF}>
@@ -223,14 +243,14 @@ export default function ProjectPage() {
                     <img
                       className={styles.statusImg}
                       src={statusImage}
-                      alt={project?.projectStatus || "status"}
+                      alt={project.projectStatus || "status"}
                     />
                   )}
                   {finalBadgeText}
                 </h4>
 
                 <h4 className={styles.mainLabel}>
-                  {project?.projectType
+                  {project.projectType
                     ? "• " + project.projectType
                     : "Type unavailable"}
                 </h4>
@@ -241,7 +261,7 @@ export default function ProjectPage() {
           <div className={styles.box}>
             <p className={styles.label}>Summary</p>
             <h4 className={styles.summary}>
-              {project?.projectShortDescription || "Summary unavailable"}
+              {project.projectShortDescription || "Summary unavailable"}
             </h4>
           </div>
 
@@ -249,25 +269,25 @@ export default function ProjectPage() {
             <div className={styles.box}>
               <p className={styles.label}>Category</p>
               <h4 className={styles.mainLabel}>
-                {project?.projectCategory || "N/A"}
+                {project.projectCategory || "N/A"}
               </h4>
             </div>
 
             <div className={styles.box}>
               <p className={styles.label}>Ownership</p>
               <h4 className={styles.mainLabel}>
-                {project?.projectOwnership || "N/A"}
+                {project.projectOwnership || "N/A"}
               </h4>
             </div>
 
             <div className={styles.box}>
               <p className={styles.label}>Role</p>
-              <h4 className={styles.mainLabel}>{project?.role || "N/A"}</h4>
+              <h4 className={styles.mainLabel}>{project.role || "N/A"}</h4>
             </div>
 
             <div className={styles.box}>
               <p className={styles.label}>Team size</p>
-              <h4 className={styles.mainLabel}>{project?.teamSize || "N/A"}</h4>
+              <h4 className={styles.mainLabel}>{project.teamSize || "N/A"}</h4>
             </div>
           </div>
 
@@ -275,14 +295,14 @@ export default function ProjectPage() {
         </div>
 
         <div className={styles.projectImagesWrapper}>
-          {(project?.projectImages || []).map((item, index) => (
+          {(project.projectImages || []).map((item, index) => (
             <div key={index} className={styles.projectImgWrapper}>
               <img
                 className={styles.projectImg}
                 src={item || bigFallbackImg}
-                alt={project?.projectName}
+                alt={project.projectName}
                 onClick={() => {
-                  const img = project?.projectImages?.[index];
+                  const img = project.projectImages?.[index];
                   if (!img) return;
 
                   setSelectedImage(null);
@@ -308,8 +328,9 @@ export default function ProjectPage() {
               />
               Tech Stack
             </h3>
+
             <p className={styles.sectionTextContent}>
-              {project?.projectStack?.join(", ") || "No stack listed"}
+              {project.projectStack?.join(", ") || "No stack listed"}
             </p>
           </div>
 
@@ -322,8 +343,9 @@ export default function ProjectPage() {
               />
               Features
             </h3>
+
             <p className={styles.sectionTextContent}>
-              {project?.keyFeatures?.join(", ") || "No features listed"}
+              {project.keyFeatures?.join(", ") || "No features listed"}
             </p>
           </div>
 
@@ -341,10 +363,10 @@ export default function ProjectPage() {
               Browse the project's source code and development history.
             </p>
 
-            {project?.projectRepoLink ? (
+            {project.projectRepoLink ? (
               <div className={styles.ctaButtonsWrapper}>
                 <BtnCTABlackSmall
-                  buttonText={"Git Repository"}
+                  buttonText="Git Repository"
                   href={project.projectRepoLink}
                 />
               </div>
@@ -373,10 +395,10 @@ export default function ProjectPage() {
               Access the deployed version of this project.
             </p>
 
-            {project?.projectLiveLink ? (
+            {project.projectLiveLink ? (
               <div className={styles.ctaButtonsWrapper}>
                 <BtnCTAWhiteSmall
-                  buttonText={"Open Live Project"}
+                  buttonText="Open Live Project"
                   href={project.projectLiveLink}
                 />
               </div>
@@ -400,21 +422,24 @@ export default function ProjectPage() {
 
       <ImagePreviewModal
         src={activeImage}
-        alt={project?.projectName}
-        pageName={project?.projectName}
-        imageDescription={project?.projectShortDescription}
+        alt={project.projectName}
+        pageName={project.projectName}
+        imageDescription={project.projectShortDescription}
         isOpen={isModalOpen}
         onClose={() => {
           setSelectedImage(null);
           setSelectedIndex(null);
         }}
         currentImage={selectedIndex}
-        totalImages={(project?.projectImages || []).length}
+        totalImages={(project.projectImages || []).length}
         onNext={() => {
           setSelectedIndex((prev) => {
-            const images = project?.projectImages || [];
+            const images = project.projectImages || [];
+
             if (!images.length) return null;
+
             const last = images.length - 1;
+
             return prev < last ? prev + 1 : prev;
           });
         }}

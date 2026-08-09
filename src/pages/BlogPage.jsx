@@ -1,26 +1,22 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { slugify } from "../utils/slugify";
 import { useToast } from "../components/ToastContext";
-import { createPortal } from "react-dom";
+import { useParams } from "react-router-dom";
+import { slugify } from "../utils/slugify";
 import styles from "../styles/BlogPage.module.css";
 import LoaderMaxView from "../components/LoaderMax";
 import NotFound from "./NotFound";
+import ErrorMaxView from "../components/ErrorMaxView";
 import ImagePreviewModal from "../components/ImagePreviewModal";
 import shareImg from "../assets/icons/share.svg";
 import copyLinkImg from "../assets/icons/link.svg";
 import threadsImg from "../assets/icons/threads.svg";
 import xImg from "../assets/icons/twitter-alt.svg";
 import linkedInImg from "../assets/icons/linkedin (2).svg";
-import linkImg from "../assets/icons/share.svg";
 import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
-import SectionDevider from "../components/SectionDevider";
 import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
 import BlogPageTopTitlesView from "../components/BlogPageTopTitles";
-import CounterView from "../components/CounterView";
-import EyeImg from "../assets/icons/eye.svg";
 import BlogsCompact from "../components/BlogsCompact";
 import myDefaultProfileImage from "../assets/images/tshepang.jpg";
 import ShareWith from "../components/ShareWith";
@@ -30,12 +26,13 @@ import SubscribeLabel from "../components/SubscribeLabel";
 
 export default function BlogPage() {
   const { showToast } = useToast();
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { slug } = useParams();
 
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState(null);
 
   const detailsRef = useRef(null);
   const hasViewed = useRef(false);
@@ -67,14 +64,20 @@ export default function BlogPage() {
     try {
       setLoading(true);
       setNotFound(false);
+      setError(null);
 
       const res = await fetch(`${API_URL}/api/blogs`);
 
+      if (!res.ok) {
+        throw new Error("server");
+      }
+
       let data;
+
       try {
         data = await res.json();
       } catch {
-        throw new Error("Invalid server response");
+        throw new Error("server");
       }
 
       const blogs = Array.isArray(data) ? data : data?.data || [];
@@ -89,8 +92,14 @@ export default function BlogPage() {
       }
 
       setBlog(found);
-    } catch {
-      setNotFound(true);
+    } catch (err) {
+      console.error("Failed to fetch blog:", err);
+
+      if (!navigator.onLine) {
+        setError("network");
+      } else {
+        setError("server");
+      }
     } finally {
       setLoading(false);
     }
@@ -136,7 +145,16 @@ export default function BlogPage() {
   }, [blog]);
 
   if (loading) return <LoaderMaxView />;
-  if (notFound || !blog) return <NotFound />;
+
+  if (notFound) return <NotFound />;
+
+  if (error) {
+    return <ErrorMaxView errType={error} onRetry={fetchBlog} />;
+  }
+
+  if (!blog) {
+    return <ErrorMaxView errType="default" onRetry={fetchBlog} />;
+  }
 
   const displayDate = blog.publishedDate
     ? new Date(blog.publishedDate).toLocaleDateString("en-US", {
@@ -165,8 +183,6 @@ export default function BlogPage() {
   const readTime = calculateReadTime(blog);
 
   const siteUrl = typeof window !== "undefined" ? window.location.href : "";
-
-  const handleModalClick = (e) => e.stopPropagation();
 
   const handleNativeShare = async () => {
     try {
@@ -202,7 +218,7 @@ export default function BlogPage() {
 
   const shareOptions = getShareOptions({
     siteUrl,
-    siteName: blog?.title,
+    siteName: blog.title,
     handleCopyLink,
     openShareModal: () => setIsShareModalOpen(true),
     icons: {
@@ -236,7 +252,7 @@ export default function BlogPage() {
             className={styles.blogImg}
             src={blog.imageUrl || bigFallbackImg}
             alt={blog.title}
-            onClick={() => setSelectedImage(blog?.imageUrl)}
+            onClick={() => setSelectedImage(blog.imageUrl)}
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
@@ -274,6 +290,7 @@ export default function BlogPage() {
                     }}
                   />
                 </div>
+
                 <h4 className={styles.author}>{blog.author}</h4>
               </div>
 
@@ -298,7 +315,6 @@ export default function BlogPage() {
               {sec.media?.type === "video" &&
                 (sec.media.provider === "direct" ? (
                   <div className={styles.sectionVideoWrapper}>
-                    {" "}
                     <video
                       className={styles.sectionVideo}
                       controls
@@ -358,7 +374,7 @@ export default function BlogPage() {
             currentBlogSlug={blog.slug}
           />
 
-          <SubscribeLabel/>
+          <SubscribeLabel />
         </section>
       </div>
 

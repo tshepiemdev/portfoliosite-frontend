@@ -1,37 +1,29 @@
 .titlesWrapper {
-  width: 100%;
+  width: 45%;
   height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 2rem;
+  gap: 1rem;
   position: relative;
-  margin-top: 2rem;
 }
 
 .serviceImgWrapper {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   aspect-ratio: 1 / 1;
-  padding: 1.2rem;
+  padding: 1rem;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to top, pink, orangered, blueviolet);
+  margin-bottom: 1rem;
+  background-color: #1a1a1a;
+  border: #1f1f1f;
   border-radius: 0.45rem;
   overflow: hidden;
   position: relative;
-}
-
-.serviceImgWrapper::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 0.45rem;
-  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.1);
-  pointer-events: none;
 }
 
 .serviceImg {
@@ -42,45 +34,34 @@
 
 .name {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  font-size: 2rem;
   font-weight: 600;
-  line-height: 1.1;
-  width: 34%;
-}
-
-.chip {
-  display: inline-block;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-size: 0.8rem;
-  font-weight: 500;
-  background-color: white;
-  border: none;
-  border-radius: 0.3rem;
-  padding: 0.2rem 0.3rem;
-  transform: translateY(-0.3rem);
+  line-height: 1;
+  width: 65%;
 }
 
 .shortDescription {
-  font-family: instrumentSerifFont;
+  font-family: "Instrument Serif", instrumentSerifFont;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   text-align: start;
   line-height: 0.9;
-  font-size: clamp(1.8rem, 5vw, 2rem);
+  font-size: clamp(1.5rem, 5vw, 2rem);
   margin-bottom: 1rem;
-  width: 75%;
 }
 
 .topWrapper {
   width: 100%;
-  height: fit-content;
   display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
 }
 
 .columnWrapper {
@@ -90,15 +71,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .rowWrapper {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: start;
-  align-items: center;
-  gap: 0.3rem;
+  align-items: start;
+  gap: 0rem;
 }
 
 .rowWrapperControls {
@@ -111,18 +93,29 @@
 }
 
 .buttonsWrapper {
-  width: 40%;
   display: flex;
   justify-content: start;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.textIcon {
+  width: 0.8rem;
+  height: 0.8rem;
+  filter: invert(1);
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .category,
 .type {
-  font-size: clamp(0.7rem, 3.5vw, 0.9rem);
-  font-weight: 600;
-  margin-left: 0rem;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .type {
@@ -131,47 +124,21 @@
 }
 
 @media (max-width: 768px) {
+  .titlesWrapper {
+    width: 100%;
+  }
+
   .name {
     width: 100%;
-  }
-
-  .shortDescription {
-    width: 100%;
-  }
-
-  .rowWrapperControls {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-  }
-
-  .buttonsWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 0.5rem;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .name {
-    width: 40%;
-  }
-
-  .shortDescription {
-    width: 80%;
-  }
-
-  .buttonsWrapper {
+  .titlesWrapper {
     width: 50%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 0.5rem;
   }
 
-  .chip {
-    margin: 0;
+  .name {
+    width: 100%;
   }
 }

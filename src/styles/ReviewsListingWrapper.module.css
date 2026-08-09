@@ -13,9 +13,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 2rem;
   overflow: hidden;
 }
@@ -40,11 +40,21 @@
   .ListingWrapper {
     width: 100%;
   }
+
+  .reviewsList {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .ListingWrapper {
     width: 100%;
     padding: 0;
+  }
+
+  .reviewsList {
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
   }
 }

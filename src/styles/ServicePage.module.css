@@ -5,21 +5,46 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 2rem 1rem;
   padding-top: 4rem;
   position: relative;
   overflow: hidden;
 }
 
 .serviceWrapper {
-  width: 60%;
-  min-height: 50vh;
+  width: 80.8%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.serviceGridWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-rows: minmax(auto, 1fr);
+  align-items: stretch;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.bento {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  border: none;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
   gap: 2rem;
-  padding: 2rem 1rem;
-  overflow: hidden;
 }
 
 .ctasWrapper {
@@ -31,24 +56,6 @@
   padding: 1rem 0rem;
   border-top: 1px solid #1f1f1f;
   margin-top: 1rem;
-}
-
-.metaWrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  gap: 0rem;
-}
-
-.detailedSection {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  gap: 1rem;
 }
 
 .serviceSpecsUl {
@@ -70,25 +77,34 @@
   border-bottom: 1px solid #1a1a1a;
 }
 
+.serviceSpecLi:first-child {
+  padding-top: 0;
+}
+
 .serviceSpecLi:last-child {
   border-bottom: none;
 }
 
 .label {
-  font-size: clamp(0.9rem, 5vw, 1.4rem);
+  font-size: clamp(1rem, 4vw, 1.1rem);
   font-weight: 400;
   width: fit-content;
   margin-right: auto;
 }
 
+.rate,
+.startingFromLbl,
+.currency,
+.unit {
+  font-size: clamp(1rem, 4vw, 1.1rem);
+}
+
 .rate {
-  font-size: clamp(0.9rem, 5vw, 1.4rem);
   font-weight: 500;
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .startingFromLbl {
-  font-size: clamp(0.9rem, 5vw, 1.4rem);
   font-weight: 400;
   width: fit-content;
   display: flex;
@@ -97,14 +113,12 @@
 }
 
 .currency {
-  font-size: clamp(0.9rem, 5vw, 1.4rem);
-  color: #6a6a6a;
+  color: #999999;
   font-weight: 500;
   margin-left: 0rem;
 }
 
 .unit {
-  font-size: clamp(0.9rem, 5vw, 1.4rem);
   font-weight: 400;
   width: fit-content;
 }
@@ -114,7 +128,7 @@
   justify-content: start;
   align-items: center;
   gap: 0.2rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #454545;
   margin: 0rem 0rem 0.5rem 0rem;
@@ -122,36 +136,35 @@
 
 .sectionBlock {
   width: 100%;
-  background-color: #1a1a1a;
+  height: 100%;
+  background-color: transparent;
   border: none;
-  border-radius: 1rem;
-  padding: 0.8rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
 .descriptionlabel {
-  font-size: clamp(0.8rem, 5vw, 1rem);
+  font-size: clamp(0.9rem, 5vw, 1.2rem);
   font-weight: 500;
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .badgeImg {
-  filter: invert(1);
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 0.7rem;
+  height: 0.7rem;
   opacity: 0.5;
+  display: none;
 }
 
 .bentoHeader {
   display: flex;
   justify-content: start;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   color: #454545;
@@ -160,10 +173,7 @@
 .sectionBentoBox {
   width: 100%;
   height: 100%;
-  background-color: black;
   border: none;
-  padding: 1rem;
-  padding-bottom: 1.5rem;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -172,18 +182,6 @@
   align-items: start;
   gap: 2rem;
   transition: all 0.2s ease-in-out;
-}
-
-.sectionBentoWrapper {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
-  border-radius: 1rem;
-  overflow: hidden;
 }
 
 .serviceSpecsUlmini {
@@ -212,18 +210,22 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  padding-left: 1.4rem;
+  padding-left: 1rem;
 }
 
 .serviceSpecLiminiSubject {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.1;
   width: 100%;
-  padding: 1rem 0;
+  padding: 0.8rem 0;
   border-bottom: 2px dotted rgba(255, 255, 255, 0.1);
+}
+
+.serviceSpecLiminiSubject:first-child {
+  padding-top: 0;
 }
 
 .serviceSpecLiminiSubject::marker {
@@ -234,17 +236,33 @@
   border-bottom: none;
 }
 
+.serviceSpecLiLegal {
+  font-size: 1rem;
+  color: #999999;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  margin-bottom: 0.5rem;
+}
+
+.serviceSpecLiLegal:hover {
+  color: orange;
+}
+
 .folderIcon {
   width: 1rem;
-  aspect-ratio: 1 / 1;
+  height: 1rem;
   filter: invert(1);
   opacity: 0.5;
+  margin-right: 0.4rem;
 }
 
 .nextIcon {
-  width: 1rem;
-  aspect-ratio: 1 / 1;
+  width: 1.2rem;
+  height: 1.2rem;
   filter: invert(1);
+  opacity: 0.5;
 }
 
 .serviceLegalLi:first-child {
@@ -257,9 +275,8 @@
 }
 
 .textIcon {
-  width: 1.1rem;
-  height: 1.1rem;
-  aspect-ratio: 1 / 1;
+  width: 0.8rem;
+  height: 0.8rem;
   margin-right: 0.2rem;
   object-fit: contain;
 }
@@ -283,6 +300,11 @@
   .serviceWrapper {
     width: 100%;
   }
+
+  .serviceGridWrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(auto, 1fr);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -293,5 +315,12 @@
 
   .serviceWrapper {
     width: 100%;
+  }
+
+  .serviceGridWrapper {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-rows: minmax(auto, 1fr);
   }
 }

@@ -74,10 +74,10 @@
   background: transparent;
   border: none;
   text-decoration: none;
-  color: #6a6a6a;
+  color: #999999;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
   display: flex;

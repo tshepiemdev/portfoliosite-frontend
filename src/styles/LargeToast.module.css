@@ -84,17 +84,17 @@
   align-items: center;
   gap: 0.2rem;
   margin-right: auto;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .title {
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .message {
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   opacity: 0.6;
 }
 

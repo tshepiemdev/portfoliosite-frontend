@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/LegalPage.module.css";
-import SectionDevider from "../components/SectionDevider";
 import LoaderMaxView from "../components/LoaderMax";
 import NotFound from "./NotFound";
 import MarkdownText from "../components/MarkdownText";
 import API_URL from "../config/api";
 import PageHelmet from "../components/PageHelmet";
 import PageTopHeading from "../components/PageTopHeading";
+import ErrorMaxView from "../components/ErrorMaxView";
 import ogImages from "../config/ogImages";
 
 export default function LegalPage() {
@@ -17,19 +17,26 @@ export default function LegalPage() {
   const [legal, setLegal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchLegal = async () => {
     try {
       setLoading(true);
       setNotFound(false);
+      setError(null);
 
       const res = await fetch(`${API_URL}/api/legals`);
 
+      if (!res.ok) {
+        throw new Error("server");
+      }
+
       let data;
+
       try {
         data = await res.json();
       } catch {
-        throw new Error("Invalid server response");
+        throw new Error("server");
       }
 
       const legals = Array.isArray(data) ? data : data?.data || [];
@@ -46,7 +53,13 @@ export default function LegalPage() {
 
       setLegal(found);
     } catch (err) {
-      setNotFound(true);
+      console.error("Failed to fetch legal information:", err);
+
+      if (!navigator.onLine) {
+        setError("network");
+      } else {
+        setError("server");
+      }
     } finally {
       setLoading(false);
     }
@@ -57,13 +70,22 @@ export default function LegalPage() {
   }, [slug]);
 
   if (loading) return <LoaderMaxView />;
+
   if (notFound) return <NotFound />;
+
+  if (error) {
+    return <ErrorMaxView errType={error} onRetry={fetchLegal} />;
+  }
+
+  if (!legal) {
+    return <ErrorMaxView errType="default" onRetry={fetchLegal} />;
+  }
 
   return (
     <div className={styles.legalPage}>
       <PageHelmet
-        title={`${legal.name}`}
-        description={"Legal Information & Notices by " + `${legal.for}`}
+        title={legal.name}
+        description={`Legal Information & Notices by ${legal.for}`}
         image={ogImages.legal}
         url={window.location.href}
         keywords={`legal, ${legal.name}, ${legal.for}, tshepiem.dev policies`}
@@ -92,10 +114,9 @@ export default function LegalPage() {
 
           <p className={styles.text}>
             Any feedback, suggestions, ideas, or other information submitted
-            through
-            {` ${legal.company}`} may be used to improve our website, services,
-            and user experience. Unless otherwise agreed in writing, such
-            feedback will not be considered confidential information.
+            through {legal.company} may be used to improve our website,
+            services, and user experience. Unless otherwise agreed in writing,
+            such feedback will not be considered confidential information.
           </p>
 
           <p className={styles.text}>

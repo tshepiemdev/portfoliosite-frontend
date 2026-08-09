@@ -33,9 +33,9 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   grid-template-rows: minmax(260px, 1fr);
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 1.2rem;
   overflow: hidden;
 }
@@ -47,9 +47,9 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   grid-template-rows: minmax(260px, 1fr);
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 1.2rem;
   overflow: hidden;
 }

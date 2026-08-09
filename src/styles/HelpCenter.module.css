@@ -47,7 +47,7 @@
   grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr));
   grid-template-rows: minmax(auto, 1fr);
   align-items: stretch;
-  gap: 0.8px;
+  gap: 0.9px;
   background-color: #121212;
   border: 1px solid #121212;
   border-radius: 1.2rem;
@@ -72,7 +72,7 @@
 }
 
 .bentoName {
-  font-family: instrumentSerifFont;
+  font-family: "Instrument Serif", instrumentSerifFont;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -134,7 +134,7 @@
   width: 50%;
   font-size: 1rem;
   font-weight: 500;
-  color: #6a6a6a;
+  color: #999999;
   margin-top: 0rem;
 }
 

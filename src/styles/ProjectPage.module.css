@@ -101,7 +101,7 @@
   justify-content: start;
   align-items: start;
   gap: 2rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   margin: 1rem 0;
   padding-bottom: 0rem;
   border-bottom: 0px solid #1a1a1a;
@@ -194,7 +194,7 @@
 }
 
 .boxFlexF .mainLabel:last-child {
-  color: #6a6a6a;
+  color: #999999;
 }
 
 .projectName {
@@ -206,8 +206,8 @@
 
 .label {
   font-weight: 600;
-  color: #6a6a6a;
-  font-size: 0.8rem;
+  color: #999999;
+  font-size: 0.9rem;
 }
 
 .mainLabel {
@@ -237,7 +237,7 @@
 }
 
 .summary {
-  font-family: instrumentSerifFont;
+  font-family: "Instrument Serif", instrumentSerifFont;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -253,9 +253,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: stretch;
-  gap: 0.8px;
-  background-color: #121212;
-  border: 1px solid #121212;
+  gap: 0.9px;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 1rem;
   overflow: hidden;
 }
@@ -309,7 +309,7 @@
 .sectionBackupText {
   font-size: 0.7rem;
   font-weight: 500;
-  color: #6a6a6a;
+  color: #999999;
   background-color: #1a1a1a;
   border: 1px solid #101010;
   padding: 0.5rem;

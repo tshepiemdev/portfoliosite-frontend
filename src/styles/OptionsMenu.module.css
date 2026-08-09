@@ -1,73 +1,63 @@
 .menuWrapper {
-  background-color: rgba(12, 12, 12, 0.6);
+  background-color: rgba(12, 12, 12, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
-  border-radius: 1.4rem;
+  border-radius: 1.2rem;
   position: absolute;
   top: 0;
   right: 0;
   z-index: 1000;
-  transform: translateX(-10%) translateY(20%);
+  transform: translateX(-5%) translateY(5%);
   overflow: hidden;
   font-family: "Inter", interFont, sans-serif;
+  padding: 0;
 }
 
 .ul {
   background-color: transparent;
   list-style: none;
-  width: fit-content;
-  height: fit-content;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .linkToButton {
+  position: relative;
   background-color: transparent;
   border: none;
   color: inherit;
   text-decoration: none;
   min-width: 12rem;
-  height: 2.6rem;
-  padding: 0.2rem 0.8rem;
-  border-radius: 1.1rem;
+  height: 100%;
+  padding: 0 0.8rem;
   cursor: pointer;
   display: flex;
   justify-content: start;
   align-items: center;
   gap: 0.6rem;
-  transition: all 0.1s ease-in-out;
   font-size: 0.9rem;
-}
-
-.linkToButton:hover {
-  height: 2.6rem;
 }
 
 .linkTo {
   color: inherit;
   text-decoration: none;
   min-width: 12rem;
-  height: 2.6rem;
-  padding: 0.2rem 0.8rem;
-  border-radius: 1.1rem;
+  height: 100%;
+  padding: 0 0.8rem;
   cursor: pointer;
   display: flex;
   justify-content: start;
   align-items: center;
   gap: 0.6rem;
-  transition: all 0.1s ease-in-out;
   font-size: 0.9rem;
-}
-
-.linkTo:hover {
-  height: 3rem;
 }
 
 .li {
   width: fit-content;
-  height: fit-content;
+  height: 2.8rem;
   font-size: 1rem;
-  padding: 0.2rem 0.2rem;
 }
 
 .li:last-child {
@@ -83,6 +73,6 @@
 }
 
 .icon {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 1rem;
+  height: 1rem;
 }

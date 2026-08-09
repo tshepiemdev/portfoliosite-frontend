@@ -324,6 +324,7 @@ export default function HelpCenter() {
                     value={searchInput}
                     onChange={setSearchInput}
                     placeholder="Search help articles"
+                    setMarginBottom={0}
                   />
                 )}
               </div>
