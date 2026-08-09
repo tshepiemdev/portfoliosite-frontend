@@ -34,7 +34,7 @@
 
 .name {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 600;
   line-height: 1;
   width: 65%;
@@ -129,7 +129,7 @@
   }
 
   .name {
-    width: 100%;
+    width: 90%;
   }
 }
 

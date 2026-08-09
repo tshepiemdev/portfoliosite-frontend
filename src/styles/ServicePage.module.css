@@ -210,11 +210,11 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  padding-left: 1rem;
+  padding-left: 1.1rem;
 }
 
 .serviceSpecLiminiSubject {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 500;
   font-optical-sizing: auto;
   font-style: normal;
@@ -230,6 +230,7 @@
 
 .serviceSpecLiminiSubject::marker {
   color: orange;
+ 
 }
 
 .serviceSpecLiminiSubject:last-child {

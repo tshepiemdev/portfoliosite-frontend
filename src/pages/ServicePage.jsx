@@ -379,7 +379,7 @@ export default function ServicePage() {
                     title="Note"
                     text={
                       <>
-                        Couln't find listed legal guidelines or regulations
+                        Couln't find listed legal resources
                         regarding this service. You may{" "}
                         <Link
                           className={styles.linker}
