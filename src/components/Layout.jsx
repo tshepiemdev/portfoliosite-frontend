@@ -105,7 +105,7 @@ export default function Layout() {
     import.meta.env.PROD &&
     (settings?.maintenanceMode === true || pageUnderMaintenance);
 
-  if (!isUnderMaintenance) {
+  if (isUnderMaintenance) {
     return (
       <div className={styles.layout}>
         {settings?.maintenanceMode === false && <Header />}
