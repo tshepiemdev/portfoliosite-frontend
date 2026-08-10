@@ -6,7 +6,6 @@
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
   border-radius: 16rem;
   width: fit-content;
-  min-width: 280px;
   position: relative;
   z-index: 999;
   display: flex;
@@ -157,7 +156,7 @@
   align-items: center;
   cursor: pointer;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   transition: color 0.2s ease;
   color: #a8a8a8;

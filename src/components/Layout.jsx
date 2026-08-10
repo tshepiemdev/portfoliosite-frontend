@@ -108,6 +108,7 @@ export default function Layout() {
   if (isUnderMaintenance) {
     return (
       <div className={styles.layout}>
+        <Header />
         <MaintenanceView data={settings} pageName={pageName} />
       </div>
     );
