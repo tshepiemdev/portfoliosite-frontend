@@ -1,7 +1,6 @@
 .maintenanceWrapper {
   background-color: #1a1a1a;
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: start;
@@ -39,7 +38,6 @@
 .contentWrapper {
   width: 80.8%;
   min-height: 100vh;
-  min-height: 100dvh;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
@@ -62,6 +60,7 @@
   font-size: 0.8rem;
   font-weight: 550;
   color: #8a8a8a;
+  margin-bottom: 3rem;
 }
 
 .spanText {
