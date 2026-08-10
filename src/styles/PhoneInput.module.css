@@ -69,6 +69,7 @@
   font-weight: 500;
   color: #fff;
   border-left: 1px solid #212121;
+  text-decoration: none;
 }
 
 .phoneInput:focus {

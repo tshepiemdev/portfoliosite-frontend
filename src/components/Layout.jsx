@@ -108,10 +108,16 @@ export default function Layout() {
   if (isUnderMaintenance) {
     return (
       <div className={styles.layout}>
-        <Header />
+        {settings?.maintenanceMode === false && <Header />}
+
         <MaintenanceView data={settings} pageName={pageName} />
-        <SectionDevider />
-        <Footer />
+
+        {settings?.maintenanceMode === false && (
+          <>
+            <SectionDevider />
+            <Footer />
+          </>
+        )}
       </div>
     );
   }

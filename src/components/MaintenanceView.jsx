@@ -17,8 +17,8 @@ export default function MaintenanceView({ data, pageName }) {
 
         <div className={styles.wrapper}>
           <h2 className={styles.label}>
-            <span className={styles.spanText}>/{pageName}</span> page is
-            currently <br />
+            Note that <span className={styles.spanText}>{pageName}</span> is currently{" "}
+            <br />
             undergoing maintenance.
           </h2>
 
@@ -28,8 +28,7 @@ export default function MaintenanceView({ data, pageName }) {
 
           <p className={styles.copyrightText}>
             <span>&copy;</span>
-            {new Date().getFullYear()} tshepiem.dev. <br />
-            All rights reserved
+            {new Date().getFullYear()} tshepiem.dev. <br/>All rights reserved
           </p>
         </div>
       </div>

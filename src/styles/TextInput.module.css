@@ -30,6 +30,7 @@
   text-align: start;
   vertical-align: middle;
   opacity: 1;
+  text-decoration: none;
 }
 
 .inputField:focus {

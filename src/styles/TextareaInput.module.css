@@ -28,6 +28,7 @@
   resize: none;
   text-decoration: none;
   font-family: "Inter", interFont, sans-serif;
+  text-decoration: none;
 }
 
 .textareaField:focus {
