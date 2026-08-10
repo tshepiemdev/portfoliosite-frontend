@@ -31,8 +31,8 @@
 }
 
 .textareaField:focus {
-  outline: none;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  outline: 2px solid rgba(255, 166, 0, 0.5);
+  border: 2px solid orange;
   opacity: 1;
 }
 
@@ -40,9 +40,14 @@
   color: #a2a2a2;
   font-weight: 500;
 }
+.textareaFieldError {
+  outline: 2px solid #ff6060;
+  border: 2px solid #ff3b3b !important;
+}
 
 .textareaFieldError:focus {
-  border: 2px solid #ff3b3b;
+  outline: 2px solid #ff6060;
+  border: 2px solid #ff3b3b !important;
 }
 
 .inputErrorWrapper {

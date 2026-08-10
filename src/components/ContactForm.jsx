@@ -9,7 +9,10 @@ import PhoneInput from "./PhoneInput";
 import Modal from "./Modal";
 import ResponseLayout from "./ResponseLayout";
 import BtnCTAWhite from "./BtnCTAWhite";
-import SubmitIcon from "../assets/icons/flower.svg";
+import BtnCTABlack from "./BtnCTABlack";
+import phoneImg from "../assets/icons/phone-flip.svg";
+import emailImg from "../assets/icons/envelope.svg";
+import contactInfo from "../config/contactInfo";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import API_URL from "../config/api";
@@ -446,8 +449,10 @@ export default function ContactForm() {
 
         <p className={styles.terms}>
           By submitting this form, you agree to be contacted regarding your
-          inquiry and acknowledge that your information will be handled in
-          accordance with the{" "}
+          inquiry and acknowledge that the information you provide may be used
+          to respond to your request and communicate with you about related
+          services. Your information will be collected, processed, and handled
+          in accordance with site's{" "}
           <Link
             className={styles.termsLink}
             to="/legal/tshepiemdev-website-privacy-policy"
@@ -458,12 +463,23 @@ export default function ContactForm() {
         </p>
 
         <div className={styles.controlWrapper}>
-          <BtnCTAWhite
-            type="submit"
-            icon={SubmitIcon}
-            buttonText="Submit message"
-            fullWidth
-          />
+          <BtnCTAWhite type="submit" buttonText="Submit message" fullWidth />
+
+          <div className={styles.altOptionsWrapper}>
+            <BtnCTABlack
+              iconB={emailImg}
+              buttonText="Mail me directly"
+              fullWidth
+              href={`mailto:${contactInfo.personal.email}`}
+            />
+
+            <BtnCTABlack
+              iconB={phoneImg}
+              buttonText="Give me a call"
+              fullWidth
+              href={`tel:${contactInfo.personal.phone}`}
+            />
+          </div>
         </div>
 
         <input name="website" style={{ display: "none" }} />

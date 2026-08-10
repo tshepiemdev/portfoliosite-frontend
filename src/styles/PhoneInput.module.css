@@ -25,7 +25,9 @@
 }
 
 .phoneRow:focus-within {
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  outline: 2px solid rgba(255, 166, 0, 0.5);
+  border: 2px solid orange;
+  opacity: 1;
 }
 
 .phoneSelect {
@@ -78,7 +80,13 @@
 }
 
 .phoneInputError {
-  color: #ff3b3b;
+  outline: 2px solid #ff6060;
+  border: 2px solid #ff3b3b !important;
+}
+
+.phoneInputError:focus {
+  outline: 2px solid #ff6060;
+  border: 2px solid #ff3b3b !important;
 }
 
 .inputErrorWrapper {
@@ -88,8 +96,8 @@
 }
 
 .errorImg {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
 .inputErrorText {

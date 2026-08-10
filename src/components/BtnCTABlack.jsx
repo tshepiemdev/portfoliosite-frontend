@@ -46,6 +46,8 @@ export default function BtnCTABlack({
 
       if (href.startsWith("http")) {
         window.open(href, "_blank", "noopener,noreferrer");
+      } else if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+        window.location.href = href;
       } else {
         navigate(href);
       }

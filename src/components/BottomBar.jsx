@@ -7,7 +7,6 @@ import closeImg from "../assets/icons/cross-small.svg";
 import backChevronImg from "../assets/icons/chevron-left.svg";
 import nextChevronImg from "../assets/icons/chevron-right.svg";
 import FaviconIcon from "../assets/images/favicon.svg";
-import CopyIcon from "../assets/icons/clone (1).svg";
 import ShareIcon from "../assets/icons/paper-plane.svg";
 import IconFallbackImg from "../assets/icons/logo2.svg";
 import { useToast } from "./ToastContext";
@@ -53,6 +52,7 @@ export default function BottomBar() {
 
       const rect = el.getBoundingClientRect();
       const isVisible = rect.top < window.innerHeight && rect.bottom > 200;
+
       setShowProjects(!isVisible);
     }
 
@@ -155,127 +155,134 @@ export default function BottomBar() {
 
   return (
     <>
-      <div
-        ref={menuRef}
-        className={`${styles.BottomBar} ${isMenuOpen ? styles.open : ""}`}
-      >
-        <div className={styles.listsWrapper}>
-          <button
-            className={styles.closeChip}
-            type="button"
-            onClick={toggleMenu}
-          ></button>
-
-          <ul className={styles.optionsUl}>
-            {filteredMenuOptions.map((option) => (
-              <li key={option.name} className={styles.optionsLi}>
-                {option.link ? (
-                  <Link
-                    className={styles.linkTo}
-                    to={option.link}
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    <img
-                      className={styles.icon}
-                      src={option.icon || IconFallbackImg}
-                      alt={option.name}
-                    />
-                    {option.name}
-                    <img
-                      className={styles.nextImg}
-                      src={nextChevronImg}
-                      alt={option.name}
-                    />
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    className={styles.linkToButton}
-                    onClick={() => handleOptionClick(option)}
-                  >
-                    <img
-                      className={styles.icon}
-                      src={option.icon || IconFallbackImg}
-                      alt={option.name}
-                    />
-                    {option.name}
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          <ul className={styles.contactOptionsUl}>
-            {contactOptions.map((option) => (
-              <li key={option.name} className={styles.contactOptionsLi}>
-                <a
-                  className={styles.contactOptionsLinkTo}
-                  href={option.href}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <img
-                    className={styles.icon2}
-                    src={option.icon || IconFallbackImg}
-                    alt={option.name}
-                  />
-                  {option.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.gridWrapper}>
-          {location.pathname !== "/" && (
+      <div className={styles.bottomBarHoverWrapper}>
+        <div
+          ref={menuRef}
+          className={`${styles.BottomBar} ${isMenuOpen ? styles.open : ""}`}
+        >
+          <div className={styles.listsWrapper}>
             <button
+              className={styles.closeChip}
               type="button"
-              className={styles.backBtn}
-              onClick={() => {
-                if (window.history.length > 1) navigate(-1);
-                else navigate("/");
-              }}
-            >
-              <img
-                className={styles.backImg}
-                src={backChevronImg}
-                alt="Go back"
-              />
-            </button>
-          )}
+              onClick={toggleMenu}
+            ></button>
 
-          <div className={styles.nav}>
-            <ul className={styles.ul}>
-              {filteredOptions.map((link) => (
-                <li
-                  key={link.name}
-                  className={`${styles.li} ${
-                    link.id === "projects" && !showProjects ? styles.hideLi : ""
-                  }`}
-                >
-                  {link.id ? (
+            <ul className={styles.optionsUl}>
+              {filteredMenuOptions.map((option) => (
+                <li key={option.name} className={styles.optionsLi}>
+                  {option.link ? (
+                    <Link
+                      className={styles.linkTo}
+                      to={option.link}
+                      onClick={() => handleOptionClick(option)}
+                    >
+                      <img
+                        className={styles.icon}
+                        src={option.icon || IconFallbackImg}
+                        alt={option.name}
+                      />
+                      {option.name}
+                      <img
+                        className={styles.nextImg}
+                        src={nextChevronImg}
+                        alt={option.name}
+                      />
+                    </Link>
+                  ) : (
                     <button
                       type="button"
-                      className={styles.a}
-                      onClick={() => handleScroll(link.id)}
+                      className={styles.linkToButton}
+                      onClick={() => handleOptionClick(option)}
                     >
-                      {link.name}
+                      <img
+                        className={styles.icon}
+                        src={option.icon || IconFallbackImg}
+                        alt={option.name}
+                      />
+                      {option.name}
                     </button>
-                  ) : (
-                    <NavLink to={link.path} className={styles.a}>
-                      {link.name}
-                    </NavLink>
                   )}
+                </li>
+              ))}
+            </ul>
+
+            <ul className={styles.contactOptionsUl}>
+              {contactOptions.map((option) => (
+                <li key={option.name} className={styles.contactOptionsLi}>
+                  <a
+                    className={styles.contactOptionsLinkTo}
+                    href={option.href}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <img
+                      className={styles.icon2}
+                      src={option.icon || IconFallbackImg}
+                      alt={option.name}
+                    />
+                    {option.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          <ImgButton
-            buttonImgSrc={isMenuOpen ? closeImg : toggleSidebarImg}
-            altText={isMenuOpen ? "close menu" : "open menu"}
-            onClick={toggleMenu}
-            setMarginLeft={"0.5rem"}
-          />
+          <div className={styles.gridWrapper}>
+            {location.pathname !== "/" && (
+              <button
+                type="button"
+                className={styles.backBtn}
+                onClick={() => {
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate("/");
+                  }
+                }}
+              >
+                <img
+                  className={styles.backImg}
+                  src={backChevronImg}
+                  alt="Go back"
+                />
+              </button>
+            )}
+
+            <div className={styles.nav}>
+              <ul className={styles.ul}>
+                {filteredOptions.map((link) => (
+                  <li
+                    key={link.name}
+                    className={`${styles.li} ${
+                      link.id === "projects" && !showProjects
+                        ? styles.hideLi
+                        : ""
+                    }`}
+                  >
+                    {link.id ? (
+                      <button
+                        type="button"
+                        className={styles.a}
+                        onClick={() => handleScroll(link.id)}
+                      >
+                        {link.name}
+                      </button>
+                    ) : (
+                      <NavLink to={link.path} className={styles.a}>
+                        {link.name}
+                      </NavLink>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <ImgButton
+              buttonImgSrc={isMenuOpen ? closeImg : toggleSidebarImg}
+              altText={isMenuOpen ? "close menu" : "open menu"}
+              onClick={toggleMenu}
+              setMarginLeft={"0.5rem"}
+            />
+          </div>
         </div>
       </div>
 

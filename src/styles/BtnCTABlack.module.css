@@ -6,7 +6,7 @@
   color: rgb(255, 255, 255);
   background-color: #1a1a1a;
   border: 1px solid transparent;
-  border-radius: 0.8rem;
+  border-radius: 0.6rem;
   height: 2.5rem;
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
@@ -28,8 +28,8 @@
 }
 
 .buttonImg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.8rem;
+  height: 0.8rem;
   filter: invert(1);
 }
 

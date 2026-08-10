@@ -7,8 +7,7 @@
   border-radius: 16rem;
   width: fit-content;
   min-width: 280px;
-  position: fixed;
-  bottom: 0;
+  position: relative;
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -30,18 +29,27 @@
   animation-fill-mode: forwards;
 
   transition:
-    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 300ms ease,
     box-shadow 300ms ease;
 }
 
-.BottomBar:hover {
-  transform: translateY(-1.5rem) scale(1.02);
+.bottomBarHoverWrapper {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: 999;
+  width: fit-content;
+  transform: translateX(-50%);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bottomBarHoverWrapper:hover {
+  transform: translateX(-50%) translateY(-0.2rem) scale(1.05);
 }
 
 @keyframes bottomBarEnter {
   0% {
-    transform: translateY(120%) scale(0.5);
+    transform: translateY(120%) scale(0.2);
     opacity: 0;
     filter: blur(8px);
   }
@@ -70,7 +78,6 @@
   overflow-y: auto;
   transition: height 0.3s ease;
   border-radius: 2rem;
-  transform: translateY(-1.5rem) scale(1.02);
 }
 
 .BottomBar::after {
@@ -199,7 +206,6 @@
   filter: invert(1);
 }
 
-/* options ul */
 .listsWrapper {
   width: 100%;
   list-style: none;
@@ -276,7 +282,6 @@
   margin-left: auto;
 }
 
-/* contact list */
 .contactOptionsUl {
   width: 100%;
   list-style: none;

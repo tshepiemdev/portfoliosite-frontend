@@ -27,7 +27,7 @@ export default function Home() {
         image={ogImages.home}
         url={window.location.href}
         keywords="hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa"
-        siteName="Creative & Skilled developer"
+        siteName="Creative & Skilled Software Engineer"
       />
 
       <section id="hero" className={styles.landingSectionWrapper}>

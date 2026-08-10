@@ -27,9 +27,6 @@ export default function BtnCTAWhiteSmall({
           behavior: "smooth",
           block: "start",
         });
-
-        element.setAttribute("tabindex", "-1");
-        element.focus({ preventScroll: true });
       }
     }
 
@@ -44,6 +41,8 @@ export default function BtnCTAWhiteSmall({
 
       if (href.startsWith("http")) {
         window.open(href, "_blank", "noopener,noreferrer");
+      } else if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+        window.location.href = href;
       } else {
         navigate(href);
       }

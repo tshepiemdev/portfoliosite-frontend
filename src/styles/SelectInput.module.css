@@ -40,8 +40,8 @@
 }
 
 .selectSelect:focus {
-  outline: none;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  outline: 2px solid rgba(255, 166, 0, 0.5);
+  border: 2px solid orange;
   opacity: 1;
 }
 
@@ -50,11 +50,13 @@
 }
 
 .selectSelectError {
+  outline: 2px solid #ff6060;
   border: 2px solid #ff3b3b !important;
 }
 
 .selectSelectError:focus {
-  border: 2px solid #ff3b3b;
+  outline: 2px solid #ff6060;
+  border: 2px solid #ff3b3b !important;
 }
 
 .inputErrorWrapper {

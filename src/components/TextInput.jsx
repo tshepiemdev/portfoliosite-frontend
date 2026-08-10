@@ -1,5 +1,5 @@
 import styles from "../styles/TextInput.module.css";
-import ErrorImg from "../assets/icons/exclamation2.svg";
+import ErrorImg from "../assets/icons/triangle-warning-red.svg";
 import { forwardRef } from "react";
 
 const TextInput = forwardRef(function TextInput(

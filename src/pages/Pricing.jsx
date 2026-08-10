@@ -129,9 +129,7 @@ export default function Pricing() {
           title={<>Pricing</>}
           subtext={
             <>
-              Choose a package that fits your goals <br />
-              whether you're starting out, growing, <br />
-              or scaling big.
+              Choose a package built to align <br/>seamlessly with your goals.
             </>
           }
         />

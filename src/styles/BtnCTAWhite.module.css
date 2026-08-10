@@ -7,7 +7,7 @@
   color: rgb(0, 0, 0);
   background-color: #ffffff;
   border: 1px solid #ffffff;
-  border-radius: 0.8rem;
+  border-radius: 0.6rem;
   height: 2.4rem;
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
@@ -28,8 +28,8 @@
 }
 
 .buttonImg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 0.8rem;
+  height: 0.8rem;
   aspect-ratio: 1 / 1;
   filter: invert(0);
 }
