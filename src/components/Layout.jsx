@@ -110,6 +110,8 @@ export default function Layout() {
       <div className={styles.layout}>
         <Header />
         <MaintenanceView data={settings} pageName={pageName} />
+        <SectionDevider />
+        <Footer />
       </div>
     );
   }
