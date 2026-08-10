@@ -37,7 +37,7 @@
 
 .contentWrapper {
   width: 80.8%;
-  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
