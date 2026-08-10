@@ -6,6 +6,7 @@
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
   border-radius: 16rem;
   width: fit-content;
+  max-width: 290px;
   position: relative;
   z-index: 999;
   display: flex;
