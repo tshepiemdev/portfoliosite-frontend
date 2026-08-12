@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/ProjectsWrapper.module.css";
 import Project from "./Project";
 import LoaderView from "./Loader";
@@ -12,10 +13,18 @@ export default function ProjectsWrapper({
   marginTop = 0,
   limit,
 }) {
+  const { settings } = useOutletContext();
+
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const projectsUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.projects === true;
+
+  // const projectsUnderMaintenance =
+  //   settings?.maintenancePages?.projects === true;
 
   const fetchProjects = async () => {
     try {
@@ -25,6 +34,7 @@ export default function ProjectsWrapper({
       const res = await fetch(`${API_URL}/api/projects`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -80,7 +90,7 @@ export default function ProjectsWrapper({
 
   return (
     <div className={styles.projectsWrapper}>
-      {showFilter && projects.length > 0 && (
+      {showFilter && !projectsUnderMaintenance && projects.length > 0 && (
         <div className={styles.filterWrapper}>
           <FilterBar
             categories={categories}
@@ -94,44 +104,57 @@ export default function ProjectsWrapper({
         className={styles.contentWrapper}
         style={{ marginTop: `${marginTop}rem` }}
       >
-        {loading && <LoaderView />}
-
-        {!loading && errorType && (
-          <ErrorView errType={errorType} onRetry={fetchProjects} />
-        )}
-
-        {!loading && !errorType && filteredProjects.length === 0 && (
+        {projectsUnderMaintenance && (
           <ErrorView
             errType="default"
-            errorText={
-              <>
-                Couln't find projects, <br />
-                come back later
-              </>
-            }
-            onRetry={fetchProjects}
+            errorText={<>Under maintenace. <br/>Please check back later.</>}
           />
         )}
 
-        {!loading && !errorType && !filteredProjects.length === 0 && (
-          <div className={styles.wrapAllProjects}>
-            {filteredProjects
-              .slice(0, limit ?? filteredProjects.length)
-              .map((project, index) => (
-                <Project
-                  key={project._id || index}
-                  isProjNew={project.isProjNew}
-                  projectOrder={project.order}
-                  projectIcon={project.projectIcon}
-                  projectName={project.projectName}
-                  projectStatus={project.projectStatus}
-                  projectSummary={project.projectShortDescription}
-                  projectType={project.projectType}
-                  projectLink={`/projects/${slugify(project.projectName)}`}
-                />
-              ))}
-          </div>
+        {!projectsUnderMaintenance && loading && <LoaderView />}
+
+        {!projectsUnderMaintenance && !loading && errorType && (
+          <ErrorView errType={errorType} onRetry={fetchProjects} />
         )}
+
+        {!projectsUnderMaintenance &&
+          !loading &&
+          !errorType &&
+          filteredProjects.length === 0 && (
+            <ErrorView
+              errType="default"
+              errorText={
+                <>
+                  Couln't find projects, <br />
+                  come back later
+                </>
+              }
+              onRetry={fetchProjects}
+            />
+          )}
+
+        {!projectsUnderMaintenance &&
+          !loading &&
+          !errorType &&
+          filteredProjects.length > 0 && (
+            <div className={styles.wrapAllProjects}>
+              {filteredProjects
+                .slice(0, limit ?? filteredProjects.length)
+                .map((project, index) => (
+                  <Project
+                    key={project._id || index}
+                    isProjNew={project.isProjNew}
+                    projectOrder={project.order}
+                    projectIcon={project.projectIcon}
+                    projectName={project.projectName}
+                    projectStatus={project.projectStatus}
+                    projectSummary={project.projectShortDescription}
+                    projectType={project.projectType}
+                    projectLink={`/projects/${slugify(project.projectName)}`}
+                  />
+                ))}
+            </div>
+          )}
       </div>
     </div>
   );

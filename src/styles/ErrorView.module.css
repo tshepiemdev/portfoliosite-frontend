@@ -96,12 +96,10 @@
   margin-bottom: 1.5rem;
   color: #7d7d7d;
   font-size: 0.9rem;
-  width: 25%;
   text-align: center;
 }
 
 .errorHead {
-  width: 32%;
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   text-align: center;
   font-optical-sizing: auto;
@@ -126,14 +124,6 @@
 }
 
 @media (max-width: 768px) {
-  .errorSubtext {
-    width: 80%;
-  }
-
-  .errorHead {
-    width: 80%;
-  }
-
   .errorView {
     width: 100%;
     display: grid;
@@ -148,14 +138,6 @@
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .errorSubtext {
-    width: 40%;
-  }
-
-  .errorHead {
-    width: 50%;
-  }
-
   .errorView {
     width: 100%;
     display: grid;

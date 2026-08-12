@@ -178,7 +178,7 @@ export default function Layout() {
       <Header />
 
       <main className={styles.content}>
-        <Outlet />
+        <Outlet context={{ settings }} />
       </main>
 
       <SectionDevider />
