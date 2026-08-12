@@ -9,6 +9,15 @@
   padding: 1rem;
 }
 
+.turnstileWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
 .title {
   font-family:
     instrumentSerifFont, "Host Grotesk", hostGroteskFont, "Inter", interFont,
@@ -85,7 +94,9 @@
 }
 
 .inputWrapper:focus-within {
-  border: 2px solid orange;
+  outline: 1px solid rgba(255, 166, 0, 0.5);
+  border: 1px solid orange;
+  opacity: 1;
 }
 
 .input {
@@ -119,4 +130,20 @@
   align-items: center;
   gap: 1rem;
   padding-top: 2rem;
+}
+
+.errorlabel {
+  color: #999999;
+  font-weight: 500;
+  text-align: center;
+  font-size: 1rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.errroIcon {
+  width: 0.8rem;
+  height: 0.8rem;
 }

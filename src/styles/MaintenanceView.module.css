@@ -1,10 +1,9 @@
 .maintenanceWrapper {
-  background-color: #1a1a1a;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: start;
-  padding: 0 1rem;
+  padding: 4rem 1rem;
 }
 
 .title {
@@ -37,7 +36,7 @@
 
 .contentWrapper {
   width: 80.8%;
-  min-height: 100vh;
+  min-height: 60vh;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
@@ -54,12 +53,15 @@
   padding: 1rem 0;
 }
 
+.wrapper:last-child {
+  padding-top: 1rem; border-top: 1px solid #1a1a1a;
+}
+
 .copyrightText {
   margin-top: auto;
   font-size: 0.8rem;
   font-weight: 550;
   color: #8a8a8a;
-  margin-bottom: 4rem;
 }
 
 .spanText {

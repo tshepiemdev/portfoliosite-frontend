@@ -1,10 +1,9 @@
 .gridWrapper {
-  width: 340px;
-  height: 220px;
+  width: var(--grid-width, 340px);
+  height: var(--grid-height, 220px);
   overflow: hidden;
   border-radius: 1rem;
   background: #121212;
-  overflow: hidden;
 }
 
 .trackWrapper {

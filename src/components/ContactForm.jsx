@@ -1,12 +1,11 @@
 import styles from "../styles/ContactForm.module.css";
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
+import { Turnstile } from "@marsidev/react-turnstile";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import TextareaInput from "./TextareaInput";
 import PhoneInput from "./PhoneInput";
-import Modal from "./Modal";
 import ResponseLayout from "./ResponseLayout";
 import BtnCTAWhite from "./BtnCTAWhite";
 import BtnCTABlack from "./BtnCTABlack";
@@ -36,10 +35,23 @@ const countryOptions = Object.entries(
   }))
   .sort((a, b) => a.label.localeCompare(b.label));
 
-export default function ContactForm() {
+const initialForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: {
+    iso: "ZA",
+    code: "+27",
+    number: "",
+  },
+  country: "ZA",
+  reason: "",
+  message: "",
+  teamSize: "",
+};
+
+export default function ContactForm({ onResponseStatusChange }) {
   const [searchParams] = useSearchParams();
-  const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
-  const [disableClose, setDisableClose] = useState(false);
 
   const [responseData, setResponseData] = useState({
     title: "",
@@ -47,27 +59,12 @@ export default function ContactForm() {
     status: "",
   });
 
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: {
-      iso: "ZA",
-      code: "+27",
-      number: "",
-    },
-    country: "ZA",
-    reason: "",
-    message: "",
-    teamSize: "",
-  });
-
+  const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [mailRef, setMailRef] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
-  const recaptchaRef = useRef(null);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const turnstileRef = useRef(null);
 
   useDetectLocation(setForm);
 
@@ -121,7 +118,6 @@ export default function ContactForm() {
       value: "business_inquiry",
       label: "Business Inquiry",
     },
-
     {
       value: "other",
       label: "Other",
@@ -142,9 +138,13 @@ export default function ContactForm() {
   const validate = (values) => {
     const newErrors = {};
 
-    if (!values.firstName.trim())
+    if (!values.firstName.trim()) {
       newErrors.firstName = "First name is required";
-    if (!values.lastName.trim()) newErrors.lastName = "Last name is required";
+    }
+
+    if (!values.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
 
     if (!values.email.trim()) {
       newErrors.email = "Email address is required";
@@ -152,12 +152,21 @@ export default function ContactForm() {
       newErrors.email = "Please enter a valid email address";
     }
 
-    if (!values.country) newErrors.country = "Please select your country";
-    if (!values.reason) newErrors.reason = "Please select a reason";
-    if (!values.teamSize) newErrors.teamSize = "Please select team size";
+    if (!values.country) {
+      newErrors.country = "Please select your country";
+    }
 
-    if (values.message.length > 1000)
+    if (!values.reason) {
+      newErrors.reason = "Please select a reason";
+    }
+
+    if (!values.teamSize) {
+      newErrors.teamSize = "Please select team size";
+    }
+
+    if (values.message.length > 1000) {
       newErrors.message = "Length limit reached";
+    }
 
     return newErrors;
   };
@@ -174,15 +183,55 @@ export default function ContactForm() {
   };
 
   const handleChange = (field) => (e) => {
-    const updated = { ...form, [field]: e.target.value };
+    const updated = {
+      ...form,
+      [field]: e.target.value,
+    };
+
     setForm(updated);
-    if (submitted) setErrors(validate(updated));
+
+    if (submitted) {
+      setErrors(validate(updated));
+    }
+  };
+
+  const showResponse = (status, title, subtitle) => {
+    setResponseData({
+      status,
+      title,
+      subtitle,
+    });
+
+    onResponseStatusChange(status);
+  };
+
+  const resetForm = () => {
+    setForm(initialForm);
+    setErrors({});
+    setSubmitted(false);
+    setTurnstileToken("");
+
+    turnstileRef.current?.reset();
+
+    setResponseData({
+      title: "",
+      subtitle: "",
+      status: "",
+    });
+
+    onResponseStatusChange("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     const validationErrors = validate(form);
+
     setErrors(validationErrors);
     setSubmitted(true);
 
@@ -192,45 +241,30 @@ export default function ContactForm() {
     }
 
     if (!navigator.onLine) {
-      setResponseData({
-        title: "You're offline",
-        subtitle: "Please check your internet connection and try again.",
-        status: "network",
-      });
-
-      setIsResponseModalOpen(true);
-      setDisableClose(false);
+      showResponse(
+        "network",
+        "You're offline",
+        "Please check your internet connection and try again.",
+      );
       return;
     }
 
-    if (!captchaToken) {
-      setResponseData({
-        title: (
-          <>
-            Verification is <br />
-            required to submit
-          </>
-        ),
-        subtitle: "Please confirm that you are not a robot to continue.",
-        status: "error",
-      });
-
-      setIsResponseModalOpen(true);
-      setDisableClose(false);
+    if (!turnstileToken) {
+      showResponse(
+        "error",
+        <>
+          Verification is
+          <br />
+          required to submit
+        </>,
+        "Please complete the verification to continue.",
+      );
       return;
     }
 
     const ref = generateRef();
-    setMailRef(ref);
 
-    setIsResponseModalOpen(true);
-    setResponseData({
-      title: "",
-      subtitle: "",
-      status: "loading",
-    });
-
-    setDisableClose(true);
+    showResponse("loading", "", "");
 
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
@@ -260,7 +294,7 @@ export default function ContactForm() {
               enterprise: "200+ people",
             }[form.teamSize] || form.teamSize,
           message: form.message || "No message provided",
-          recaptcha_token: captchaToken,
+          turnstile_token: turnstileToken,
         }),
       });
 
@@ -268,241 +302,239 @@ export default function ContactForm() {
 
       try {
         data = await res.json();
-      } catch (e) {
+      } catch {
         throw new Error("Server returned an invalid response");
       }
 
       if (!res.ok || !data?.success) {
         throw new Error(
-          data?.error || data?.message || "Failed to send message",
+          data?.message || data?.error || "Failed to send message",
         );
       }
 
-      setResponseData({
-        title: "Message sent successfully",
-        subtitle: `Thank you ${form.firstName}. I'll get back to you soon. Reference: ${ref}`,
-        status: "success",
-      });
+      showResponse(
+        "success",
+        <>
+          Message sent
+          <br />
+          successfully
+        </>,
+        `${
+          data.message ||
+          `Thank you ${form.firstName}. I'll get back to you soon.`
+        } Reference: ${ref}`,
+      );
 
-      setDisableClose(true);
-
-      setForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: {
-          iso: "ZA",
-          code: "+27",
-          number: "",
-        },
-        country: "ZA",
-        reason: "",
-        message: "",
-        teamSize: "",
-      });
-
+      setForm(initialForm);
       setSubmitted(false);
       setErrors({});
-      setCaptchaToken("");
-      recaptchaRef.current?.reset();
-    } catch (error) {
-      setResponseData({
-        title: (
-          <>
-            Failed to send <br />
-            your mail
-          </>
-        ),
-        subtitle: error.message,
-        status: "error",
-      });
+      setTurnstileToken("");
 
-      setDisableClose(false);
+      turnstileRef.current?.reset();
+    } catch (error) {
+      showResponse(
+        "error",
+        <>
+          Failed to send
+          <br />
+          your mail
+        </>,
+        error instanceof Error ? error.message : "Failed to send your message",
+      );
+
+      setTurnstileToken("");
+      turnstileRef.current?.reset();
     }
   };
 
+  if (responseData.status) {
+    return (
+      <ResponseLayout
+        status={responseData.status}
+        title={responseData.title}
+        subtitle={responseData.subtitle}
+        onClose={resetForm}
+      />
+    );
+  }
+
   return (
-    <>
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <div className={styles.inputsWrapper}>
-          <TextInput
-            ref={firstNameRef}
-            label="First name"
-            placeholder="Your first name"
-            value={form.firstName}
-            required
-            onChange={handleChange("firstName")}
-            error={submitted ? errors.firstName : ""}
-          />
-          <TextInput
-            ref={lastNameRef}
-            label="Last name"
-            placeholder="Your last name"
-            value={form.lastName}
-            required
-            onChange={handleChange("lastName")}
-            error={submitted ? errors.lastName : ""}
-          />
-        </div>
+    <form className={styles.form} onSubmit={handleSubmit} noValidate>
+      <div className={styles.inputsWrapper}>
+        <TextInput
+          ref={firstNameRef}
+          label="First name"
+          placeholder="Your first name"
+          value={form.firstName}
+          required
+          onChange={handleChange("firstName")}
+          error={submitted ? errors.firstName : ""}
+        />
 
         <TextInput
-          ref={emailRef}
-          label="Email address"
-          placeholder="yourname@company.com"
-          type="email"
-          value={form.email}
+          ref={lastNameRef}
+          label="Last name"
+          placeholder="Your last name"
+          value={form.lastName}
           required
-          onChange={handleChange("email")}
-          error={submitted ? errors.email : ""}
+          onChange={handleChange("lastName")}
+          error={submitted ? errors.lastName : ""}
         />
+      </div>
 
-        <PhoneInput
-          label="Phone number"
-          value={form.phone}
-          onChange={(value) =>
-            setForm((prev) => ({
-              ...prev,
-              phone: value,
-            }))
-          }
-          error={submitted ? errors.phone : ""}
+      <TextInput
+        ref={emailRef}
+        label="Email address"
+        placeholder="yourname@company.com"
+        type="email"
+        value={form.email}
+        required
+        onChange={handleChange("email")}
+        error={submitted ? errors.email : ""}
+      />
+
+      <PhoneInput
+        ref={phoneRef}
+        label="Phone number"
+        value={form.phone}
+        onChange={(value) =>
+          setForm((prev) => ({
+            ...prev,
+            phone: value,
+          }))
+        }
+        error={submitted ? errors.phone : ""}
+      />
+
+      <div className={styles.inputsWrapper}>
+        <SelectInput
+          ref={teamSizeRef}
+          label="Team size"
+          value={form.teamSize}
+          required
+          onChange={handleChange("teamSize")}
+          options={[
+            { value: "solo", label: "Just me" },
+            { value: "small", label: "2 - 10 people" },
+            { value: "medium", label: "11 - 50 people" },
+            { value: "large", label: "51 - 200 people" },
+            { value: "enterprise", label: "200+ people" },
+          ]}
+          placeholder="Select team size"
+          error={submitted ? errors.teamSize : ""}
         />
-
-        <div className={styles.inputsWrapper}>
-          <SelectInput
-            ref={teamSizeRef}
-            label="Team size"
-            value={form.teamSize}
-            required
-            onChange={(e) => setForm({ ...form, teamSize: e.target.value })}
-            options={[
-              { value: "solo", label: "Just me" },
-              { value: "small", label: "2 - 10 people" },
-              { value: "medium", label: "11 - 50 people" },
-              { value: "large", label: "51 - 200 people" },
-              { value: "enterprise", label: "200+ people" },
-            ]}
-            placeholder="Select team size"
-            error={submitted ? errors.teamSize : ""}
-          />
-
-          <SelectInput
-            ref={countryRef}
-            label="Country"
-            value={form.country}
-            required
-            onChange={(e) => {
-              const countryCode = e.target.value;
-
-              let dialCode = form.phone.code;
-
-              try {
-                dialCode = `+${getCountryCallingCode(countryCode)}`;
-              } catch {}
-
-              setForm((prev) => ({
-                ...prev,
-                country: countryCode,
-                phone: {
-                  ...prev.phone,
-                  iso: countryCode,
-                  code: dialCode,
-                },
-              }));
-            }}
-            options={countryOptions}
-            placeholder="Select your country"
-            error={submitted ? errors.country : ""}
-          />
-        </div>
 
         <SelectInput
-          ref={reasonRef}
-          label="How can I help you?"
-          value={form.reason}
+          ref={countryRef}
+          label="Country"
+          value={form.country}
           required
-          onChange={handleChange("reason")}
-          options={reasons}
-          placeholder="Select an option"
-          error={submitted ? errors.reason : ""}
+          onChange={(e) => {
+            const countryCode = e.target.value;
+
+            let dialCode = form.phone.code;
+
+            try {
+              dialCode = `+${getCountryCallingCode(countryCode)}`;
+            } catch {}
+
+            setForm((prev) => ({
+              ...prev,
+              country: countryCode,
+              phone: {
+                ...prev.phone,
+                iso: countryCode,
+                code: dialCode,
+              },
+            }));
+          }}
+          options={countryOptions}
+          placeholder="Select your country"
+          error={submitted ? errors.country : ""}
         />
+      </div>
 
-        <TextareaInput
-          ref={messageRef}
-          label="Message"
-          placeholder="Tell me more about your inquiry..."
-          value={form.message}
-          onChange={handleChange("message")}
-          rows={10}
-          error={submitted ? errors.message : ""}
-        />
+      <SelectInput
+        ref={reasonRef}
+        label="How can I help you?"
+        value={form.reason}
+        required
+        onChange={handleChange("reason")}
+        options={reasons}
+        placeholder="Select an option"
+        error={submitted ? errors.reason : ""}
+      />
 
-        <div className={styles.recaptchaWrapper}>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            theme="light"
-            onChange={(token) => setCaptchaToken(token)}
-            onExpired={() => setCaptchaToken("")}
-          />
-        </div>
+      <TextareaInput
+        ref={messageRef}
+        label="Message"
+        placeholder="Tell me more about your inquiry..."
+        value={form.message}
+        onChange={handleChange("message")}
+        rows={10}
+        error={submitted ? errors.message : ""}
+      />
 
-        <p className={styles.terms}>
-          By submitting this form, you agree to be contacted regarding your
-          inquiry and acknowledge that the information you provide may be used
-          to respond to your request and communicate with you about related
-          services. Your information will be collected, processed, and handled
-          in accordance with site's{" "}
-          <Link
-            className={styles.termsLink}
-            to="/legal/tshepiemdev-website-privacy-policy"
-          >
-            Terms
-          </Link>
-          .
-        </p>
-
-        <div className={styles.controlWrapper}>
-          <BtnCTAWhite type="submit" buttonText="Submit message" fullWidth />
-
-          <div className={styles.altOptionsWrapper}>
-            <BtnCTABlack
-              iconB={emailImg}
-              buttonText="Mail me directly"
-              fullWidth
-              href={`mailto:${contactInfo.personal.email}`}
-            />
-
-            <BtnCTABlack
-              iconB={phoneImg}
-              buttonText="Give me a call"
-              fullWidth
-              href={`tel:${contactInfo.personal.phone}`}
-            />
-          </div>
-        </div>
-
-        <input name="website" style={{ display: "none" }} />
-      </form>
-
-      <Modal
-        isOpen={isResponseModalOpen}
-        onClose={() => setIsResponseModalOpen(false)}
-        showTopControl={
-          responseData.status === "error" || responseData.status === "network"
-        }
-        disableClose={disableClose}
-      >
-        <ResponseLayout
-          status={responseData.status}
-          title={responseData.title}
-          subtitle={responseData.subtitle}
-          onClose={() => {
-            setDisableClose(false);
-            setIsResponseModalOpen(false);
+      <div className={styles.turnstileWrapper}>
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+          onSuccess={(token) => setTurnstileToken(token)}
+          onExpire={() => setTurnstileToken("")}
+          onError={() => setTurnstileToken("")}
+          options={{
+            theme: "light",
+            size: "flexible",
           }}
         />
-      </Modal>
-    </>
+      </div>
+
+      <p className={styles.terms}>
+        By submitting this form, you agree to be contacted regarding your
+        inquiry and acknowledge that your information will be handled in
+        accordance with our{" "}
+        <Link
+          className={styles.termsLink}
+          to="/legal/tshepiemdev-website-terms-of-use"
+        >
+          Terms
+        </Link>{" "}
+        and{" "}
+        <Link
+          className={styles.termsLink}
+          to="/legal/tshepiemdev-website-privacy-policy"
+        >
+          Privacy Policy
+        </Link>
+        .
+      </p>
+
+      <div className={styles.controlWrapper}>
+        <BtnCTAWhite type="submit" buttonText="Submit message" fullWidth />
+
+        <div className={styles.altOptionsWrapper}>
+          <BtnCTABlack
+            iconB={emailImg}
+            buttonText="Mail me directly"
+            fullWidth
+            href={`mailto:${contactInfo.personal.email}`}
+          />
+
+          <BtnCTABlack
+            iconB={phoneImg}
+            buttonText="Give me a call"
+            fullWidth
+            href={`tel:${contactInfo.personal.phone}`}
+          />
+        </div>
+      </div>
+
+      <input
+        name="website"
+        style={{
+          display: "none",
+        }}
+      />
+    </form>
   );
 }

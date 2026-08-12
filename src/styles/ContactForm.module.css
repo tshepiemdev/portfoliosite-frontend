@@ -11,15 +11,12 @@
   position: relative;
 }
 
-.recaptchaWrapper {
-  min-width: 6rem;
-  min-height: 3rem;
+.turnstileWrapper {
+  width: 100%;
   display: flex;
   justify-content: start;
   align-items: start;
-  background-color: #1a1a1a;
-  border: 1px solid #1f1f1f;
-  border-radius: 0.6rem;
+  border-radius: 0.5rem;
   overflow: hidden;
 }
 
@@ -34,6 +31,10 @@
   color: #999999;
   font-size: 0.8rem;
   font-weight: 500;
+  margin-top: 1rem;
+  width: 100%;
+  border-top: 1px solid #1a1a1a;
+  padding-top: 1.5rem;
 }
 
 .termsLink {
@@ -46,7 +47,7 @@
 
 .controlWrapper {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0rem;
   display: flex;
   flex-direction: row;
   align-items: center;

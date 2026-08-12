@@ -20,10 +20,11 @@
   align-items: center;
   margin-bottom: 1rem;
   background-color: #1a1a1a;
-  border: #1f1f1f;
+  border: 1px solid #1f1f1f;
   border-radius: 0.45rem;
   overflow: hidden;
   position: relative;
+  /* background: linear-gradient(to top, pink, orangered, blueviolet); */
 }
 
 .serviceImg {
@@ -36,7 +37,7 @@
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.1;
   width: 65%;
 }
 
@@ -49,6 +50,7 @@
   line-height: 0.9;
   font-size: clamp(1.5rem, 5vw, 2rem);
   margin-bottom: 1rem;
+  opacity: 0.5;
 }
 
 .topWrapper {
@@ -114,7 +116,7 @@
 
 .category,
 .type {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
 }
 

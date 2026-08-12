@@ -21,6 +21,11 @@
   font-style: normal;
 }
 
+.blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .main {
   max-width: 380px;
   min-width: 360px;

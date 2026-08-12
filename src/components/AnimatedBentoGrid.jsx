@@ -14,7 +14,11 @@ const fallbackImages = Array.from({ length: 9 }, (_, i) => ({
 const CACHE_KEY = "bentoImages";
 const CACHE_TIME = 1000 * 60 * 60 * 12;
 
-export default function AnimatedBentoGrid() {
+export default function AnimatedBentoGrid({
+  width,
+  height,
+  showLinkTo = true,
+}) {
   const [bentoImages, setBentoImages] = useState(fallbackImages);
 
   const location = useLocation();
@@ -39,7 +43,6 @@ export default function AnimatedBentoGrid() {
 
     try {
       const res = await fetch(`${API_URL}/api/bento-images`);
-
       const result = await res.json();
 
       if (!res.ok) {
@@ -71,7 +74,13 @@ export default function AnimatedBentoGrid() {
   const loopImages = [...bentoImages, ...bentoImages];
 
   return (
-    <div className={styles.gridWrapper}>
+    <div
+      className={styles.gridWrapper}
+      style={{
+        ...(width !== undefined && { "--grid-width": width }),
+        ...(height !== undefined && { "--grid-height": height }),
+      }}
+    >
       <div className={styles.trackWrapper}>
         <div className={styles.sliderTrack}>
           {loopImages.map((img, index) => (
@@ -94,16 +103,18 @@ export default function AnimatedBentoGrid() {
         </div>
 
         <div className={styles.overlay}>
-          <div className={styles.blurWrapper}>
-            <Logo isClickable={false} />
+          {showLinkTo && (
+            <div className={styles.blurWrapper}>
+              <Logo isClickable={false} />
 
-            {location.pathname !== "/blog" && (
-              <Link className={styles.span} to="/blog">
-                /blog
-                <img className={styles.nextIcon} src={nextImg} alt="/blog" />
-              </Link>
-            )}
-          </div>
+              {location.pathname !== "/blog" && (
+                <Link className={styles.span} to="/blog">
+                  /blog
+                  <img className={styles.nextIcon} src={nextImg} alt="/blog" />
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

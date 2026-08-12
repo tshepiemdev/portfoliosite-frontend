@@ -44,7 +44,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .ctasWrapper {
@@ -180,7 +180,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 2rem;
+  gap: 1rem;
   transition: all 0.2s ease-in-out;
 }
 
@@ -230,7 +230,6 @@
 
 .serviceSpecLiminiSubject::marker {
   color: orange;
- 
 }
 
 .serviceSpecLiminiSubject:last-child {
@@ -264,15 +263,6 @@
   height: 1.2rem;
   filter: invert(1);
   opacity: 0.5;
-}
-
-.serviceLegalLi:first-child {
-  background-color: blueviolet;
-  border: 1px solid #a84bff;
-}
-
-.serviceLegalLi:hover {
-  transform: scale(1.02);
 }
 
 .textIcon {

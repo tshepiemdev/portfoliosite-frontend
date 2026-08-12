@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/Header.module.css";
 import imgBtnStyles from "../styles/ImgButton.module.css";
@@ -12,6 +12,32 @@ import closeImg from "../assets/icons/cross-small.svg";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1024) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   function toggleMenu() {
     setIsMenuOpen((prev) => !prev);
@@ -59,6 +85,7 @@ export default function Header() {
             buttonText="Get in touch"
             href="/contact"
             className={ctaBtnStyles.mobileOnly}
+            onClick={closeMenu}
           />
 
           <ImgButton

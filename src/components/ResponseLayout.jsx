@@ -1,11 +1,11 @@
 import styles from "../styles/ResponseLayout.module.css";
 import SuccessImg from "../assets/icons/badge.svg";
-import ErrorImg from "../assets/icons/triangle-warning-black.svg";
+import ErrorImg from "../assets/icons/triangle-warning-red.svg";
 import InternetErrorImg from "../assets/icons/no-network.svg";
 import FallbackImg from "../assets/icons/logo-white.svg";
-import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import BtnCTABlackSmall from "./BtnCTABlackSmall";
 import LoaderView from "./Loader";
+import AnimatedBentoGrid from "./AnimatedBentoGrid";
 
 export default function ResponseLayout({ status, title, subtitle, onClose }) {
   const isLoading = status === "loading";
@@ -20,57 +20,56 @@ export default function ResponseLayout({ status, title, subtitle, onClose }) {
         ? ErrorImg
         : FallbackImg;
 
-  const openEmailProvider = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "Open email app",
-          text: "Choose an email application",
-        });
-      } else {
-        window.location.href = "mailto:";
-      }
-
-      onClose();
-    } catch {}
-  };
-
   return (
     <div className={styles.layout}>
       {isLoading ? (
         <LoaderView
           text={
             <>
-              Hang tight, I'm
+              Hang tight, processing
               <br />
-              processing your message
+              your message
             </>
           }
           setHeight={30}
+          bg={"#1a1a1a"}
+          border={"1px solid #1f1f1f"}
+          radius={0.5}
         />
       ) : (
         <div className={styles.responseWrapper}>
-          <img className={styles.messageImg} src={resolvedImg} alt="response" />
+            <div className={styles.wrapper}>
+              <div className={styles.iconWrapper}>
 
-          <h2 className={styles.title}>{title}</h2>
+              </div>
+            <img
+              className={styles.messageImg}
+              src={resolvedImg}
+              alt="response"
+            />
 
-          <p className={styles.subtitle}>{subtitle}</p>
+            <h2 className={styles.title}>{title}</h2>
 
-          {isSuccess && (
+            <p className={styles.subtitle}>{subtitle}</p>
+
             <div className={styles.ctasWrapper}>
-              <BtnCTAWhiteSmall
-                buttonText="Open emails"
-                fullWidth
-                onClick={openEmailProvider}
-              />
-
               <BtnCTABlackSmall
                 buttonText="Close"
                 fullWidth
                 onClick={onClose}
               />
             </div>
-          )}
+          </div>
+
+          <div className={styles.wrapper}>
+            {isSuccess && (
+              <AnimatedBentoGrid
+                width={"100%"}
+                height={"100%"}
+                showLinkTo={false}
+              />
+            )}
+          </div>
         </div>
       )}
     </div>

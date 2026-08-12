@@ -3,7 +3,9 @@ import styles from "../styles/PageTopHeading.module.css";
 export default function PageTopHeading({
   icon,
   title,
+  titleSize,
   miniTitle,
+  miniTitleSize,
   titleWidth = "fit-content",
   subtext,
   textAlign = "start",
@@ -20,7 +22,11 @@ export default function PageTopHeading({
       {title && (
         <h1
           className={styles.title}
-          style={{ width: titleWidth, textAlign: textAlign }}
+          style={{
+            width: titleWidth,
+            textAlign,
+            ...(titleSize !== undefined && { fontSize: `${titleSize}rem` }),
+          }}
         >
           {title}
         </h1>
@@ -29,14 +35,20 @@ export default function PageTopHeading({
       {miniTitle && (
         <h2
           className={styles.miniTitle}
-          style={{ width: titleWidth, textAlign: textAlign }}
+          style={{
+            width: titleWidth,
+            textAlign,
+            ...(miniTitleSize !== undefined && {
+              fontSize: `${miniTitleSize}rem`,
+            }),
+          }}
         >
           {miniTitle}
         </h2>
       )}
 
       {subtext && (
-        <p className={styles.subtext} style={{ textAlign: textAlign }}>
+        <p className={styles.subtext} style={{ textAlign }}>
           {subtext}
         </p>
       )}

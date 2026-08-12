@@ -129,9 +129,8 @@ export default function LegalPage() {
 
           <p className={styles.text}>
             Copyright &copy; {legal.copyright_start}–{new Date().getFullYear()}{" "}
-            {legal.company}. All rights reserved.
-            <br />
-            {legal.company}, {legal.company_address}.
+            {legal.company}. All rights reserved. {legal.company},{" "}
+            {legal.company_address}.
           </p>
 
           <p className={styles.text}>

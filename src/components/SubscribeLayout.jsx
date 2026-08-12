@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Turnstile } from "@marsidev/react-turnstile";
 import styles from "../styles/SubscribeLayout.module.css";
 import LogoIcon from "./LogoIcon";
 import mailIcon from "../assets/icons/envelope.svg";
@@ -17,6 +18,10 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
   const [success, setSuccess] = useState(false);
   const [subscriberCount, setSubscriberCount] = useState(0);
   const [showCount, setShowCount] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [showTurnstile, setShowTurnstile] = useState(false);
+
+  const turnstileRef = useRef(null);
 
   useEffect(() => {
     const fetchSubscriberCount = async () => {
@@ -54,7 +59,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         window.location.href = "mailto:";
       }
 
-      onClose();
+      onSuccess();
     } catch {}
   };
 
@@ -75,6 +80,22 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
       return;
     }
 
+    if (!navigator.onLine) {
+      setMessage("You're offline. Please check your connection and try again.");
+      return;
+    }
+
+    if (!showTurnstile) {
+      setShowTurnstile(true);
+      setMessage("Please complete the verification.");
+      return;
+    }
+
+    if (!turnstileToken) {
+      setMessage("Please complete the verification.");
+      return;
+    }
+
     try {
       setLocalLoading(true);
       setDisableClose(true);
@@ -87,6 +108,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         body: JSON.stringify({
           email: value,
           website,
+          turnstile_token: turnstileToken,
         }),
       });
 
@@ -100,16 +122,25 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         throw new Error("Invalid server response");
       }
 
-      if (!res.ok) {
-        throw new Error(data.message || "Subscription failed");
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.message || "Subscription failed");
       }
 
       setEmail("");
       setSuccess(true);
+      setTurnstileToken("");
+      setShowTurnstile(false);
+      turnstileRef.current?.reset();
       setDisableClose(true);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "Subscription failed");
+      const errorMessage =
+        err instanceof Error ? err.message : "Subscription failed";
+
+      setMessage(errorMessage);
       setDisableClose(false);
+      setTurnstileToken("");
+      setShowTurnstile(true);
+      turnstileRef.current?.reset();
     } finally {
       setLocalLoading(false);
     }
@@ -122,7 +153,10 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
       <>
         No spam. Unsubscribe anytime.
         <br />
-        <Link to="/legal/tshepiemdev-website-blog-subscription-terms" className={styles.termsLink}>
+        <Link
+          to="/legal/tshepiemdev-website-blog-subscription-terms"
+          className={styles.termsLink}
+        >
           Subscription terms
         </Link>{" "}
         apply.
@@ -206,7 +240,13 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               value={email}
               placeholder="Enter your email here..."
               autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+
+                if (message) {
+                  setMessage("");
+                }
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSubscribe();
@@ -214,6 +254,31 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               }}
             />
           </div>
+
+          {showTurnstile && (
+            <div className={styles.turnstileWrapper}>
+              <Turnstile
+                ref={turnstileRef}
+                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                onSuccess={(token) => {
+                  setTurnstileToken(token);
+                  setMessage("");
+                }}
+                onExpire={() => {
+                  setTurnstileToken("");
+                  setMessage("Please complete the verification again.");
+                }}
+                onError={() => {
+                  setTurnstileToken("");
+                  setMessage("Verification failed. Please try again.");
+                }}
+                options={{
+                  theme: "light",
+                  size: "flexible",
+                }}
+              />
+            </div>
+          )}
 
           <BtnCTAWhiteSmall
             buttonText="Subscribe"
@@ -223,9 +288,10 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
 
           {message && (
             <p
-              className={styles.label}
+              className={styles.errorlabel}
               style={{
                 color: "#ff8d8d",
+                fontSize: "0.8rem",
               }}
             >
               {message}

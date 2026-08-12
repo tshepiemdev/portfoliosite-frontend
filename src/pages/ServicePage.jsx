@@ -244,19 +244,15 @@ export default function ServicePage() {
           </div>
 
           <div className={styles.bento}>
-            <div className={styles.sectionBlock}>
-              <h3 className={styles.miniHeader}>
-                <img
-                  className={styles.badgeImg}
-                  src={BadgeImg}
-                  alt="Detailed specifications"
-                />
-                Detailed specifications
-              </h3>
-              <p className={styles.descriptionlabel}>
-                {service.longDescription}
-              </p>
-            </div>
+            <h3 className={styles.miniHeader}>
+              <img
+                className={styles.badgeImg}
+                src={BadgeImg}
+                alt="Detailed specifications"
+              />
+              Detailed specifications
+            </h3>
+            <p className={styles.descriptionlabel}>{service.longDescription}</p>
           </div>
 
           {service.technologies?.length > 0 && (
@@ -379,8 +375,8 @@ export default function ServicePage() {
                     title="Note"
                     text={
                       <>
-                        Couln't find listed legal resources
-                        regarding this service. You may{" "}
+                        Couln't find listed legal resources regarding this
+                        service. You may{" "}
                         <Link
                           className={styles.linker}
                           to="/contact?reason=support"

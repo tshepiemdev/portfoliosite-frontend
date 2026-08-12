@@ -19,14 +19,14 @@
   width: 100%;
   height: fit-content;
   background-color: #1a1a1a;
-  border: 2px solid #1f1f1f;
+  border: 1px solid #1f1f1f;
   border-radius: 0.6rem;
   overflow: hidden;
 }
 
 .phoneRow:focus-within {
-  outline: 2px solid rgba(255, 166, 0, 0.5);
-  border: 2px solid orange;
+  outline: 1px solid rgba(255, 166, 0, 0.5);
+  border: 1px solid orange;
   opacity: 1;
 }
 
@@ -70,10 +70,16 @@
   color: #fff;
   border-left: 1px solid #212121;
   text-decoration: none;
+  transition: border-color 0.2s ease;
 }
 
 .phoneInput:focus {
   outline: none;
+}
+
+.phoneInput:not(:focus) {
+  color: #a2a2a2;
+  font-weight: 500;
 }
 
 .phoneInput::placeholder {
@@ -81,13 +87,13 @@
 }
 
 .phoneInputError {
-  outline: 2px solid #ff6060;
-  border: 2px solid #ff3b3b !important;
+  outline: 1px solid #ff6060;
+  border: 1px solid #ff3b3b !important;
 }
 
 .phoneInputError:focus {
-  outline: 2px solid #ff6060;
-  border: 2px solid #ff3b3b !important;
+  outline: 1px solid #ff6060;
+  border: 1px solid #ff3b3b !important;
 }
 
 .inputErrorWrapper {

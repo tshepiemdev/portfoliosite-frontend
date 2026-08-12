@@ -1,6 +1,6 @@
 import styles from "../styles/Loader.module.css";
 
-export default function LoaderView({ text, bg, border, setHeight = 60 }) {
+export default function LoaderView({ text, bg, border, radius, setHeight = 60 }) {
   return (
     <div
       className={styles.loaderView}
@@ -8,6 +8,7 @@ export default function LoaderView({ text, bg, border, setHeight = 60 }) {
         backgroundColor: bg,
         border: border,
         height: `${setHeight}vh`,
+        borderRadius: `${radius}rem`
       }}
     >
       <div className={styles.loadingCircle}></div>

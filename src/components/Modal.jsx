@@ -12,6 +12,7 @@ export default function Modal({
   showTopControl = false,
   children,
   disableClose = false,
+  blur = false,
 }) {
   const { shouldRender, close } = useModal({
     isOpen,
@@ -27,7 +28,10 @@ export default function Modal({
   if (!shouldRender || !modalRoot) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={handleClose}>
+    <div
+      className={`${styles.overlay} ${blur ? styles.blur : ""}`}
+      onClick={handleClose}
+    >
       <div
         className={styles.main}
         role="dialog"

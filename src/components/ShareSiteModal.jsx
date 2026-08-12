@@ -1,10 +1,8 @@
-import { createPortal } from "react-dom";
 import { useToast } from "./ToastContext";
 import { useNavigate } from "react-router-dom";
-import useModal from "../hooks/useModal";
+import Modal from "./Modal";
 import styles from "../styles/ShareSiteModal.module.css";
 import moreImg from "../assets/icons/menu-dots.svg";
-import CancelImg from "../assets/icons/x-close.svg";
 import LinkImg from "../assets/icons/link.svg";
 import linkedInImg from "../assets/icons/linkedin (2).svg";
 import whatsappImg from "../assets/icons/whatsapp.svg";
@@ -16,17 +14,6 @@ import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
   const { showToast } = useToast();
   const navigate = useNavigate();
-
-  const { shouldRender, close } = useModal({
-    isOpen,
-    onClose,
-    closeDelay: 300,
-  });
-
-  if (!shouldRender) return null;
-
-  const modalRoot = document.getElementById("modal-root");
-  if (!modalRoot) return null;
 
   const siteUrl = window.location.href;
   const shareUrl = imageUrl || siteUrl;
@@ -48,7 +35,7 @@ export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
         url: shareUrl,
       });
 
-      close();
+      onClose();
     } catch {
       showToast("error", "Share cancelled", "No action completed");
     }
@@ -57,10 +44,8 @@ export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
-
       showToast("success", "Link copied", "You can now share it anywhere");
-
-      close();
+      onClose();
     } catch {
       showToast("error", "Copy failed", "Try again manually");
     }
@@ -105,63 +90,56 @@ export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
     },
   ];
 
-  return createPortal(
-    <div className={styles.overlay} onClick={close}>
-      <div className={styles.main} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.topWrapper}>
-          <h2 className={styles.title}>Share</h2>
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Share"
+      showTopControl={true}
+      blur
+    >
+      <div className={styles.bottomWrapper}>
+        <h4 className={styles.miniHeader}>Share with</h4>
 
-          <button className={styles.btnClose} type="button" onClick={close}>
-            <img className={styles.cancelImg} src={CancelImg} alt="close" />
-          </button>
-        </div>
+        <ul className={styles.ul}>
+          {shareOptions.map((item, i) => (
+            <li className={styles.li} key={i}>
+              {item.action ? (
+                <button
+                  className={styles.btnMore}
+                  type="button"
+                  onClick={item.action}
+                >
+                  <div className={styles.iconWrapper}>
+                    <img className={styles.moreImg} src={item.icon} alt="" />
+                  </div>
 
-        <div className={styles.bottomWrapper}>
-          <h4 className={styles.miniHeader}>Share with</h4>
+                  <p className={styles.optionName}>{item.name}</p>
+                </button>
+              ) : (
+                <a
+                  className={styles.anchor}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div className={styles.iconWrapper}>
+                    <img className={styles.socialImg} src={item.icon} alt="" />
+                  </div>
 
-          <ul className={styles.ul}>
-            {shareOptions.map((item, i) => (
-              <li className={styles.li} key={i}>
-                {item.action ? (
-                  <button
-                    className={styles.btnMore}
-                    type="button"
-                    onClick={item.action}
-                  >
-                    <div className={styles.iconWrapper}>
-                      <img className={styles.moreImg} src={item.icon} alt="" />
-                    </div>
-                    <p className={styles.optionName}>{item.name}</p>
-                  </button>
-                ) : (
-                  <a
-                    className={styles.anchor}
-                    href={item.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <div className={styles.iconWrapper}>
-                      <img
-                        className={styles.socialImg}
-                        src={item.icon}
-                        alt=""
-                      />
-                    </div>
-                    <p className={styles.optionName}>{item.name}</p>
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.lastWrapper}>
-          <input className={styles.urlInput} value={shareUrl} readOnly />
-
-          <BtnCTAWhiteSmall buttonText="Copy link" onClick={handleCopyLink} />
-        </div>
+                  <p className={styles.optionName}>{item.name}</p>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>,
-    modalRoot,
+
+      <div className={styles.lastWrapper}>
+        <input className={styles.urlInput} value={shareUrl} readOnly />
+
+        <BtnCTAWhiteSmall buttonText="Copy link" onClick={handleCopyLink} />
+      </div>
+    </Modal>
   );
 }

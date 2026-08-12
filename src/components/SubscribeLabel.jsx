@@ -44,6 +44,7 @@ export default function SubscribeLabel({ marginTop }) {
         title="Subscribe"
         showTopControl={false}
         disableClose={disableClose}
+        blur
       >
         <SubscribeLayout
           onSuccess={() => {

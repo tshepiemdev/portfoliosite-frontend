@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@marsidev/react-turnstile": "^1.6.0",
     "i18n-iso-countries": "^7.14.0",
     "libphonenumber-js": "^1.13.8",
     "react": "^19.2.0",

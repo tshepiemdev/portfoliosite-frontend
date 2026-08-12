@@ -36,14 +36,12 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  padding-bottom: 1rem;
-  border-bottom: 2px dotted #1a1a1a;
   margin-top: 1rem;
 }
 
 .miniHeader {
   font-size: clamp(0.8rem, 5vw, 0.9rem);
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 0.4rem;
 }
 
