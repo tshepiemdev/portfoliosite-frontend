@@ -19,7 +19,6 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
   const [subscriberCount, setSubscriberCount] = useState(0);
   const [showCount, setShowCount] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
-  const [showTurnstile, setShowTurnstile] = useState(false);
 
   const turnstileRef = useRef(null);
 
@@ -27,11 +26,13 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     const fetchSubscriberCount = async () => {
       try {
         const res = await fetch(`${API_URL}/api/subscriptions/count`);
-        const data = await res.json();
 
-        if (res.ok) {
-          setSubscriberCount(data.count || 0);
+        if (!res.ok) {
+          return;
         }
+
+        const data = await res.json();
+        setSubscriberCount(data?.count || 0);
       } catch {}
     };
 
@@ -39,7 +40,10 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
   }, []);
 
   useEffect(() => {
-    if (subscriberCount <= 50) return;
+    if (subscriberCount <= 50) {
+      setShowCount(false);
+      return;
+    }
 
     const interval = setInterval(() => {
       setShowCount((prev) => !prev);
@@ -47,6 +51,11 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
 
     return () => clearInterval(interval);
   }, [subscriberCount]);
+
+  const resetTurnstile = () => {
+    setTurnstileToken("");
+    turnstileRef.current?.reset();
+  };
 
   const openEmailProvider = async () => {
     try {
@@ -64,6 +73,10 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
   };
 
   const handleSubscribe = async () => {
+    if (loading) {
+      return;
+    }
+
     const value = email.trim();
 
     setMessage("");
@@ -85,14 +98,9 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
       return;
     }
 
-    if (!showTurnstile) {
-      setShowTurnstile(true);
-      setMessage("Please complete the verification.");
-      return;
-    }
-
     if (!turnstileToken) {
-      setMessage("Please complete the verification.");
+      setMessage("Please wait while verification completes.");
+      turnstileRef.current?.reset();
       return;
     }
 
@@ -114,33 +122,43 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
 
       const text = await res.text();
 
-      let data;
+      let data = {};
 
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Invalid server response");
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error("We couldn't process the server response.");
+        }
       }
 
-      if (!res.ok || !data?.success) {
-        throw new Error(data?.message || "Subscription failed");
+      if (!res.ok) {
+        throw new Error(
+          data?.message || "We couldn't complete your subscription.",
+        );
+      }
+
+      if (data?.success === false) {
+        throw new Error(
+          data?.message || "We couldn't complete your subscription.",
+        );
       }
 
       setEmail("");
+      setWebsite("");
       setSuccess(true);
-      setTurnstileToken("");
-      setShowTurnstile(false);
-      turnstileRef.current?.reset();
+      setMessage("");
       setDisableClose(true);
+      resetTurnstile();
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : "Subscription failed";
+        err instanceof Error
+          ? err.message
+          : "We couldn't complete your subscription.";
 
       setMessage(errorMessage);
       setDisableClose(false);
-      setTurnstileToken("");
-      setShowTurnstile(true);
-      turnstileRef.current?.reset();
+      resetTurnstile();
     } finally {
       setLocalLoading(false);
     }
@@ -183,15 +201,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
 
       {loading ? (
         <div className={styles.responseWrapper}>
-          <LoaderView
-            text={
-              <>
-                Hang tight, processing <br />
-                your subscription
-              </>
-            }
-            setHeight={40}
-          />
+          <LoaderView setHeight={40} />
         </div>
       ) : success ? (
         <div className={styles.responseWrapper}>
@@ -240,6 +250,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               value={email}
               placeholder="Enter your email here..."
               autoComplete="email"
+              disabled={loading}
               onChange={(e) => {
                 setEmail(e.target.value);
 
@@ -249,36 +260,34 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
+                  e.preventDefault();
                   handleSubscribe();
                 }
               }}
             />
           </div>
 
-          {showTurnstile && (
-            <div className={styles.turnstileWrapper}>
-              <Turnstile
-                ref={turnstileRef}
-                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-                onSuccess={(token) => {
-                  setTurnstileToken(token);
-                  setMessage("");
-                }}
-                onExpire={() => {
-                  setTurnstileToken("");
-                  setMessage("Please complete the verification again.");
-                }}
-                onError={() => {
-                  setTurnstileToken("");
-                  setMessage("Verification failed. Please try again.");
-                }}
-                options={{
-                  theme: "light",
-                  size: "flexible",
-                }}
-              />
-            </div>
-          )}
+          <div className={styles.turnstileWrapper}>
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+              onSuccess={(token) => {
+                setTurnstileToken(token);
+                setMessage("");
+              }}
+              onExpire={() => {
+                setTurnstileToken("");
+              }}
+              onError={() => {
+                setTurnstileToken("");
+                setMessage("Verification failed. Please try again.");
+              }}
+              options={{
+                theme: "light",
+                size: "invisible",
+              }}
+            />
+          </div>
 
           <BtnCTAWhiteSmall
             buttonText="Subscribe"

@@ -1,9 +1,9 @@
 import CounterView from "./CounterView";
 import styles from "../styles/ShareWith.module.css";
 
-export default function ShareWith({ options = [], views }) {
+export default function ShareWith({marginTop=0, options = [], views }) {
   return (
-    <>
+    <div className={styles.shareWithWrapper} style={{marginTop: `${marginTop}rem`}}>
       {typeof views === "number" && (
         <CounterView count={views} text={"Viewed times"} />
       )}
@@ -42,6 +42,6 @@ export default function ShareWith({ options = [], views }) {
             </li>
           ))}
       </ul>
-    </>
+    </div>
   );
 }

@@ -124,8 +124,6 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   const [submitted, setSubmitted] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
 
-  useDetectLocation(setForm);
-
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
@@ -136,6 +134,8 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   const startTimeRef = useRef(null);
   const messageRef = useRef(null);
   const turnstileRef = useRef(null);
+
+  useDetectLocation(setForm);
 
   useEffect(() => {
     const loadData = async () => {
@@ -227,10 +227,16 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   };
 
   const handleChange = (field) => (e) => {
-    setForm((prev) => ({
-      ...prev,
+    const updated = {
+      ...form,
       [field]: e.target.value,
-    }));
+    };
+
+    setForm(updated);
+
+    if (submitted) {
+      setErrors(validate(updated));
+    }
   };
 
   const validate = (values) => {
@@ -325,7 +331,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     onResponseStatusChange(status);
   };
 
-  const returnToForm = () => {
+  const closeResponse = () => {
     setResponseData({
       title: "",
       subtitle: "",
@@ -335,9 +341,30 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     onResponseStatusChange("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const resetTurnstile = () => {
+    setTurnstileToken("");
+    turnstileRef.current?.reset();
+  };
 
+  const clearForm = () => {
+    setForm(initialForm);
+    setSelectedService(null);
+    setPackages([]);
+    setErrors({});
+    setSubmitted(false);
+    resetTurnstile();
+  };
+
+  const handleSuccess = () => {
+    clearForm();
+    closeResponse();
+  };
+
+  const handleError = () => {
+    closeResponse();
+  };
+
+  const submitForm = async () => {
     const validationErrors = validate(form);
 
     setErrors(validationErrors);
@@ -351,7 +378,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     if (!navigator.onLine) {
       showResponse(
         "network",
-        "You're offline",
+        <>
+          Looks like
+          <br />
+          you're offline
+        </>,
         "Please check your internet connection and try again.",
       );
       return;
@@ -432,7 +463,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
       showResponse(
         "success",
-        "Request sent successfully",
+        <>
+          Request sent
+          <br />
+          successfully
+        </>,
         `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${ref}`,
       );
 
@@ -441,10 +476,25 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       setPackages([]);
       setSubmitted(false);
       setErrors({});
-      setTurnstileToken("");
-
-      turnstileRef.current?.reset();
+      resetTurnstile();
     } catch (error) {
+      const isNetworkError = error instanceof TypeError || !navigator.onLine;
+
+      resetTurnstile();
+
+      if (isNetworkError) {
+        showResponse(
+          "network",
+          <>
+            Looks like
+            <br />
+            you're offline
+          </>,
+          "Please check your internet connection and try again.",
+        );
+        return;
+      }
+
       showResponse(
         "error",
         <>
@@ -454,10 +504,28 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         </>,
         error instanceof Error ? error.message : "Failed to send your request",
       );
-
-      setTurnstileToken("");
-      turnstileRef.current?.reset();
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    await submitForm();
+  };
+
+  const handleRetry = async () => {
+    closeResponse();
+
+    await new Promise((resolve) => {
+      requestAnimationFrame(resolve);
+    });
+
+    await submitForm();
   };
 
   if (responseData.status) {
@@ -466,7 +534,9 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         status={responseData.status}
         title={responseData.title}
         subtitle={responseData.subtitle}
-        onClose={returnToForm}
+        onSuccess={handleSuccess}
+        onError={handleError}
+        onRetry={handleRetry}
       />
     );
   }

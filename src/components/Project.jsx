@@ -63,21 +63,21 @@ function Project({
           {projectName || "Untitled"}
           {isProjNew && <span className={styles.chip}>New</span>}
         </h2>
-      </div>
 
-      <div className={styles.controlsWrapper}>
-        <div className={styles.vWrapper}>
-          <img src={starImg} className={styles.labelIcon} alt={projectType} />
-          <p className={styles.label}>{projectType}</p>
-          <p className={styles.label}>{finalStatus}</p>
-        </div>
+        <div className={styles.controlsWrapper}>
+          <div className={styles.vWrapper}>
+            <img src={starImg} className={styles.labelIcon} alt={projectType} />
+            <p className={styles.label}>{projectType}</p>
+            <p className={styles.label}>{finalStatus}</p>
+          </div>
 
-        <div className={styles.chevronBox}>
-          <img
-            className={styles.chevronIcon}
-            src={ChevronImg}
-            alt="open project"
-          />
+          <div className={styles.chevronBox}>
+            <img
+              className={styles.chevronIcon}
+              src={ChevronImg}
+              alt="open project"
+            />
+          </div>
         </div>
       </div>
     </Link>

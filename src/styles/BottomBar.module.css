@@ -6,7 +6,6 @@
   box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.2);
   border-radius: 16rem;
   width: fit-content;
-  min-width: 280px;
   position: relative;
   z-index: 999;
   display: flex;
@@ -17,18 +16,16 @@
   padding: 1rem;
   overflow: hidden;
   height: fit-content;
-
   transform: translateY(120%) scale(0.96);
   opacity: 0;
   filter: blur(8px);
-
   animation-name: bottomBarEnter;
   animation-duration: 900ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-delay: 1s;
   animation-fill-mode: forwards;
-
   transition:
+    width 500ms cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 300ms ease,
     box-shadow 300ms ease;
 }
@@ -92,7 +89,7 @@
 }
 
 .gridWrapper {
-  width: 100%;
+  width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -109,11 +106,12 @@
 }
 
 .nav {
+  width: fit-content;
   display: flex;
-  justify-content: start;
-  align-items: start;
-  gap: 0rem;
-  margin-right: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .miniMenu {
@@ -124,30 +122,33 @@
   margin-bottom: auto;
 }
 
-.nav {
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
 .ul {
-  width: 100%;
-  list-style: none;
   width: fit-content;
+  list-style: none;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  padding: 0;
+  margin: 0;
 }
 
 .li {
   list-style: none;
+  overflow: hidden;
+  max-width: 10rem;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    max-width 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 250ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .a {
+  width: fit-content;
+  white-space: nowrap;
   background: transparent;
   border: none;
   outline: none;
@@ -161,6 +162,7 @@
   font-weight: 600;
   transition: color 0.2s ease;
   color: #a8a8a8;
+  padding: 0;
 }
 
 .a:hover {
@@ -173,10 +175,11 @@
 }
 
 .hideLi {
+  max-width: 0;
   opacity: 0;
-  width: 0;
-  display: none;
-  transition: all 1s ease-in-out;
+  transform: translateX(-1rem);
+  margin: 0;
+  pointer-events: none;
 }
 
 .backBtn {
@@ -345,16 +348,4 @@
   width: 2.5rem;
   height: 0.15rem;
   margin-bottom: 1rem;
-}
-
-@media (max-width: 768px) {
-  .BottomBar {
-    min-width: 300px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .BottomBar {
-    min-width: 300px;
-  }
 }

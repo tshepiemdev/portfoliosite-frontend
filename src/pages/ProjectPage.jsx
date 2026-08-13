@@ -258,7 +258,7 @@ export default function ProjectPage() {
             </div>
           </div>
 
-          <div className={styles.box}>
+          <div className={styles.bentoBox}>
             <p className={styles.label}>Summary</p>
             <h4 className={styles.summary}>
               {project.projectShortDescription || "Summary unavailable"}
@@ -291,7 +291,7 @@ export default function ProjectPage() {
             </div>
           </div>
 
-          <ShareWith options={shareOptions} views={project.views || 0} />
+          <ShareWith marginTop={1} options={shareOptions} views={project.views || 0} />
         </div>
 
         <div className={styles.projectImagesWrapper}>
@@ -371,7 +371,8 @@ export default function ProjectPage() {
                 />
               </div>
             ) : (
-              <NoticeLbl
+                <NoticeLbl
+                  title={"Note"}
                 text={
                   "Repository is not publicly available. Project is currently in " +
                   finalBadgeText +
@@ -403,7 +404,8 @@ export default function ProjectPage() {
                 />
               </div>
             ) : (
-              <NoticeLbl
+                <NoticeLbl
+                  title={"Note"}
                 text={
                   "Live deployment is not available. Project is currently in " +
                   finalBadgeText +

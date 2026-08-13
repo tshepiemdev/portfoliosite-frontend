@@ -1,6 +1,6 @@
 import styles from "../styles/ContactForm.module.css";
 import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Turnstile } from "@marsidev/react-turnstile";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
@@ -51,8 +51,6 @@ const initialForm = {
 };
 
 export default function ContactForm({ onResponseStatusChange }) {
-  const [searchParams] = useSearchParams();
-
   const [responseData, setResponseData] = useState({
     title: "",
     subtitle: "",
@@ -124,17 +122,6 @@ export default function ContactForm({ onResponseStatusChange }) {
     },
   ];
 
-  useEffect(() => {
-    const reason = searchParams.get("reason");
-
-    if (reason && reasons.some((item) => item.value === reason)) {
-      setForm((prev) => ({
-        ...prev,
-        reason,
-      }));
-    }
-  }, [searchParams]);
-
   const validate = (values) => {
     const newErrors = {};
 
@@ -171,15 +158,38 @@ export default function ContactForm({ onResponseStatusChange }) {
     return newErrors;
   };
 
-  const focusFirstError = (errors) => {
-    if (errors.firstName) return firstNameRef.current?.focus();
-    if (errors.lastName) return lastNameRef.current?.focus();
-    if (errors.email) return emailRef.current?.focus();
-    if (errors.phone) return phoneRef.current?.focus();
-    if (errors.country) return countryRef.current?.focus();
-    if (errors.reason) return reasonRef.current?.focus();
-    if (errors.teamSize) return teamSizeRef.current?.focus();
-    if (errors.message) return messageRef.current?.focus();
+  const focusFirstError = (validationErrors) => {
+    if (validationErrors.firstName) {
+      return firstNameRef.current?.focus();
+    }
+
+    if (validationErrors.lastName) {
+      return lastNameRef.current?.focus();
+    }
+
+    if (validationErrors.email) {
+      return emailRef.current?.focus();
+    }
+
+    if (validationErrors.phone) {
+      return phoneRef.current?.focus();
+    }
+
+    if (validationErrors.country) {
+      return countryRef.current?.focus();
+    }
+
+    if (validationErrors.reason) {
+      return reasonRef.current?.focus();
+    }
+
+    if (validationErrors.teamSize) {
+      return teamSizeRef.current?.focus();
+    }
+
+    if (validationErrors.message) {
+      return messageRef.current?.focus();
+    }
   };
 
   const handleChange = (field) => (e) => {
@@ -205,14 +215,7 @@ export default function ContactForm({ onResponseStatusChange }) {
     onResponseStatusChange(status);
   };
 
-  const resetForm = () => {
-    setForm(initialForm);
-    setErrors({});
-    setSubmitted(false);
-    setTurnstileToken("");
-
-    turnstileRef.current?.reset();
-
+  const closeResponse = () => {
     setResponseData({
       title: "",
       subtitle: "",
@@ -222,14 +225,25 @@ export default function ContactForm({ onResponseStatusChange }) {
     onResponseStatusChange("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const clearForm = () => {
+    setForm(initialForm);
+    setErrors({});
+    setSubmitted(false);
+    setTurnstileToken("");
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    turnstileRef.current?.reset();
+  };
 
+  const handleSuccessClose = () => {
+    clearForm();
+    closeResponse();
+  };
+
+  const handleErrorClose = () => {
+    closeResponse();
+  };
+
+  const submitForm = async () => {
     const validationErrors = validate(form);
 
     setErrors(validationErrors);
@@ -243,7 +257,11 @@ export default function ContactForm({ onResponseStatusChange }) {
     if (!navigator.onLine) {
       showResponse(
         "network",
-        "You're offline",
+        <>
+          Looks like
+          <br />
+          you're offline
+        </>,
         "Please check your internet connection and try again.",
       );
       return;
@@ -332,19 +350,56 @@ export default function ContactForm({ onResponseStatusChange }) {
 
       turnstileRef.current?.reset();
     } catch (error) {
-      showResponse(
-        "error",
-        <>
-          Failed to send
-          <br />
-          your mail
-        </>,
-        error instanceof Error ? error.message : "Failed to send your message",
-      );
+      const isNetworkError = error instanceof TypeError || !navigator.onLine;
+
+      if (isNetworkError) {
+        showResponse(
+          "network",
+          <>
+            Looks like
+            <br />
+            you're offline
+          </>,
+          "Please check your internet connection and try again.",
+        );
+      } else {
+        showResponse(
+          "error",
+          <>
+            Failed to send
+            <br />
+            your message
+          </>,
+          error instanceof Error
+            ? error.message
+            : "Failed to send your message",
+        );
+      }
 
       setTurnstileToken("");
       turnstileRef.current?.reset();
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    await submitForm();
+  };
+
+  const handleRetry = async () => {
+    closeResponse();
+
+    await new Promise((resolve) => {
+      requestAnimationFrame(resolve);
+    });
+
+    await submitForm();
   };
 
   if (responseData.status) {
@@ -353,7 +408,9 @@ export default function ContactForm({ onResponseStatusChange }) {
         status={responseData.status}
         title={responseData.title}
         subtitle={responseData.subtitle}
-        onClose={resetForm}
+        onSuccess={handleSuccessClose}
+        onError={handleErrorClose}
+        onRetry={handleRetry}
       />
     );
   }
