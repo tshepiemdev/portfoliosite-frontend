@@ -93,7 +93,7 @@ export default function Home() {
           </div>
         </div>
 
-        <ProjectsWrapper marginTop={2} showBar={true} limit={3} />
+        <ProjectsWrapper marginTop={1} showBar={true} limit={3} />
       </section>
 
       <section id="qualifications" className={styles.section}>
