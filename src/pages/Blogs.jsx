@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/Blogs.module.css";
 import BlogBox from "../components/BlogBox";
 import LoaderView from "../components/Loader";
@@ -13,11 +14,15 @@ import SubscribeLabel from "../components/SubscribeLabel";
 import SearchBar from "../components/SearchBar";
 
 export default function Blogs() {
+  const { settings } = useOutletContext();
+
   const [myBlogs, setMyBlogs] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
-
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const blogsUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.blog === true;
 
   const fetchBlogs = async () => {
     try {
@@ -27,6 +32,7 @@ export default function Blogs() {
       const res = await fetch(`${API_URL}/api/blogs`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -92,7 +98,7 @@ export default function Blogs() {
         .filter((b) => !b.isFeatured)
         .sort(
           (a, b) =>
-            new Date(b.publishedDate || 0) - new Date(a.publishedDate || 0),
+            new Date(b.publishedDate || 0) - new Date(b.publishedDate || 0),
         ),
     [filteredByCategory],
   );
@@ -129,7 +135,8 @@ export default function Blogs() {
         textAlign="center"
         centerContent="center"
       />
-      {myBlogs.length > 0 && (
+
+      {!blogsUnderMaintenance && myBlogs.length > 0 && (
         <SearchBar
           value={""}
           onChange={""}
@@ -139,7 +146,7 @@ export default function Blogs() {
       )}
 
       <div className={styles.blogsWrapper}>
-        {myBlogs.length > 0 && (
+        {!blogsUnderMaintenance && myBlogs.length > 0 && (
           <FilterBar
             categories={categories}
             onFilterChange={setActiveCategory}
@@ -149,20 +156,39 @@ export default function Blogs() {
         )}
 
         <div className={styles.blogSections}>
-          {!loading && !errorType && myBlogs.length === 0 ? (
+          {blogsUnderMaintenance && (
             <div className={styles.fullSpan}>
               <ErrorView
                 errType="default"
                 errorText={
                   <>
-                    No blogs found, <br />
-                    come back later
+                    Under maintenace. <br />
+                    Please check back later.
                   </>
                 }
-                onRetry={fetchBlogs}
               />
             </div>
-          ) : (
+          )}
+
+          {!blogsUnderMaintenance &&
+            !loading &&
+            !errorType &&
+            myBlogs.length === 0 && (
+              <div className={styles.fullSpan}>
+                <ErrorView
+                  errType="default"
+                  errorText={
+                    <>
+                      No blogs found, <br />
+                      come back later
+                    </>
+                  }
+                  onRetry={fetchBlogs}
+                />
+              </div>
+            )}
+
+          {!blogsUnderMaintenance && (
             <div className={styles.blogSections}>
               {activeCategory === "All" && (
                 <div className={styles.sectionBlock}>
@@ -313,15 +339,17 @@ export default function Blogs() {
             </div>
           )}
 
-          <SubscribeLabel
-            text={
-              <>
-                to receive new <br />
-                blogs, directly into your inbox.
-              </>
-            }
-            marginTop={4}
-          />
+          {!blogsUnderMaintenance && (
+            <SubscribeLabel
+              text={
+                <>
+                  to receive new <br />
+                  blogs, directly into your inbox.
+                </>
+              }
+              marginTop={4}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/Legal.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
@@ -10,9 +11,14 @@ import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 
 export default function Legal() {
+  const { settings } = useOutletContext();
+
   const [myLegal, setLegal] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const legalUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.legal === true;
 
   const fetchLegal = async () => {
     try {
@@ -22,6 +28,7 @@ export default function Legal() {
       const res = await fetch(`${API_URL}/api/legals`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -83,37 +90,55 @@ export default function Legal() {
         />
 
         <div className={styles.legalContainer}>
-          {loading && <LoaderView />}
-
-          {!loading && errorType && (
-            <ErrorView errType={errorType} onRetry={fetchLegal} />
-          )}
-
-          {!loading && !errorType && myLegal.length === 0 && (
+          {legalUnderMaintenance && (
             <ErrorView
               errType="default"
               errorText={
                 <>
-                  Couln't find any listed <br />
-                  legal guidelines
+                  Under maintenace. <br />
+                  Please check back later.
                 </>
               }
-              onRetry={fetchLegal}
             />
           )}
 
-          {!loading && !errorType && myLegal.length > 0 && (
-            <div className={styles.legalGridWrapper}>
-              {myLegal.map((legal) => (
-                <LegalBox
-                  key={legal._id}
-                  name={legal.name}
-                  legalFor={legal.for}
-                  link={`/legal/${slugify(legal.for + "-" + legal.name)}`}
-                />
-              ))}
-            </div>
+          {!legalUnderMaintenance && loading && <LoaderView />}
+
+          {!legalUnderMaintenance && !loading && errorType && (
+            <ErrorView errType={errorType} onRetry={fetchLegal} />
           )}
+
+          {!legalUnderMaintenance &&
+            !loading &&
+            !errorType &&
+            myLegal.length === 0 && (
+              <ErrorView
+                errType="default"
+                errorText={
+                  <>
+                    Couln't find any listed <br />
+                    legal guidelines
+                  </>
+                }
+                onRetry={fetchLegal}
+              />
+            )}
+
+          {!legalUnderMaintenance &&
+            !loading &&
+            !errorType &&
+            myLegal.length > 0 && (
+              <div className={styles.legalGridWrapper}>
+                {myLegal.map((legal) => (
+                  <LegalBox
+                    key={legal._id}
+                    name={legal.name}
+                    legalFor={legal.for}
+                    link={`/legal/${slugify(legal.for + "-" + legal.name)}`}
+                  />
+                ))}
+              </div>
+            )}
         </div>
       </div>
     </div>

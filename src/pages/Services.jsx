@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/Services.module.css";
 import ServiceBox from "../components/ServiceBox";
 import LoaderView from "../components/Loader";
@@ -11,10 +12,15 @@ import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 
 export default function Services({ showFilter = true, marginTop = 0 }) {
+  const { settings } = useOutletContext();
+
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const servicesUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.services === true;
 
   const fetchServices = async () => {
     try {
@@ -24,6 +30,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
       const res = await fetch(`${API_URL}/api/services`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -92,14 +99,15 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
             title={<>Services</>}
             subtext={
               <>
-                Building solutions for startup <br/>and enterprise clients.
+                Building solutions for startup <br />
+                and enterprise clients.
               </>
             }
             textAlign="center"
             centerContent="center"
           />
 
-          {showFilter && services.length > 0 && (
+          {showFilter && !servicesUnderMaintenance && services.length > 0 && (
             <div className={styles.filterWrapper}>
               <FilterBar
                 categories={categories}
@@ -115,45 +123,65 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
           className={styles.contentWrapper}
           style={{ marginTop: `${marginTop}rem` }}
         >
-          {loading && (
-            <div className={styles.fullSpan}>
-              <LoaderView />
-            </div>
-          )}
-
-          {!loading && errorType && (
-            <div className={styles.fullSpan}>
-              <ErrorView errType={errorType} onRetry={fetchServices} />
-            </div>
-          )}
-
-          {!loading && !errorType && filteredServices.length === 0 && (
+          {servicesUnderMaintenance && (
             <div className={styles.fullSpan}>
               <ErrorView
                 errType="default"
                 errorText={
                   <>
-                    Couln't find any <br />
-                    listed services
+                    Under maintenace. <br />
+                    Please check back later.
                   </>
                 }
-                onRetry={fetchServices}
               />
             </div>
           )}
 
-          {!loading && !errorType && filteredServices.length > 0 && (
-            <div className={styles.servicesGrid}>
-              {filteredServices.map((service, index) => (
-                <ServiceBox
-                  key={service._id || index}
-                  name={service.name}
-                  serviceLink={`/services/${slugify(service.name)}`}
-                  isFeatured={service.isFeatured}
-                />
-              ))}
+          {!servicesUnderMaintenance && loading && (
+            <div className={styles.fullSpan}>
+              <LoaderView />
             </div>
           )}
+
+          {!servicesUnderMaintenance && !loading && errorType && (
+            <div className={styles.fullSpan}>
+              <ErrorView errType={errorType} onRetry={fetchServices} />
+            </div>
+          )}
+
+          {!servicesUnderMaintenance &&
+            !loading &&
+            !errorType &&
+            filteredServices.length === 0 && (
+              <div className={styles.fullSpan}>
+                <ErrorView
+                  errType="default"
+                  errorText={
+                    <>
+                      Couln't find any <br />
+                      listed services
+                    </>
+                  }
+                  onRetry={fetchServices}
+                />
+              </div>
+            )}
+
+          {!servicesUnderMaintenance &&
+            !loading &&
+            !errorType &&
+            filteredServices.length > 0 && (
+              <div className={styles.servicesGrid}>
+                {filteredServices.map((service, index) => (
+                  <ServiceBox
+                    key={service._id || index}
+                    name={service.name}
+                    serviceLink={`/services/${slugify(service.name)}`}
+                    isFeatured={service.isFeatured}
+                  />
+                ))}
+              </div>
+            )}
         </div>
       </div>
     </div>
