@@ -7,7 +7,7 @@
   background-color: #1a1a1a;
   border: 1px solid #161616;
   border-radius: 16rem;
-  height: 2.6rem;
+  height: 2.4rem;
   padding: 0.7rem 1rem;
   opacity: 1;
   transition: 0.1s ease-in-out;
@@ -16,14 +16,16 @@
   width: fit-content;
 }
 
+.count , .text {
+  font-size: 0.8rem;
+}
+
 .count {
-  font-size: 0.9rem;
   font-weight: 600;
 }
 
 .text {
   opacity: 0.6;
-  font-size: 0.9rem;
   font-weight: 500;
   display: -webkit-box;
   line-clamp: 1;

@@ -1,5 +1,5 @@
 import styles from "../styles/ReviewBentoBox.module.css";
-import smallFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import smallFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import quoteImg from "../assets/icons/quotation-marks.svg";
 
 export default function ReviewBentoBox({

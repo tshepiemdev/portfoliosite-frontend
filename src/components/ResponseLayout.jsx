@@ -51,7 +51,7 @@ export default function ResponseLayout({
 
           <div className={styles.ctasWrapper}>
             {isSuccess && (
-              <BtnCTABlack buttonText="Okay Got It" onClick={onSuccess} />
+              <BtnCTAWhite buttonText="Okay Got It" onClick={onSuccess} />
             )}
 
             {isError && (

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import nextArrowImg from "../assets/icons/back_arrow.svg";
 import starImg from "../assets/icons/logo-black.svg";
 import newImg from "../assets/icons/star.svg";
-import smallFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import smallFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import { slugify } from "../utils/slugify";
 
 export default function BlogBoxCompact({

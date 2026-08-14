@@ -25,16 +25,20 @@
 }
 
 .featuredBlogsList {
-  margin-top: 0rem;
+  margin-top: 0;
   margin-bottom: 1rem;
   width: 100%;
   height: fit-content;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: minmax(400px, auto);
   align-items: stretch;
   gap: 1rem;
   position: relative;
+}
+
+.featuredBlogsList > :only-child {
+  grid-column: 1 / -1;
 }
 
 .latestBlogsList {

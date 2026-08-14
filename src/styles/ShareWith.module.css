@@ -26,19 +26,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1a1a;
-  border: 1px solid #161616;
-  border-radius: 16rem;
-  width: 2.6rem;
-  height: 2.6rem;
-  padding: 0.8rem;
+  width: 1.4rem;
+  height: 1.4rem;
   overflow: hidden;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  opacity: 0.5;
 }
 
 .shareButton:hover,
 .shareWithA:hover {
-  background-color: #1a1a1a;
+  opacity: 1;
 }
 
 .shareSocialIcon {
@@ -48,7 +47,7 @@
 }
 
 .shareIcon {
-  width: 1rem;
-  height: 1rem;
+  width: 100%;
+  height: 100%;
   filter: invert(1);
 }

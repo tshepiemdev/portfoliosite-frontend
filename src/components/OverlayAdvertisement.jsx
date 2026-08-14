@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/OverlayAdvertisement.module.css";
-import FallbackImg from "../assets/images/fallback_img_16_9.svg";
+import FallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import menuImg from "../assets/icons/menu-dots.svg";
 import cancelImg from "../assets/icons/x-close.svg";
 

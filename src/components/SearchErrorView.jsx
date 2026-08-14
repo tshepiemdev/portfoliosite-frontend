@@ -1,8 +1,15 @@
 import styles from "../styles/SearchErrorView.module.css";
-import ErrorImg from "../assets/icons/restrict.svg";
+import ErrorImg from "../assets/icons/not-found-alt.svg";
 import BtnHyperLink from "./BtnHyperLink";
 
-export default function SearchErrorView({ icon, header, subText, bg, border }) {
+export default function SearchErrorView({
+  icon,
+  header,
+  subText,
+  bg,
+  border,
+  showAssist = false,
+}) {
   return (
     <div
       className={styles.errorView}
@@ -15,11 +22,13 @@ export default function SearchErrorView({ icon, header, subText, bg, border }) {
       <h2 className={styles.errorHead}>{header}</h2>
       <p className={styles.errorSubtext}>{subText}</p>
 
-      <BtnHyperLink
-        text={"Need more help?"}
-        linkText={"Get in touch"}
-        href={"/contact?reason=support"}
-      />
+      {showAssist && (
+        <BtnHyperLink
+          text={"Need more help?"}
+          linkText={"Get in touch"}
+          href={"/contact?reason=support"}
+        />
+      )}
     </div>
   );
 }

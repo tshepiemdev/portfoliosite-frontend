@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/ExperienceWrapper.module.css";
 import ExperienceBox from "./Experience";
 import LoaderView from "./Loader";
@@ -6,9 +7,14 @@ import ErrorView from "./ErrorView";
 import API_URL from "../config/api";
 
 export default function ExperienceWrapper() {
+  const { settings } = useOutletContext();
+
   const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const experiencesUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.experiences === true;
 
   const fetchExperiences = async () => {
     try {
@@ -18,6 +24,7 @@ export default function ExperienceWrapper() {
       const res = await fetch(`${API_URL}/api/experiences`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -52,36 +59,54 @@ export default function ExperienceWrapper() {
 
   return (
     <div className={styles.experienceWrapper}>
-      {loading && <LoaderView />}
-
-      {!loading && errorType && (
-        <ErrorView errType={errorType} onRetry={fetchExperiences} />
-      )}
-
-      {!loading && !errorType && experiences.length === 0 && (
+      {experiencesUnderMaintenance && (
         <ErrorView
           errType="default"
-          errorText="Couldn't find any listed working experiences"
-          onRetry={fetchExperiences}
+          errorText={
+            <>
+              Under maintenace. <br />
+              Please check back later.
+            </>
+          }
         />
       )}
 
-      {!loading && !errorType && experiences.length > 0 && (
-        <div className={styles.wrapAllExperience}>
-          {experiences.map((exp, index) => (
-            <ExperienceBox
-              key={exp._id || index}
-              company={exp.company}
-              position={exp.position}
-              from={exp.from}
-              to={exp.to}
-              timelapse={exp.timelapse}
-              location={exp.location}
-              responsibilities={exp.responsibilities}
-            />
-          ))}
-        </div>
+      {!experiencesUnderMaintenance && loading && <LoaderView />}
+
+      {!experiencesUnderMaintenance && !loading && errorType && (
+        <ErrorView errType={errorType} onRetry={fetchExperiences} />
       )}
+
+      {!experiencesUnderMaintenance &&
+        !loading &&
+        !errorType &&
+        experiences.length === 0 && (
+          <ErrorView
+            errType="default"
+            errorText="Couldn't find any listed working experiences"
+            onRetry={fetchExperiences}
+          />
+        )}
+
+      {!experiencesUnderMaintenance &&
+        !loading &&
+        !errorType &&
+        experiences.length > 0 && (
+          <div className={styles.wrapAllExperience}>
+            {experiences.map((exp, index) => (
+              <ExperienceBox
+                key={exp._id || index}
+                company={exp.company}
+                position={exp.position}
+                from={exp.from}
+                to={exp.to}
+                timelapse={exp.timelapse}
+                location={exp.location}
+                responsibilities={exp.responsibilities}
+              />
+            ))}
+          </div>
+        )}
     </div>
   );
 }

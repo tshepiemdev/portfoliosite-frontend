@@ -12,7 +12,7 @@ const fallbackImages = Array.from({ length: 9 }, (_, i) => ({
 }));
 
 const CACHE_KEY = "bentoImages";
-const CACHE_TIME = 1000 * 60 * 60 * 12;
+const CACHE_TIME = 1000 * 60 * 60 * 24;
 
 export default function AnimatedBentoGrid({
   width,

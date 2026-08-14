@@ -1,24 +1,72 @@
 import styles from "../styles/BlogPageTopTitles.module.css";
+import ShareWith from "../components/ShareWith";
+import myDefaultProfileImage from "../assets/images/tshepang.jpg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 
 export default function BlogPageTopTitlesView({
   category,
   name,
-  buttonText,
-  linkTo,
+  shortDescription,
+  shareOptions,
+  views = 0,
+  publishDate,
+  authorName,
+  authorPic,
+  totalReadTime,
 }) {
   const capitalizeFirstLetter = (text) => {
     if (!text) return "";
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
+  const displayDate = publishDate
+    ? new Date(publishDate).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "";
+
   return (
     <div className={styles.titlesWrapper}>
-      <div className={styles.rowWrapper}>
-        <p className={styles.type}>Blog / </p>
-        <p className={styles.category}>{capitalizeFirstLetter(category)}</p>
+      <div className={styles.columnWrapper}>
+        <div className={styles.rowWrapper}>
+          <p className={styles.type}>{capitalizeFirstLetter(category)}</p>
+          <p className={styles.label}>Blog</p>
+        </div>
+
+        <p className={styles.type}>
+          {displayDate} • <p className={styles.text}> {totalReadTime}</p>
+        </p>
       </div>
 
       <h1 className={styles.name}>{name}</h1>
+
+      <p className={styles.summary}>{shortDescription}</p>
+
+      <div className={styles.wrapper}>
+        <ShareWith options={shareOptions} views={views} />
+      </div>
+
+      <div className={styles.box}>
+        <div className={styles.minicontainer} title="Author">
+          <div className={styles.authorImgWrapper}>
+            <img
+              className={styles.authorImg}
+              src={authorPic?.trim() ? authorPic : myDefaultProfileImage}
+              alt={authorName}
+              onClick={() =>
+                setSelectedImage(authorPic || myDefaultProfileImage)
+              }
+              onError={(e) => {
+                e.target.src = bigFallbackImg;
+              }}
+            />
+          </div>
+
+          <h4 className={styles.author}>{authorName}</h4>
+        </div>
+      </div>
     </div>
   );
 }

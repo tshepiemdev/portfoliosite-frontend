@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/Meet.module.css";
 import myDefaultProfileImage from "../assets/images/tshepang.jpg";
-import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import BentoImg from "../assets/icons/logo-white.svg";
 import TechStackImg from "../assets/icons/ball-pile.svg";
 import BuildsImg from "../assets/icons/build-alt.svg";

@@ -92,31 +92,30 @@ export default function BlogsCompact({
         <h2 className={styles.heading}>Related articles</h2>
       </div>
 
-      <div className={styles.commentsList}>
-        <div className={styles.blogsList}>
-          {loading && <LoaderView />}
+      <div className={styles.blogsList}>
+        {loading && <LoaderView />}
 
-          {!loading && error && (
-            <ErrorView errorText={error} onRetry={fetchBlogs} />
-          )}
+        {!loading && error && (
+          <ErrorView errorText={error} onRetry={fetchBlogs} />
+        )}
 
-          {!loading &&
-            !error &&
-            visibleBlogs.map((blog) => (
-              <BlogBoxCompact
-                key={blog._id || blog.slug}
-                title={blog.title}
-                category={blog.category}
-                publishedDate={blog.publishedDate}
-                formattedDate={blog.formattedDate}
-                imageUrl={blog.imageUrl}
-                isFeatured={blog.isFeatured}
-                blogLink={`/blog/${blog.slug}`}
-              />
-            ))}
-        </div>
+        {!loading &&
+          !error &&
+          visibleBlogs.map((blog) => (
+            <BlogBoxCompact
+              key={blog._id || blog.slug}
+              title={blog.title}
+              category={blog.category}
+              publishedDate={blog.publishedDate}
+              formattedDate={blog.formattedDate}
+              imageUrl={blog.imageUrl}
+              isFeatured={blog.isFeatured}
+              blogLink={`/blog/${blog.slug}`}
+            />
+          ))}
+      </div>
 
-        {!loading && !error && relatedBlogs.length > 0 && (
+      {/* {!loading && !error && relatedBlogs.length > 0 && (
           <div className={styles.blogControls}>
             {visibleCount < relatedBlogs.length ? (
               <BtnCTABlackSmall
@@ -130,8 +129,7 @@ export default function BlogsCompact({
               />
             )}
           </div>
-        )}
-      </div>
+        )} */}
     </div>
   );
 }

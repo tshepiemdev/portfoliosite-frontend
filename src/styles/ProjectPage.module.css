@@ -316,6 +316,8 @@
   padding-bottom: 1rem;
   font-size: 1.8rem;
   margin-bottom: auto;
+  text-decoration: underline;
+  text-decoration-color: orange;
 }
 
 .sectionBackupText {

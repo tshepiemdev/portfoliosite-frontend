@@ -12,17 +12,13 @@
   margin-top: 2rem;
 }
 
-.commentsList {
-  width: 100%;
-}
-
 .blogsList {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   width: 100%;
   height: fit-content;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-auto-rows: minmax(50px, auto);
   align-items: stretch;
   gap: 2rem;

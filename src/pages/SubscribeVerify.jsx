@@ -140,7 +140,7 @@ export default function SubscribeVerify({ onSuccess }) {
             </p>
 
             <BtnCTAWhiteSmall
-              buttonText="Retry"
+              buttonText="Retry subscription"
               onClick={handleSubscriptionAction}
             />
           </div>

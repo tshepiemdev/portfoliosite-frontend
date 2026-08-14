@@ -16,7 +16,7 @@ import VsCodeIcon from "../assets/icons/vs.svg";
 import FigmaIcon from "../assets/icons/figma.svg";
 import LogoImg from "../assets/icons/logo-white.svg";
 import AwsImg from "../assets/icons/aws-color.svg";
-import DefaultBentoImage from "../assets/images/fallback_img_16_9.svg";
+import DefaultBentoImage from "../assets/images/fallback_img_16_9_light.svg";
 
 export default function HeroBentoWrapper() {
   const fallbackBentoImages = [
@@ -42,7 +42,7 @@ export default function HeroBentoWrapper() {
   const [animate, setAnimate] = useState(true);
 
   const CACHE_KEY = "bentoImages";
-  const CACHE_TIME = 1000 * 60 * 60 * 12;
+  const CACHE_TIME = 1000 * 60 * 60 * 24;
 
   const fetchBentoImages = async () => {
     const cached = localStorage.getItem(CACHE_KEY);

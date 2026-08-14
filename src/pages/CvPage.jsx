@@ -12,7 +12,7 @@ import ShippedImg from "../assets/icons/cloud.svg";
 import DiscontinuedImg from "../assets/icons/ban.svg";
 import BuildingImg from "../assets/icons/square-terminal-color.svg";
 import myDefaultProfileImage from "../assets/images/tshepang.jpg";
-import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
 import ImagePreviewModal from "../components/ImagePreviewModal";
 import { convertDriveToPreview, convertDriveToDownload } from "../utils/drive";

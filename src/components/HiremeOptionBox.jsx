@@ -5,7 +5,7 @@ import FeaturedBadge from "./FeaturedBadge";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import BtnCTABlackSmall from "./BtnCTABlackSmall";
 import nextImg from "../assets/icons/arrow-small-right.svg";
-import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 
 export default function HiremeOptionBox({
   icon,

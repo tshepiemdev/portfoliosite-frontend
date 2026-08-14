@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%;
   font-weight: 400;
-  font-size: clamp(0.8rem, 5vw, 1rem);
   display: flex;
   justify-content: start;
   align-items: center;
@@ -41,25 +40,25 @@
   width: 40%;
   font-weight: 600;
   line-height: 1.1;
-  font-size: 1rem;
   color: #4e4b4b;
   display: -webkit-box;
   line-clamp: 1;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-size: 1rem;
 }
 
 .title {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-weight: 500;
   line-height: 1.1;
-  font-size: 1rem;
   display: -webkit-box;
   line-clamp: 1;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-size: 1rem;
 }
 
 .folderIcon {

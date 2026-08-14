@@ -22,7 +22,7 @@ import FeaturesImg from "../assets/icons/spark.svg";
 import ShippedImg from "../assets/icons/cloud.svg";
 import DiscontinuedImg from "../assets/icons/ban.svg";
 import BuildingImg from "../assets/icons/logo.svg";
-import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
 import NoticeLbl from "../components/NoticeLbl";
@@ -291,7 +291,11 @@ export default function ProjectPage() {
             </div>
           </div>
 
-          <ShareWith marginTop={1} options={shareOptions} views={project.views || 0} />
+          <ShareWith
+            marginTop={1}
+            options={shareOptions}
+            views={project.views || 0}
+          />
         </div>
 
         <div className={styles.projectImagesWrapper}>
@@ -371,8 +375,8 @@ export default function ProjectPage() {
                 />
               </div>
             ) : (
-                <NoticeLbl
-                  title={"Note"}
+              <NoticeLbl
+                title={"Note"}
                 text={
                   "Repository is not publicly available. Project is currently in " +
                   finalBadgeText +
@@ -404,8 +408,8 @@ export default function ProjectPage() {
                 />
               </div>
             ) : (
-                <NoticeLbl
-                  title={"Note"}
+              <NoticeLbl
+                title={"Note"}
                 text={
                   "Live deployment is not available. Project is currently in " +
                   finalBadgeText +

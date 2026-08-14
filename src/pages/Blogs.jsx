@@ -4,6 +4,7 @@ import styles from "../styles/Blogs.module.css";
 import BlogBox from "../components/BlogBox";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
+import SearchErrorView from "../components/SearchErrorView";
 import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import FilterBar from "../components/FilterBar";
@@ -18,6 +19,7 @@ export default function Blogs() {
 
   const [myBlogs, setMyBlogs] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
 
@@ -74,37 +76,44 @@ export default function Blogs() {
     return ["All", ...new Set(myBlogs.map((b) => b.category).filter(Boolean))];
   }, [myBlogs]);
 
-  const filteredByCategory = useMemo(() => {
-    if (activeCategory === "All") return myBlogs;
+  const filteredBlogs = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
 
     return myBlogs.filter((blog) => {
-      if (!blog.category) return false;
+      const matchesSearch =
+        !query ||
+        [blog.title, blog.category, blog.author, blog.excerpt, blog.content]
+          .filter(Boolean)
+          .some((value) => String(value).toLowerCase().includes(query));
 
-      return (
-        blog.category.trim().toLowerCase() ===
-        activeCategory.trim().toLowerCase()
-      );
+      const matchesCategory =
+        activeCategory === "All" ||
+        (blog.category &&
+          blog.category.trim().toLowerCase() ===
+            activeCategory.trim().toLowerCase());
+
+      return matchesSearch && matchesCategory;
     });
-  }, [myBlogs, activeCategory]);
+  }, [myBlogs, searchQuery, activeCategory]);
 
   const featuredBlogs = useMemo(
-    () => filteredByCategory.filter((b) => b.isFeatured),
-    [filteredByCategory],
+    () => filteredBlogs.filter((b) => b.isFeatured),
+    [filteredBlogs],
   );
 
   const nonFeaturedBlogs = useMemo(
     () =>
-      filteredByCategory
+      [...filteredBlogs]
         .filter((b) => !b.isFeatured)
         .sort(
           (a, b) =>
-            new Date(b.publishedDate || 0) - new Date(b.publishedDate || 0),
+            new Date(b.publishedDate || 0) - new Date(a.publishedDate || 0),
         ),
-    [filteredByCategory],
+    [filteredBlogs],
   );
 
   const latestBlogs = useMemo(
-    () => nonFeaturedBlogs.slice(0, 3),
+    () => nonFeaturedBlogs.slice(0, 9),
     [nonFeaturedBlogs],
   );
 
@@ -112,6 +121,17 @@ export default function Blogs() {
     () => nonFeaturedBlogs.slice(3),
     [nonFeaturedBlogs],
   );
+
+  const hasNoBlogs =
+    !blogsUnderMaintenance && !loading && !errorType && myBlogs.length === 0;
+
+  const hasNoSearchResults =
+    !blogsUnderMaintenance &&
+    !loading &&
+    !errorType &&
+    searchQuery.trim() !== "" &&
+    myBlogs.length > 0 &&
+    filteredBlogs.length === 0;
 
   return (
     <div className={styles.blogs}>
@@ -138,10 +158,10 @@ export default function Blogs() {
 
       {!blogsUnderMaintenance && myBlogs.length > 0 && (
         <SearchBar
-          value={""}
-          onChange={""}
+          value={searchQuery}
+          onChange={setSearchQuery}
           placeholder="Search"
-          setMarginBottom={4}
+          setMarginBottom={2}
         />
       )}
 
@@ -162,7 +182,7 @@ export default function Blogs() {
                 errType="default"
                 errorText={
                   <>
-                    Under maintenace. <br />
+                    Under maintenance. <br />
                     Please check back later.
                   </>
                 }
@@ -170,62 +190,84 @@ export default function Blogs() {
             </div>
           )}
 
+          {loading && !blogsUnderMaintenance && (
+            <div className={styles.fullSpan}>
+              <LoaderView />
+            </div>
+          )}
+
+          {!loading && errorType && !blogsUnderMaintenance && (
+            <div className={styles.fullSpan}>
+              <ErrorView errType={errorType} onRetry={fetchBlogs} />
+            </div>
+          )}
+
+          {hasNoBlogs && (
+            <div className={styles.fullSpan}>
+              <ErrorView
+                errType="default"
+                errorText={
+                  <>
+                    No blogs found, <br />
+                    come back later
+                  </>
+                }
+                onRetry={fetchBlogs}
+              />
+            </div>
+          )}
+
+          {hasNoSearchResults && (
+            <div className={styles.fullSpan}>
+              <SearchErrorView
+                header={<>Oops! Blog not found</>}
+                subText={
+                  <>
+                    Couldn't find any blogs matching <br />"
+                    {searchQuery.trim()}" . Try searching something else.
+                  </>
+                }
+                bg={"transparent"}
+                border={"none"}
+                showAssist={false}
+              />
+            </div>
+          )}
+
           {!blogsUnderMaintenance &&
             !loading &&
             !errorType &&
-            myBlogs.length === 0 && (
-              <div className={styles.fullSpan}>
-                <ErrorView
-                  errType="default"
-                  errorText={
-                    <>
-                      No blogs found, <br />
-                      come back later
-                    </>
-                  }
-                  onRetry={fetchBlogs}
-                />
-              </div>
-            )}
+            myBlogs.length > 0 &&
+            filteredBlogs.length > 0 && (
+              <>
+                {activeCategory === "All" && !searchQuery.trim() && (
+                  <div className={styles.sectionBlock}>
+                    <div className={styles.featuredBlogsList}>
+                      {featuredBlogs.length > 0 &&
+                        featuredBlogs.map((blog) => (
+                          <BlogBox
+                            key={blog._id || blog.slug}
+                            variant="featured"
+                            title={blog.title}
+                            category={blog.category}
+                            publishedDate={blog.publishedDate}
+                            formattedDate={blog.formattedDate}
+                            imageUrl={blog.imageUrl}
+                            isFeatured={blog.isFeatured}
+                            blogLink={`/blog/${blog.slug}`}
+                          />
+                        ))}
+                    </div>
+                  </div>
+                )}
 
-          {!blogsUnderMaintenance && (
-            <div className={styles.blogSections}>
-              {activeCategory === "All" && (
-                <div className={styles.sectionBlock}>
-                  <div className={styles.featuredBlogsList}>
-                    {loading && (
-                      <div className={styles.fullSpan}>
-                        <LoaderView />
-                      </div>
-                    )}
-
-                    {!loading && errorType && (
-                      <div className={styles.fullSpan}>
-                        <ErrorView errType={errorType} onRetry={fetchBlogs} />
-                      </div>
-                    )}
-
-                    {!loading && !errorType && featuredBlogs.length === 0 && (
-                      <div className={styles.fullSpan}>
-                        <ErrorView
-                          errType="default"
-                          errorText={
-                            <>
-                              Couldn't find <br />
-                              featured articles
-                            </>
-                          }
-                          onRetry={fetchBlogs}
-                        />
-                      </div>
-                    )}
-
-                    {!loading &&
-                      !errorType &&
-                      featuredBlogs.map((blog) => (
+                {latestBlogs.length > 0 && (
+                  <div className={styles.sectionBlock}>
+                    <div className={styles.latestBlogsList}>
+                      {latestBlogs.map((blog) => (
                         <BlogBox
                           key={blog._id || blog.slug}
-                          variant="featured"
+                          variant="compact"
                           title={blog.title}
                           category={blog.category}
                           publishedDate={blog.publishedDate}
@@ -235,121 +277,41 @@ export default function Blogs() {
                           blogLink={`/blog/${blog.slug}`}
                         />
                       ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              <div className={styles.sectionBlock}>
-                <h2 className={styles.sectionHeader}>Latest articles</h2>
-
-                <div className={styles.latestBlogsList}>
-                  {loading && (
-                    <div className={styles.fullSpan}>
-                      <LoaderView />
+                {moreBlogs.length > 0 && (
+                  <div className={styles.sectionBlock}>
+                    <div className={styles.latestBlogsList}>
+                      {moreBlogs.map((blog) => (
+                        <BlogBox
+                          key={blog._id || blog.slug}
+                          variant="compact"
+                          title={blog.title}
+                          category={blog.category}
+                          publishedDate={blog.publishedDate}
+                          formattedDate={blog.formattedDate}
+                          imageUrl={blog.imageUrl}
+                          isFeatured={blog.isFeatured}
+                          blogLink={`/blog/${blog.slug}`}
+                        />
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
+              </>
+            )}
 
-                  {!loading && errorType && (
-                    <div className={styles.fullSpan}>
-                      <ErrorView errType={errorType} onRetry={fetchBlogs} />
-                    </div>
-                  )}
-
-                  {!loading && !errorType && latestBlogs.length === 0 && (
-                    <div className={styles.fullSpan}>
-                      <ErrorView
-                        errType="default"
-                        errorText={
-                          <>
-                            Couldn't find <br />
-                            any new articles
-                          </>
-                        }
-                        onRetry={fetchBlogs}
-                      />
-                    </div>
-                  )}
-
-                  {!loading &&
-                    !errorType &&
-                    latestBlogs.map((blog) => (
-                      <BlogBox
-                        key={blog._id || blog.slug}
-                        variant="compact"
-                        title={blog.title}
-                        category={blog.category}
-                        publishedDate={blog.publishedDate}
-                        formattedDate={blog.formattedDate}
-                        imageUrl={blog.imageUrl}
-                        isFeatured={blog.isFeatured}
-                        blogLink={`/blog/${blog.slug}`}
-                      />
-                    ))}
-                </div>
-              </div>
-
-              <div className={styles.sectionBlock}>
-                <h2 className={styles.sectionHeader}>More articles</h2>
-
-                <div className={styles.latestBlogsList}>
-                  {loading && (
-                    <div className={styles.fullSpan}>
-                      <LoaderView />
-                    </div>
-                  )}
-
-                  {!loading && errorType && (
-                    <div className={styles.fullSpan}>
-                      <ErrorView errType={errorType} onRetry={fetchBlogs} />
-                    </div>
-                  )}
-
-                  {!loading && !errorType && moreBlogs.length === 0 && (
-                    <div className={styles.fullSpan}>
-                      <ErrorView
-                        errType="default"
-                        errorText={
-                          <>
-                            Couldn't find <br />
-                            any more articles
-                          </>
-                        }
-                        onRetry={fetchBlogs}
-                      />
-                    </div>
-                  )}
-
-                  {!loading &&
-                    !errorType &&
-                    moreBlogs.map((blog) => (
-                      <BlogBox
-                        key={blog._id || blog.slug}
-                        variant="compact"
-                        title={blog.title}
-                        category={blog.category}
-                        publishedDate={blog.publishedDate}
-                        formattedDate={blog.formattedDate}
-                        imageUrl={blog.imageUrl}
-                        isFeatured={blog.isFeatured}
-                        blogLink={`/blog/${blog.slug}`}
-                      />
-                    ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {!blogsUnderMaintenance && (
-            <SubscribeLabel
-              text={
-                <>
-                  to receive new <br />
-                  blogs, directly into your inbox.
-                </>
-              }
-              marginTop={4}
-            />
-          )}
+          <SubscribeLabel
+            text={
+              <>
+                to receive new <br />
+                blogs, directly into your inbox.
+              </>
+            }
+            marginTop={4}
+          />
         </div>
       </div>
     </div>

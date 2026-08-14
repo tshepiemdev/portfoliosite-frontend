@@ -4,7 +4,7 @@ import styles from "../styles/Project.module.css";
 import nextImg from "../assets/icons/chevron-down.svg";
 import starImg from "../assets/icons/logo.svg";
 import ProjectStatusBadge from "./ProjectStatusBadge";
-import smallFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import smallFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import BtnCTABlackSmall from "./BtnCTABlackSmall";
 import ChevronImg from "../assets/icons/arrow-up-right.svg";
 

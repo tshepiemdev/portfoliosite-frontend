@@ -1,6 +1,6 @@
 import styles from "../styles/BlogBox.module.css";
 import { Link } from "react-router-dom";
-import smallFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import smallFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import StarImg from "../assets/icons/star-white.svg";
 import { slugify } from "../utils/slugify";
 
@@ -48,15 +48,18 @@ export default function BlogBox({
           loading="lazy"
         />
 
-        {isFeatured && (
-          <p className={styles.featuredLbl}>
-            <img
-              className={styles.featuredIcon}
-              src={StarImg}
-              alt="featured article"
-            />
-          </p>
-        )}
+        <div className={styles.overlayImage}>
+          {isFeatured && (
+            <p className={styles.featuredLbl}>
+              <img
+                className={styles.featuredIcon}
+                src={StarImg}
+                alt="featured article"
+              />
+              featured
+            </p>
+          )}
+        </div>
       </div>
 
       <div className={styles.metaWrapper}>

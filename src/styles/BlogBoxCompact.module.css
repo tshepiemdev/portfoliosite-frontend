@@ -18,7 +18,7 @@
 
 .imageWrapper {
   width: clamp(6.8rem, 8vw, 8rem);
-  height: 4.4rem;
+  height: 6rem;
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
   overflow: hidden;
@@ -45,10 +45,10 @@
 }
 
 .title {
-  width: 80%;
-  font-weight: 550;
+  width: 70%;
+  font-weight: 500;
   line-height: 1.1;
-  font-size: clamp(0.9rem, 5vw, 1rem);
+  font-size: clamp(0.9rem, 5vw, 1.4rem);
   display: -webkit-box;
   line-clamp: 2;
   -webkit-line-clamp: 2;

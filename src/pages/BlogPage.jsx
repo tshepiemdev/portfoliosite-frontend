@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useToast } from "../components/ToastContext";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/BlogPage.module.css";
 import LoaderMaxView from "../components/LoaderMax";
@@ -14,11 +14,10 @@ import xImg from "../assets/icons/twitter-alt.svg";
 import linkedInImg from "../assets/icons/linkedin (2).svg";
 import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
-import bigFallbackImg from "../assets/images/fallback_img_16_9.svg";
+import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
 import BlogPageTopTitlesView from "../components/BlogPageTopTitles";
 import BlogsCompact from "../components/BlogsCompact";
-import myDefaultProfileImage from "../assets/images/tshepang.jpg";
 import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
 import { getVideoUrl } from "../utils/getVideoUrl";
@@ -242,10 +241,19 @@ export default function BlogPage() {
       />
 
       <div className={styles.blogWrapper}>
-        <BlogPageTopTitlesView
-          category={blog.category || "Unspecified"}
-          name={blog.title}
-        />
+        <div className={styles.topSection}>
+          <BlogPageTopTitlesView
+            category={blog.category || "Unspecified"}
+            name={blog.title}
+            publishDate={blog.publishedDate}
+            shortDescription={blog.excerpt}
+            shareOptions={shareOptions}
+            views={blog.views || 0}
+            authorName={blog.author}
+            authorPic={blog.authorProfileImg}
+            totalReadTime={readTime}
+          />
+        </div>
 
         <div className={styles.blogBgWrapper}>
           <img
@@ -259,52 +267,15 @@ export default function BlogPage() {
               e.target.src = bigFallbackImg;
             }}
           />
-
-          {blog.imageSource && (
-            <p className={styles.imgSrcLabel}>
-              {blog.imageSource || "Unspecified image source"}
-            </p>
-          )}
         </div>
 
         <section className={styles.detailedSection}>
-          <div className={styles.topWrapper}>
-            <div className={styles.box}>
-              <div className={styles.minicontainer} title="Author">
-                <div className={styles.authorImgWrapper}>
-                  <img
-                    className={styles.authorImg}
-                    src={
-                      blog.authorProfileImg?.trim()
-                        ? blog.authorProfileImg
-                        : myDefaultProfileImage
-                    }
-                    alt={blog.author}
-                    onClick={() =>
-                      setSelectedImage(
-                        blog.authorProfileImg || myDefaultProfileImage,
-                      )
-                    }
-                    onError={(e) => {
-                      e.target.src = bigFallbackImg;
-                    }}
-                  />
-                </div>
-
-                <h4 className={styles.author}>{blog.author}</h4>
-              </div>
-
-              <div className={styles.minicontainer}>
-                <p className={styles.label}>
-                  {displayDate} • {readTime}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.wrapper}>
-            <h1 className={styles.summary}>{blog.excerpt}</h1>
-          </div>
+          {blog.imageSource && (
+            <p className={styles.imgSrcLabel}>
+              Source:
+              {blog.imageSource || "Unspecified image source"}
+            </p>
+          )}
 
           <div className={styles.sectionBlock}>
             <p className={styles.sectionTextContent}>{blog.content?.intro}</p>
@@ -365,8 +336,29 @@ export default function BlogPage() {
             </div>
           ))}
 
-          <div className={styles.opscontainer}>
-            <ShareWith options={shareOptions} views={blog.views || 0} />
+          <div className={styles.bentoWrapperStyle}>
+            <p className={styles.label}>Share article</p>
+            <ShareWith options={shareOptions} />
+          </div>
+
+          <div className={styles.bentoWrapper}>
+            <p className={styles.label}>Blog & Newsletter Information</p>
+
+            <p className={styles.text}>
+              For blog updates, article questions, topic suggestions, or other
+              newsletter-related inquiries, contact{" "}
+              <a className={styles.link} href="mailto:newsletter@tshepiem.dev">
+                newsletter@tshepiem.dev
+              </a>
+              . By subscribing, you agree to receive blog updates, new article
+              notifications, and occasional newsletter emails in accordance with
+              our{" "}
+              <Link className={styles.link} to="/legal/tshepiemdev-website-blog-subscription-terms">
+                Subscription Terms
+              </Link>
+              . You can unsubscribe at any time using the unsubscribe link
+              included in our emails.
+            </p>
           </div>
 
           <BlogsCompact
@@ -374,7 +366,7 @@ export default function BlogPage() {
             currentBlogSlug={blog.slug}
           />
 
-          <SubscribeLabel />
+          <SubscribeLabel marginTop={6} />
         </section>
       </div>
 

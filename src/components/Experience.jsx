@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../styles/Experience.module.css";
 import DownImg from "../assets/icons/chevron-down.svg";
 import CheckImg from "../assets/icons/check2.svg";
-import StarImg from "../assets/icons/logo.svg";
+import StarImg from "../assets/icons/logo-white.svg";
 
 export default function ExperienceBox({
   company,

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import styles from "../styles/ReviewsListingWrapper.module.css";
 import ReviewBentoBox from "./ReviewBentoBox";
 import API_URL from "../config/api";
@@ -6,9 +7,14 @@ import LoaderView from "./Loader";
 import ErrorView from "./ErrorView";
 
 export default function ReviewsListingWrapper() {
+  const { settings } = useOutletContext();
+
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
+
+  const reviewsUnderMaintenance =
+    import.meta.env.PROD && settings?.maintenancePages?.reviews === true;
 
   const fetchReviews = async () => {
     try {
@@ -18,6 +24,7 @@ export default function ReviewsListingWrapper() {
       const res = await fetch(`${API_URL}/api/reviews`);
 
       let data;
+
       try {
         data = await res.json();
       } catch {
@@ -53,44 +60,64 @@ export default function ReviewsListingWrapper() {
   return (
     <div className={styles.wrapAll}>
       <div className={styles.ListingWrapper}>
-        {loading && (
+        {reviewsUnderMaintenance && (
+          <div className={styles.fullSpan}>
+            <ErrorView
+              errType="default"
+              errorText={
+                <>
+                  Under maintenace. <br />
+                  Please check back later.
+                </>
+              }
+            />
+          </div>
+        )}
+
+        {!reviewsUnderMaintenance && loading && (
           <div className={styles.fullSpan}>
             <LoaderView />
           </div>
         )}
 
-        {!loading && errorType && (
+        {!reviewsUnderMaintenance && !loading && errorType && (
           <div className={styles.fullSpan}>
             <ErrorView errType={errorType} onRetry={fetchReviews} />
           </div>
         )}
 
-        {!loading && !errorType && reviews.length === 0 && (
-          <div className={styles.fullSpan}>
-            <ErrorView
-              errType="default"
-              errorText="Couldn't find any listed reviews here"
-              onRetry={fetchReviews}
-            />
-          </div>
-        )}
-
-        {!loading && !errorType && reviews.length > 0 && (
-          <div className={styles.reviewsList}>
-            {reviews.map((review, index) => (
-              <ReviewBentoBox
-                key={review._id || index}
-                profileImg={review.profileImg}
-                name={review.name}
-                position={review.position}
-                company={review.company}
-                testimony={review.testimony}
-                isActive={review.isActive}
-                order={review.order}
+        {!reviewsUnderMaintenance &&
+          !loading &&
+          !errorType &&
+          reviews.length === 0 && (
+            <div className={styles.fullSpan}>
+              <ErrorView
+                errType="default"
+                errorText="Couldn't find any listed reviews here"
+                onRetry={fetchReviews}
               />
-            ))}
-          </div>
-        )}
+            </div>
+          )}
+
+        {!reviewsUnderMaintenance &&
+          !loading &&
+          !errorType &&
+          reviews.length > 0 && (
+            <div className={styles.reviewsList}>
+              {reviews.map((review, index) => (
+                <ReviewBentoBox
+                  key={review._id || index}
+                  profileImg={review.profileImg}
+                  name={review.name}
+                  position={review.position}
+                  company={review.company}
+                  testimony={review.testimony}
+                  isActive={review.isActive}
+                  order={review.order}
+                />
+              ))}
+            </div>
+          )}
       </div>
     </div>
   );
