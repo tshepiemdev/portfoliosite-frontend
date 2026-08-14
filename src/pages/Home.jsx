@@ -17,6 +17,7 @@ import MeetWrapper from "../components/MeetWrapper";
 import SectionHeading from "../components/SectionHeading";
 import ogImages from "../config/ogImages";
 import SubscribeLabel from "../components/SubscribeLabel";
+import contactInfo from "../config/contactInfo";
 
 export default function Home() {
   return (
@@ -90,6 +91,13 @@ export default function Home() {
 
           <div className={styles.actionsWrapper}>
             <BtnCTABlack buttonText="Browse all" href={"/projects"} />
+            <BtnCTAWhite
+              buttonText={"Repositories"}
+              href={
+                contactInfo.social.find((social) => social.name === "GitHub")
+                  ?.url
+              }
+            />
           </div>
         </div>
 

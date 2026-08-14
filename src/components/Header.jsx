@@ -86,6 +86,7 @@ export default function Header() {
             href="/contact"
             className={ctaBtnStyles.mobileOnly}
             onClick={closeMenu}
+            setRadius={16}
           />
 
           <ImgButton

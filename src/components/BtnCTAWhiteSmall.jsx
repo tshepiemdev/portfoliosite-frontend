@@ -10,6 +10,7 @@ export default function BtnCTAWhiteSmall({
   focusTo,
   download = false,
   fullWidth = false,
+  setRadius,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function BtnCTAWhiteSmall({
   return (
     <button
       className={`${styles.btnCTA} ${fullWidth ? styles.full : styles.auto}`}
+      style={setRadius ? { borderRadius: `${setRadius}rem` } : undefined}
       type="button"
       onClick={handleClick}
     >

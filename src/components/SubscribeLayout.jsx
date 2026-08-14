@@ -94,7 +94,12 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     }
 
     if (!navigator.onLine) {
-      setMessage("You're offline. Please check your connection and try again.");
+      setMessage(
+        <>
+          You're offline. Please check your internet <br />
+          connection and try again.
+        </>,
+      );
       return;
     }
 
@@ -306,7 +311,11 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               {message}
             </p>
           )}
+        </div>
+      )}
 
+      {footerText && !loading && (
+        <div className={styles.footerTextWrapper}>
           <p className={styles.termsLabelWrapper}>{footerText}</p>
         </div>
       )}

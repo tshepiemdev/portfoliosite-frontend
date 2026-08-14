@@ -15,6 +15,7 @@ export default function BtnCTABlack({
   download = false,
   focusTo,
   fullWidth = false,
+  setRadius,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ export default function BtnCTABlack({
   return (
     <button
       className={`${styles.btnCTA} ${fullWidth ? styles.full : styles.auto}`}
+      style={setRadius ? { borderRadius: `${setRadius}rem` } : undefined}
       type={type}
       onClick={handleClick}
     >

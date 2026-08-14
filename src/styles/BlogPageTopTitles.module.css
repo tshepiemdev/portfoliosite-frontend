@@ -5,12 +5,12 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 1.5rem;
+  gap: 1.4rem;
 }
 
 .name {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 600;
@@ -18,7 +18,7 @@
 }
 
 .summary {
-  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  font-size: clamp(1rem, 4vw, 1.5rem);
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 500;
@@ -48,7 +48,7 @@
 }
 
 .wrapper {
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
 
 .rowWrapper {
@@ -62,8 +62,8 @@
   border: none;
   border-radius: 16rem;
   overflow: hidden;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2.25rem;
+  height: 2.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,11 +94,11 @@
 }
 
 .minicontainer {
-  width: fit-content;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
-  margin: 0;
+  gap: 1rem;
 }
 
 .box {
@@ -114,13 +114,25 @@
   color: #454545;
 }
 
+.status {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #454545;
+}
+
+
+.profileWrapper {
+  display: flex;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .name {
     width: 100%;
   }
 
   .shortDescription {
-    width: 90%;
+    width: 100%;
   }
 }
 

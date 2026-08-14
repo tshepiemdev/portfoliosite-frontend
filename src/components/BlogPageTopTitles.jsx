@@ -2,6 +2,12 @@ import styles from "../styles/BlogPageTopTitles.module.css";
 import ShareWith from "../components/ShareWith";
 import myDefaultProfileImage from "../assets/images/tshepang.jpg";
 import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
+import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
+import contactInfo from "../config/contactInfo";
+
+const twitterLink = contactInfo.social.find(
+  (social) => social.name === "Twitter",
+)?.url;
 
 export default function BlogPageTopTitlesView({
   category,
@@ -49,22 +55,29 @@ export default function BlogPageTopTitlesView({
       </div>
 
       <div className={styles.box}>
-        <div className={styles.minicontainer} title="Author">
-          <div className={styles.authorImgWrapper}>
-            <img
-              className={styles.authorImg}
-              src={authorPic?.trim() ? authorPic : myDefaultProfileImage}
-              alt={authorName}
-              onClick={() =>
-                setSelectedImage(authorPic || myDefaultProfileImage)
-              }
-              onError={(e) => {
-                e.target.src = bigFallbackImg;
-              }}
-            />
+        <div className={styles.minicontainer}>
+          <div className={styles.profileWrapper}>
+            <div className={styles.authorImgWrapper}>
+              <img
+                className={styles.authorImg}
+                src={authorPic?.trim() ? authorPic : myDefaultProfileImage}
+                alt={authorName}
+                onClick={() =>
+                  setSelectedImage(authorPic || myDefaultProfileImage)
+                }
+                onError={(e) => {
+                  e.target.src = bigFallbackImg;
+                }}
+              />
+            </div>
+
+            <div className={styles.textsWrapper}>
+              <h4 className={styles.author}>{authorName}</h4>
+              <p className={styles.status}>Last publish 16 hrs ago</p>
+            </div>
           </div>
 
-          <h4 className={styles.author}>{authorName}</h4>
+          <BtnCTAWhiteSmall buttonText="Follow" href={twitterLink} setRadius={16}/>
         </div>
       </div>
     </div>

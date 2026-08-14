@@ -279,7 +279,7 @@ export default function ImagePreviewModal({
 
       <div className={styles.bottomWrapper}>
         <div className={styles.wrapper}>
-          <Logo />
+          <Logo isClickable={false} />
         </div>
 
         <div className={styles.wrapper}>

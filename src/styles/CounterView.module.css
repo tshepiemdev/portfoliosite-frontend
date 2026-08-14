@@ -22,9 +22,17 @@
 
 .count {
   font-weight: 600;
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .text {
+  max-width: 6.7rem;
   opacity: 0.6;
   font-weight: 500;
   display: -webkit-box;
@@ -43,7 +51,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .iconImg {
     display: flex;
   }
@@ -61,4 +69,4 @@
   .text {
     display: flex;
   }
-}
+} */

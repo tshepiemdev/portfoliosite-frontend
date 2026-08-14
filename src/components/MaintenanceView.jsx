@@ -10,16 +10,15 @@ export default function MaintenanceView({ data, pageName }) {
         <div className={styles.wrapper}>
           <img className={styles.img} src={LogoImg} alt={data?.title} />
           <h2 className={styles.title}>{data?.title || "Maintenance"}</h2>
-          <h2 className={styles.message}>
-            {data?.message || "Please check back later."}
-          </h2>
+          {data?.message && <h2 className={styles.message}>{data?.message}</h2>}
+          <h2 className={styles.message}>Please check back later.</h2>
         </div>
 
         <div className={styles.wrapper}>
           <h2 className={styles.label}>
-            Note that <span className={styles.spanText}>{pageName}</span> is currently{" "}
-            <br />
-            undergoing maintenance.
+            Note that <span className={styles.spanText}>{pageName}</span>{" "}
+            service is currently <br />
+            down for maintenance.
           </h2>
 
           {data?.ctaText && data?.ctaLink && (
@@ -28,7 +27,8 @@ export default function MaintenanceView({ data, pageName }) {
 
           <p className={styles.copyrightText}>
             <span>&copy;</span>
-            {new Date().getFullYear()} tshepiem.dev. <br/>All rights reserved
+            {new Date().getFullYear()} tshepiem.dev. <br />
+            All rights reserved
           </p>
         </div>
       </div>

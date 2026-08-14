@@ -223,8 +223,8 @@ export default function Blogs() {
                 header={<>Oops! Blog not found</>}
                 subText={
                   <>
-                    Couldn't find any blogs matching <br />"
-                    {searchQuery.trim()}" . Try searching something else.
+                    Couldn't find any blogs matching <br />"{searchQuery.trim()}
+                    " . Try searching something else.
                   </>
                 }
                 bg={"transparent"}
@@ -310,7 +310,7 @@ export default function Blogs() {
                 blogs, directly into your inbox.
               </>
             }
-            marginTop={4}
+            marginTop={6}
           />
         </div>
       </div>

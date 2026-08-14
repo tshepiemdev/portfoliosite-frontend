@@ -270,12 +270,9 @@ export default function BlogPage() {
         </div>
 
         <section className={styles.detailedSection}>
-          {blog.imageSource && (
-            <p className={styles.imgSrcLabel}>
-              Source:
-              {blog.imageSource || "Unspecified image source"}
-            </p>
-          )}
+          <p className={styles.imgSrcLabel}>
+            <span>Image source</span>: {blog.imageSource || "Unspecified image source"}
+          </p>
 
           <div className={styles.sectionBlock}>
             <p className={styles.sectionTextContent}>{blog.content?.intro}</p>
@@ -353,7 +350,10 @@ export default function BlogPage() {
               . By subscribing, you agree to receive blog updates, new article
               notifications, and occasional newsletter emails in accordance with
               our{" "}
-              <Link className={styles.link} to="/legal/tshepiemdev-website-blog-subscription-terms">
+              <Link
+                className={styles.link}
+                to="/legal/tshepiemdev-website-blog-subscription-terms"
+              >
                 Subscription Terms
               </Link>
               . You can unsubscribe at any time using the unsubscribe link
