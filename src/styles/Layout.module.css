@@ -6,7 +6,7 @@
   font-family: "interFont";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
   font-optical-sizing: auto;
-  font-weight: 100 900;
+  font-weight: 500 900;
   font-style: normal;
   font-display: swap;
 }

@@ -4,6 +4,7 @@ import myDefaultProfileImage from "../assets/images/tshepang.jpg";
 import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import contactInfo from "../config/contactInfo";
+import verifiedIcon from "../assets/icons/ver-badge.svg";
 
 const twitterLink = contactInfo.social.find(
   (social) => social.name === "Twitter",
@@ -72,12 +73,18 @@ export default function BlogPageTopTitlesView({
             </div>
 
             <div className={styles.textsWrapper}>
-              <h4 className={styles.author}>{authorName}</h4>
+              <h4 className={styles.author}>
+                {authorName} <img className={styles.verBadgeIcon} src={verifiedIcon} alt={authorName} />
+              </h4>
               <p className={styles.status}>Last publish 16 hrs ago</p>
             </div>
           </div>
 
-          <BtnCTAWhiteSmall buttonText="Follow" href={twitterLink} setRadius={16}/>
+          <BtnCTAWhiteSmall
+            buttonText="Follow"
+            href={twitterLink}
+            setRadius={16}
+          />
         </div>
       </div>
     </div>

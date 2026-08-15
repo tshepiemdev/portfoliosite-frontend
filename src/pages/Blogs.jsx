@@ -310,7 +310,7 @@ export default function Blogs() {
                 blogs, directly into your inbox.
               </>
             }
-            marginTop={6}
+            marginTop={8}
           />
         </div>
       </div>

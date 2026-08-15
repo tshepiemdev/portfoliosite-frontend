@@ -200,11 +200,7 @@ export default function MeetWrapper() {
                     onClick={handleRefresh}
                     disabled={refreshing}
                   >
-                    <img
-                      className={styles.reloadImg}
-                      src={ReloadImg}
-                      alt="Refresh"
-                    />
+                    <img className={styles.reloadImg} src={ReloadImg} />
                   </button>
                 </span>
               ) : (

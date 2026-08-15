@@ -42,16 +42,17 @@
 .vWrapper {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
 }
 
 .labelIcon {
-  width: 0.8rem;
-  height: 0.8rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.2rem;
 }
 
 .label {
   font-size: 0.9rem;
+  font-weight: 500;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -111,7 +112,7 @@
 
 .chip {
   color: black;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   background-color: white;
   border: none;
@@ -150,7 +151,7 @@
 .name {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500;
+  font-weight: 600;
   font-style: normal;
   text-align: start;
   line-height: 0.9;
@@ -166,7 +167,6 @@
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-top: 0rem;
 }
 
 @media (max-width: 768px) {

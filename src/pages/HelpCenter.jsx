@@ -309,7 +309,7 @@ export default function HelpCenter() {
             ))}
           </div>
 
-          <div className={styles.box} id="helpArticles" tabIndex="-1">
+          <div className={styles.box} id="helpArticles" tabIndex="">
             <div className={styles.helpCenterArticles}>
               <div className={styles.topWrapper}>
                 <h2 className={styles.sectionTitle}>Help Articles</h2>

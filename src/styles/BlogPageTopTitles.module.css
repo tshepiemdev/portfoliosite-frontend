@@ -13,16 +13,21 @@
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-optical-sizing: auto;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
 }
 
 .summary {
-  font-size: clamp(1rem, 4vw, 1.5rem);
+  font-size: clamp(1rem, 4vw, 1.45rem);
   font-optical-sizing: auto;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.1;
+}
+
+.verBadgeIcon {
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
 .columnWrapper {
@@ -36,12 +41,12 @@
 .label {
   font-size: 1rem;
   font-weight: 700;
-  color: #454545;
+  color: #8a8a8a;
 }
 
 .type {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -89,8 +94,11 @@
 }
 
 .author {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .minicontainer {
@@ -111,15 +119,14 @@
 .text {
   font-size: 1rem;
   font-weight: 700;
-  color: #454545;
+  color: #8a8a8a;
 }
 
 .status {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: #454545;
+  color: #8a8a8a;
 }
-
 
 .profileWrapper {
   display: flex;
