@@ -3,21 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: start;
-  padding: 4rem 1rem;
-}
-
-.title {
-  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(2.6rem, 5vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1;
-  margin-bottom: 1rem;
-}
-
-.message {
-  font-size: 1rem;
-  font-weight: 550;
-  color: #8a8a8a;
+  padding: 0 1rem;
+  padding-bottom: 2rem;
 }
 
 .label {
@@ -28,34 +15,18 @@
   color: #ff8d8d;
 }
 
-.img {
-  width: 2rem;
-  height: 2rem;
-  opacity: 0.5;
-  margin-bottom: 1rem;
-  margin-top: auto;
-}
-
 .contentWrapper {
   width: 80.8%;
-  min-height: 60vh;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  align-items: stretch;
-  overflow: hidden;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0rem;
+  min-height: 30vh;
   padding: 1rem 0;
-}
-
-.wrapper:last-child {
   padding-top: 1rem;
   border-top: 1px solid #1a1a1a;
 }
@@ -68,7 +39,8 @@
 }
 
 .spanText {
-  color: whitesmoke;
+  color: #999999;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

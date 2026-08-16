@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   padding-bottom: 1rem;
   border-bottom: 0px solid #1a1a1a;
   position: relative;
@@ -12,11 +12,10 @@
 
 .header {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-size: clamp(1.6rem, 5vw, 2rem);
   font-weight: 600;
   line-height: 1;
   text-align: center;
-  margin: 1rem 0;
 }
 
 .headingWrapper {
@@ -25,7 +24,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .logo {
@@ -61,6 +60,7 @@
 
 .textsWrapper {
   width: fit-content;
+  margin-bottom: 0.5rem;
 }
 
 .arrowUpIcon {

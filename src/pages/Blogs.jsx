@@ -304,6 +304,7 @@ export default function Blogs() {
             )}
 
           <SubscribeLabel
+            heading={<>Sign up now, <br/>It's completely free</>}
             text={
               <>
                 to receive new <br />

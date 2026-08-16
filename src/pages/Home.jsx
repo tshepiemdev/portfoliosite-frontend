@@ -152,20 +152,12 @@ export default function Home() {
         <ReviewsListingWrapper />
       </section>
 
-      <section className={styles.subFooterSectionWrapper}>
-        <LargeBanner />
-      </section>
-
-      <section className={styles.bentoImagesSectionWrapper}>
-        <HeroBentoWrapper />
-      </section>
-
       <SubscribeLabel
         heading={
           <>
             Articles of inspiration, <br />
             detailed tutorials, news <br />
-            and engineering
+            and all engineering
           </>
         }
         text={
@@ -176,6 +168,14 @@ export default function Home() {
         }
         marginTop={4}
       />
+
+      <section className={styles.subFooterSectionWrapper}>
+        <LargeBanner />
+      </section>
+
+      <section className={styles.bentoImagesSectionWrapper}>
+        <HeroBentoWrapper />
+      </section>
     </main>
   );
 }

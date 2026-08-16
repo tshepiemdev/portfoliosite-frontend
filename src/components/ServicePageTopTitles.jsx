@@ -36,18 +36,7 @@ export default function ServicePageTopTitlesView({
         </div>
 
         <div className={styles.columnWrapper}>
-          <h1 className={styles.name}>
-            {name}{" "}
-            {isFeatured && (
-              <FeaturedBadge
-                text={"New"}
-                bg={"none"}
-                bgColor={"white"}
-                textColor={"black"}
-                setInvertToImage={"invert(1)"}
-              />
-            )}
-          </h1>
+          <h1 className={styles.name}>{name}</h1>
 
           <div className={styles.rowWrapper}>
             <p className={styles.category}>
@@ -57,8 +46,7 @@ export default function ServicePageTopTitlesView({
                 alt={capitalizeFirstLetter(category)}
               />
               {capitalizeFirstLetter(category)}
-            </p>
-            {" "}
+            </p>{" "}
             <p className={styles.type}>• Service</p>
           </div>
         </div>

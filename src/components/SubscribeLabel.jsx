@@ -17,35 +17,34 @@ export default function SubscribeLabel({ heading, marginTop }) {
         <div className={styles.headingWrapper}>
           <img className={styles.logo} src={LogoImg} alt="Logo" />
           <h4 className={styles.header}>{heading}</h4>
+
+          <div className={styles.textsWrapper}>
+            <p className={styles.text}>
+              <button
+                className={styles.btnSubscribe}
+                type="button"
+                onClick={() => setOpen(true)}
+              >
+                <span>
+                  Subscribe
+                  <img
+                    className={styles.arrowUpIcon}
+                    src={arrowUp}
+                    alt="subscribe"
+                  />
+                </span>
+              </button>{" "}
+              to receive new blogs,
+              <br />
+              directly into your inbox.
+            </p>
+          </div>
+
           <BtnCTAWhiteSmall buttonText={"Read articles"} href={"/blog"} />
         </div>
       )}
 
       <AnimatedBentoGrid />
-
-      <div className={styles.textsWrapper}>
-        <p className={styles.text}>
-          <button
-            className={styles.btnSubscribe}
-            type="button"
-            onClick={() => setOpen(true)}
-          >
-            <span>
-              Subscribe
-              <img
-                className={styles.arrowUpIcon}
-                src={arrowUp}
-                alt="subscribe"
-              />
-            </span>
-          </button>{" "}
-          to receive new blogs,
-          <br />
-          directly into your inbox.
-        </p>
-      </div>
-
-      
 
       <Modal
         isOpen={open}
