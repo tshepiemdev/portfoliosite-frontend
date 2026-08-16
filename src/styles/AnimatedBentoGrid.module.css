@@ -1,9 +1,10 @@
 .gridWrapper {
-  width: var(--grid-width, 340px);
-  height: var(--grid-height, 220px);
+  width: var(--grid-width, 440px);
+  height: var(--grid-height, 280px);
   overflow: hidden;
   border-radius: 1rem;
   background: #121212;
+  aspect-ratio: 16 / 18;
 }
 
 .trackWrapper {
@@ -103,4 +104,20 @@
   font-size: 1.1rem;
   color: inherit;
   text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .gridWrapper {
+    max-width: 340px;
+    max-height: 240px;
+    margin: 0 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .gridWrapper {
+    max-width: 620px;
+    max-height: 480px;
+    aspect-ratio: 16 / 18;
+  }
 }

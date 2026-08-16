@@ -5,13 +5,22 @@ import Modal from "./Modal";
 import SubscribeLayout from "./SubscribeLayout";
 import AnimatedBentoGrid from "./AnimatedBentoGrid";
 import arrowUp from "../assets/icons/arrow-up-right.svg";
+import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 
-export default function SubscribeLabel({ marginTop }) {
+export default function SubscribeLabel({ heading, marginTop }) {
   const [open, setOpen] = useState(false);
   const [disableClose, setDisableClose] = useState(false);
 
   return (
     <div className={styles.wrapper} style={{ marginTop: `${marginTop}rem` }}>
+      {heading && (
+        <div className={styles.headingWrapper}>
+          <img className={styles.logo} src={LogoImg} alt="Logo" />
+          <h4 className={styles.header}>{heading}</h4>
+          <BtnCTAWhiteSmall buttonText={"Read articles"} href={"/blog"} />
+        </div>
+      )}
+
       <AnimatedBentoGrid />
 
       <div className={styles.textsWrapper}>
@@ -36,7 +45,7 @@ export default function SubscribeLabel({ marginTop }) {
         </p>
       </div>
 
-      <img className={styles.logo} src={LogoImg} alt="Logo" />
+      
 
       <Modal
         isOpen={open}

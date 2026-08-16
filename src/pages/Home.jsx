@@ -161,6 +161,13 @@ export default function Home() {
       </section>
 
       <SubscribeLabel
+        heading={
+          <>
+            Articles of inspiration, <br />
+            detailed tutorials, news <br />
+            and engineering
+          </>
+        }
         text={
           <>
             to receive new <br />

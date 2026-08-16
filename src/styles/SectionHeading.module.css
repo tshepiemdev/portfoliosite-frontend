@@ -9,7 +9,7 @@
 
 .title {
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-size: clamp(1.85rem, 5vw, 2.6rem);
   font-weight: 600;
   line-height: 1;
   margin-bottom: 0.5rem;

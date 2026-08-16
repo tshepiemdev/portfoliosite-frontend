@@ -10,6 +10,24 @@
   position: relative;
 }
 
+.header {
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.headingWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
 .logo {
   width: 1.5rem;
   height: 1.5rem;
