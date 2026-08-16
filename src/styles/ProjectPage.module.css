@@ -231,14 +231,17 @@
 
 .building {
   color: #ff9604;
+  font-weight: 600;
 }
 
 .shipped {
   color: greenyellow;
+  font-weight: 600;
 }
 
 .discontinued {
   color: red;
+  font-weight: 600;
 }
 
 .statusImg {

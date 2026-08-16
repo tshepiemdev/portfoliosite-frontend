@@ -233,9 +233,7 @@ export default function ProjectPage() {
             </div>
 
             <div className={styles.boxFlexT}>
-              <h4 className={styles.projectName}>
-                {project.projectName} Project
-              </h4>
+              <h4 className={styles.projectName}>{project.projectName}</h4>
 
               <div className={styles.boxFlexF}>
                 <h4 className={`${styles.mainLabel} ${styles[statusClass]}`}>
@@ -252,7 +250,8 @@ export default function ProjectPage() {
                 <h4 className={styles.mainLabel}>
                   {project.projectType
                     ? "• " + project.projectType
-                    : "Type unavailable"}
+                    : "Type unavailable"}{" "}
+                  Project
                 </h4>
               </div>
             </div>

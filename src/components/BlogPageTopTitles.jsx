@@ -5,6 +5,7 @@ import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import contactInfo from "../config/contactInfo";
 import verifiedIcon from "../assets/icons/ver-badge.svg";
+import chevronRight from "../assets/icons/chevron-right-var.svg";
 
 const twitterLink = contactInfo.social.find(
   (social) => social.name === "Twitter",
@@ -74,9 +75,18 @@ export default function BlogPageTopTitlesView({
 
             <div className={styles.textsWrapper}>
               <h4 className={styles.author}>
-                {authorName} <img className={styles.verBadgeIcon} src={verifiedIcon} alt={authorName} />
+                {authorName}{" "}
+                <img
+                  className={styles.verBadgeIcon}
+                  src={verifiedIcon}
+                  alt={authorName}
+                />
               </h4>
-              <p className={styles.status}>Last publish 16 hrs ago</p>
+              <p className={styles.status}>
+                Last publish
+                <img className={styles.chevron} src={chevronRight} alt="" />
+                <span>16 hrs ago</span>
+              </p>
             </div>
           </div>
 

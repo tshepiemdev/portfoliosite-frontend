@@ -347,7 +347,7 @@ export default function ServicePage() {
                   Legal
                 </h3>
 
-                <li className={styles.serviceSpecLimini}>
+                <li className={styles.serviceSpecLiminiHeading}>
                   Legal documentation
                 </li>
 

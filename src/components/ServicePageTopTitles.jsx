@@ -4,7 +4,7 @@ import BtnCTABlack from "./BtnCTABlack";
 import fallbackIcon from "../assets/icons/logo-black.svg";
 import ShareWith from "../components/ShareWith";
 import serviceIcons from "../utils/serviceIcons";
-import FeaturedBadge from "../components/FeaturedBadge"
+import FeaturedBadge from "../components/FeaturedBadge";
 
 export default function ServicePageTopTitlesView({
   icon,
@@ -58,7 +58,8 @@ export default function ServicePageTopTitlesView({
               />
               {capitalizeFirstLetter(category)}
             </p>
-            <p className={styles.type}>Service</p>
+            {" "}
+            <p className={styles.type}>• Service</p>
           </div>
         </div>
       </div>
