@@ -7,13 +7,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   transition: all 0.3s ease-in-out;
 }
 
 .loadingCircle {
   background-color: transparent;
-  border: 8px solid #1a1a1a;
+  border: 8px solid #282828;
   border-top: 8px solid #ffffff;
   border-radius: 16rem;
   width: 4rem;
@@ -31,10 +31,11 @@
 }
 
 .spanText {
-  text-align: center;
-  font-size: 0.9rem;
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
+  font-size: 2rem;
   font-weight: 600;
-  color: #999999;
+  line-height: 1;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

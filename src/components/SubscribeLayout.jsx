@@ -72,6 +72,71 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     } catch {}
   };
 
+  const checkEmailStatus = async (emailId) => {
+    const maxAttempts = 30;
+    const interval = 2000;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/subscriptions/email-status/${encodeURIComponent(
+            emailId,
+          )}`,
+        );
+
+        if (res.ok) {
+          const data = await res.json();
+          const status = data?.status;
+
+          if (status === "bounced") {
+            setLocalLoading(false);
+            setSuccess(false);
+            setMessage("Couldn't reach this email address.");
+            setDisableClose(false);
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "failed") {
+            setLocalLoading(false);
+            setSuccess(false);
+            setMessage("Couldn't deliver to this email address.");
+            setDisableClose(false);
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "complained") {
+            setLocalLoading(false);
+            setSuccess(false);
+            setMessage("Couldn't complete the subscription.");
+            setDisableClose(false);
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "delivered") {
+            setEmail("");
+            setWebsite("");
+            resetTurnstile();
+            setLocalLoading(false);
+            setSuccess(true);
+            setMessage("");
+            setDisableClose(true);
+            return;
+          }
+        }
+      } catch {}
+
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+
+    setLocalLoading(false);
+    setSuccess(true);
+    setMessage("");
+    setDisableClose(true);
+  };
+
   const handleSubscribe = async () => {
     if (loading) {
       return;
@@ -104,8 +169,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     }
 
     if (!turnstileToken) {
-      setMessage("Please wait while verification completes.");
-      turnstileRef.current?.reset();
+      setMessage("Please complete the verification.");
       return;
     }
 
@@ -133,39 +197,38 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         try {
           data = JSON.parse(text);
         } catch {
-          throw new Error("We couldn't process the server response.");
+          throw new Error("Couldn't process the server response.");
         }
       }
 
       if (!res.ok) {
         throw new Error(
-          data?.message || "We couldn't complete your subscription.",
+          data?.message || "Couldn't complete your subscription.",
         );
       }
 
       if (data?.success === false) {
         throw new Error(
-          data?.message || "We couldn't complete your subscription.",
+          data?.message || "Couldn't complete your subscription.",
         );
       }
 
-      setEmail("");
-      setWebsite("");
-      setSuccess(true);
-      setMessage("");
-      setDisableClose(true);
-      resetTurnstile();
+      if (!data?.emailId) {
+        throw new Error("Couldn't track the confirmation email.");
+      }
+
+      await checkEmailStatus(data.emailId);
     } catch (err) {
       const errorMessage =
         err instanceof Error
           ? err.message
-          : "We couldn't complete your subscription.";
+          : "Couldn't complete your subscription.";
 
       setMessage(errorMessage);
+      setSuccess(false);
       setDisableClose(false);
-      resetTurnstile();
-    } finally {
       setLocalLoading(false);
+      resetTurnstile();
     }
   };
 
@@ -206,7 +269,16 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
 
       {loading ? (
         <div className={styles.responseWrapper}>
-          <LoaderView setHeight={40} />
+          <LoaderView
+            text={
+              <>
+                Hang tight, <br />
+                I'm processing <br />
+                your request
+              </>
+            }
+            setHeight={40}
+          />
         </div>
       ) : success ? (
         <div className={styles.responseWrapper}>
@@ -232,8 +304,6 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               onSuccess();
             }}
           />
-
-          <p className={styles.label}>{footerText}</p>
         </div>
       ) : (
         <div className={styles.controlsWrapper}>
@@ -272,24 +342,27 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
             />
           </div>
 
-          <div className={styles.turnstileWrapper}>
+          <div
+            className={styles.turnstileWrapper}
+            style={{
+              display: turnstileToken ? "none" : "block",
+            }}
+          >
             <Turnstile
               ref={turnstileRef}
               siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
               onSuccess={(token) => {
                 setTurnstileToken(token);
-                setMessage("");
               }}
               onExpire={() => {
                 setTurnstileToken("");
               }}
               onError={() => {
                 setTurnstileToken("");
-                setMessage("Verification failed. Please try again.");
               }}
               options={{
                 theme: "light",
-                size: "invisible",
+                size: "flexible",
               }}
             />
           </div>
@@ -306,6 +379,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               style={{
                 color: "#ff8d8d",
                 fontSize: "0.8rem",
+                maxWidth:"250px"
               }}
             >
               {message}

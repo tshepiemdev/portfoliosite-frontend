@@ -106,7 +106,7 @@ export default function BlogsCompact({
               key={blog._id || blog.slug}
               title={blog.title}
               category={blog.category}
-              publishedDate={blog.publishedDate}
+              publishedAt={blog.publishedAt}
               formattedDate={blog.formattedDate}
               imageUrl={blog.imageUrl}
               isFeatured={blog.isFeatured}

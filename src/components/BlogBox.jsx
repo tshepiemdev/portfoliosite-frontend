@@ -7,7 +7,7 @@ import { slugify } from "../utils/slugify";
 export default function BlogBox({
   title,
   category,
-  publishedDate,
+  publishedAt,
   formattedDate,
   isFeatured = false,
   imageUrl,
@@ -17,8 +17,8 @@ export default function BlogBox({
 }) {
   const displayDate =
     formattedDate ||
-    (publishedDate
-      ? new Date(publishedDate).toLocaleDateString("en-US", {
+    (publishedAt
+      ? new Date(publishedAt).toLocaleDateString("en-US", {
           month: "long",
           day: "numeric",
           year: "numeric",

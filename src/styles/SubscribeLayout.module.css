@@ -11,11 +11,30 @@
 
 .turnstileWrapper {
   width: 100%;
+  height: fit-content;
   display: flex;
   justify-content: start;
   align-items: start;
   border-radius: 0.5rem;
   overflow: hidden;
+  opacity: 1;
+  max-height: 100px;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.3s ease,
+    max-height 0.3s ease,
+    transform 0.3s ease,
+    margin 0.3s ease;
+}
+
+.turnstileWrapperHidden {
+  opacity: 0;
+  max-height: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  margin-top: -0.5rem;
+  pointer-events: none;
 }
 
 .title {
@@ -55,7 +74,7 @@
 
 .responseWrapper {
   width: 100%;
-  padding: 2rem 0 0 0;
+  padding: 2rem 1rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

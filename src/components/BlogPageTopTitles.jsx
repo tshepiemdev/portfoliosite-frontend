@@ -17,7 +17,7 @@ export default function BlogPageTopTitlesView({
   shortDescription,
   shareOptions,
   views = 0,
-  publishDate,
+  publishedAt,
   authorName,
   authorPic,
   totalReadTime,
@@ -27,13 +27,38 @@ export default function BlogPageTopTitlesView({
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
-  const displayDate = publishDate
-    ? new Date(publishDate).toLocaleDateString("en-US", {
+  const getTimeAgo = (date) => {
+    if (!date) return "";
+
+    const diffMs = Date.now() - new Date(date).getTime();
+
+    const minutes = Math.floor(diffMs / (1000 * 60));
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+
+    if (minutes < 1) return "Just now";
+    if (minutes < 60) return `${minutes} min${minutes === 1 ? "" : "s"} ago`;
+    if (hours < 24) return `${hours} hr${hours === 1 ? "" : "s"} ago`;
+    if (days === 1) return "Yesterday";
+    if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+    if (weeks < 5) return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+    if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
+
+    return `${years} year${years === 1 ? "" : "s"} ago`;
+  };
+
+  const displayDate = publishedAt
+    ? new Date(publishedAt).toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
       })
     : "";
+
+  const publishedAgo = getTimeAgo(publishedAt);
 
   return (
     <div className={styles.titlesWrapper}>
@@ -44,7 +69,7 @@ export default function BlogPageTopTitlesView({
         </div>
 
         <p className={styles.type}>
-          {displayDate} • <p className={styles.text}> {totalReadTime}</p>
+          {displayDate} • <span className={styles.text}>{totalReadTime}</span>
         </p>
       </div>
 
@@ -64,9 +89,6 @@ export default function BlogPageTopTitlesView({
                 className={styles.authorImg}
                 src={authorPic?.trim() ? authorPic : myDefaultProfileImage}
                 alt={authorName}
-                onClick={() =>
-                  setSelectedImage(authorPic || myDefaultProfileImage)
-                }
                 onError={(e) => {
                   e.target.src = bigFallbackImg;
                 }}
@@ -79,13 +101,14 @@ export default function BlogPageTopTitlesView({
                 <img
                   className={styles.verBadgeIcon}
                   src={verifiedIcon}
-                  alt={authorName}
+                  alt=""
                 />
               </h4>
+
               <p className={styles.status}>
-                Last publish
+                Published
                 <img className={styles.chevron} src={chevronRight} alt="" />
-                <span>16 hrs ago</span>
+                <span>{publishedAgo}</span>
               </p>
             </div>
           </div>

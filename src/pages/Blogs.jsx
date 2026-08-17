@@ -46,10 +46,10 @@ export default function Blogs() {
       }
 
       const blogsData = (Array.isArray(data) ? data : data?.data || [])
-        .filter((b) => b.isActive === true)
-        .map((b) => ({
-          ...b,
-          slug: b.slug || slugify(b.title),
+        .filter((blog) => blog.isActive === true)
+        .map((blog) => ({
+          ...blog,
+          slug: blog.slug || slugify(blog.title),
         }));
 
       setMyBlogs(blogsData);
@@ -73,47 +73,78 @@ export default function Blogs() {
   }, []);
 
   const categories = useMemo(() => {
-    return ["All", ...new Set(myBlogs.map((b) => b.category).filter(Boolean))];
+    const uniqueCategories = new Map();
+
+    myBlogs.forEach((blog) => {
+      if (!blog.category) return;
+
+      const category = blog.category.trim();
+
+      if (!category) return;
+
+      const key = category.toLowerCase();
+
+      if (!uniqueCategories.has(key)) {
+        uniqueCategories.set(key, category);
+      }
+    });
+
+    return ["All", ...uniqueCategories.values()];
   }, [myBlogs]);
 
   const filteredBlogs = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
+    const selectedCategory = activeCategory.trim().toLowerCase();
 
     return myBlogs.filter((blog) => {
-      const matchesSearch =
-        !query ||
-        [blog.title, blog.category, blog.author, blog.excerpt, blog.content]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(query));
+      const blogCategory = String(blog.category || "")
+        .trim()
+        .toLowerCase();
 
       const matchesCategory =
-        activeCategory === "All" ||
-        (blog.category &&
-          blog.category.trim().toLowerCase() ===
-            activeCategory.trim().toLowerCase());
+        selectedCategory === "all" || blogCategory === selectedCategory;
 
-      return matchesSearch && matchesCategory;
+      const searchableContent = [
+        blog.title,
+        blog.category,
+        blog.author,
+        blog.excerpt,
+        blog.content?.intro,
+        ...(blog.content?.sections || []).flatMap((section) => [
+          section.heading,
+          section.body,
+        ]),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const matchesSearch =
+        !query || searchableContent.includes(query);
+
+      return matchesCategory && matchesSearch;
     });
   }, [myBlogs, searchQuery, activeCategory]);
 
   const featuredBlogs = useMemo(
-    () => filteredBlogs.filter((b) => b.isFeatured),
+    () => filteredBlogs.filter((blog) => blog.isFeatured),
     [filteredBlogs],
   );
 
   const nonFeaturedBlogs = useMemo(
     () =>
       [...filteredBlogs]
-        .filter((b) => !b.isFeatured)
+        .filter((blog) => !blog.isFeatured)
         .sort(
           (a, b) =>
-            new Date(b.publishedDate || 0) - new Date(a.publishedDate || 0),
+            new Date(b.publishedAt || b.createdAt || 0).getTime() -
+            new Date(a.publishedAt || a.createdAt || 0).getTime(),
         ),
     [filteredBlogs],
   );
 
   const latestBlogs = useMemo(
-    () => nonFeaturedBlogs.slice(0, 9),
+    () => nonFeaturedBlogs.slice(0, 3),
     [nonFeaturedBlogs],
   );
 
@@ -123,15 +154,26 @@ export default function Blogs() {
   );
 
   const hasNoBlogs =
-    !blogsUnderMaintenance && !loading && !errorType && myBlogs.length === 0;
+    !blogsUnderMaintenance &&
+    !loading &&
+    !errorType &&
+    myBlogs.length === 0;
 
   const hasNoSearchResults =
     !blogsUnderMaintenance &&
     !loading &&
     !errorType &&
-    searchQuery.trim() !== "" &&
     myBlogs.length > 0 &&
-    filteredBlogs.length === 0;
+    filteredBlogs.length === 0 &&
+    (searchQuery.trim() !== "" || activeCategory !== "All");
+
+  const handleFilterChange = (category) => {
+    setActiveCategory(category || "All");
+  };
+
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+  };
 
   return (
     <div className={styles.blogs}>
@@ -159,7 +201,7 @@ export default function Blogs() {
       {!blogsUnderMaintenance && myBlogs.length > 0 && (
         <SearchBar
           value={searchQuery}
-          onChange={setSearchQuery}
+          onChange={handleSearchChange}
           placeholder="Search"
           setMarginBottom={2}
         />
@@ -169,7 +211,7 @@ export default function Blogs() {
         {!blogsUnderMaintenance && myBlogs.length > 0 && (
           <FilterBar
             categories={categories}
-            onFilterChange={setActiveCategory}
+            onFilterChange={handleFilterChange}
             marginTop={0}
             marginBottom={2}
           />
@@ -198,7 +240,10 @@ export default function Blogs() {
 
           {!loading && errorType && !blogsUnderMaintenance && (
             <div className={styles.fullSpan}>
-              <ErrorView errType={errorType} onRetry={fetchBlogs} />
+              <ErrorView
+                errType={errorType}
+                onRetry={fetchBlogs}
+              />
             </div>
           )}
 
@@ -220,15 +265,26 @@ export default function Blogs() {
           {hasNoSearchResults && (
             <div className={styles.fullSpan}>
               <SearchErrorView
-                header={<>Oops! Blog not found</>}
-                subText={
-                  <>
-                    Couldn't find any blogs matching <br />"{searchQuery.trim()}
-                    " . Try searching something else.
-                  </>
+                header={
+                  activeCategory !== "All" && !searchQuery.trim()
+                    ? <>No blogs in this category</>
+                    : <>Oops! Blog not found</>
                 }
-                bg={"transparent"}
-                border={"none"}
+                subText={
+                  activeCategory !== "All" && !searchQuery.trim() ? (
+                    <>
+                      Couldn't find any blogs in <br />
+                      "{activeCategory}". Try another category.
+                    </>
+                  ) : (
+                    <>
+                      Couldn't find any blogs matching <br />
+                      "{searchQuery.trim()}". Try searching something else.
+                    </>
+                  )
+                }
+                bg="transparent"
+                border="none"
                 showAssist={false}
               />
             </div>
@@ -240,23 +296,22 @@ export default function Blogs() {
             myBlogs.length > 0 &&
             filteredBlogs.length > 0 && (
               <>
-                {activeCategory === "All" && !searchQuery.trim() && (
+                {!searchQuery.trim() && featuredBlogs.length > 0 && (
                   <div className={styles.sectionBlock}>
                     <div className={styles.featuredBlogsList}>
-                      {featuredBlogs.length > 0 &&
-                        featuredBlogs.map((blog) => (
-                          <BlogBox
-                            key={blog._id || blog.slug}
-                            variant="featured"
-                            title={blog.title}
-                            category={blog.category}
-                            publishedDate={blog.publishedDate}
-                            formattedDate={blog.formattedDate}
-                            imageUrl={blog.imageUrl}
-                            isFeatured={blog.isFeatured}
-                            blogLink={`/blog/${blog.slug}`}
-                          />
-                        ))}
+                      {featuredBlogs.map((blog) => (
+                        <BlogBox
+                          key={blog._id || blog.slug}
+                          variant="featured"
+                          title={blog.title}
+                          category={blog.category}
+                          publishedAt={blog.publishedAt}
+                          formattedDate={blog.formattedDate}
+                          imageUrl={blog.imageUrl}
+                          isFeatured={blog.isFeatured}
+                          blogLink={`/blog/${blog.slug}`}
+                        />
+                      ))}
                     </div>
                   </div>
                 )}
@@ -270,7 +325,7 @@ export default function Blogs() {
                           variant="compact"
                           title={blog.title}
                           category={blog.category}
-                          publishedDate={blog.publishedDate}
+                          publishedAt={blog.publishedAt}
                           formattedDate={blog.formattedDate}
                           imageUrl={blog.imageUrl}
                           isFeatured={blog.isFeatured}
@@ -290,7 +345,7 @@ export default function Blogs() {
                           variant="compact"
                           title={blog.title}
                           category={blog.category}
-                          publishedDate={blog.publishedDate}
+                          publishedAt={blog.publishedAt}
                           formattedDate={blog.formattedDate}
                           imageUrl={blog.imageUrl}
                           isFeatured={blog.isFeatured}
@@ -304,7 +359,12 @@ export default function Blogs() {
             )}
 
           <SubscribeLabel
-            heading={<>Sign up now, <br/>It's completely free</>}
+            heading={
+              <>
+                Sign up now, <br />
+                It's completely free
+              </>
+            }
             text={
               <>
                 to receive new <br />

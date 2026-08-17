@@ -155,8 +155,8 @@ export default function BlogPage() {
     return <ErrorMaxView errType="default" onRetry={fetchBlog} />;
   }
 
-  const displayDate = blog.publishedDate
-    ? new Date(blog.publishedDate).toLocaleDateString("en-US", {
+  const displayDate = blog.publishedAt
+    ? new Date(blog.publishedAt).toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
@@ -245,7 +245,7 @@ export default function BlogPage() {
           <BlogPageTopTitlesView
             category={blog.category || "Unspecified"}
             name={blog.title}
-            publishDate={blog.publishedDate}
+            publishedAt={blog.publishedAt}
             shortDescription={blog.excerpt}
             shareOptions={shareOptions}
             views={blog.views || 0}
@@ -271,7 +271,8 @@ export default function BlogPage() {
 
         <section className={styles.detailedSection}>
           <p className={styles.imgSrcLabel}>
-            <span>Image source</span>: {blog.imageSource || "Unspecified image source"}
+            <span>Image source</span>:{" "}
+            {blog.imageSource || "Unspecified image source"}
           </p>
 
           <div className={styles.sectionBlock}>
