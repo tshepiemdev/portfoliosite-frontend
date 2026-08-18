@@ -57,7 +57,9 @@ export default function Header() {
     <header className={`${styles.header} ${isMenuOpen ? styles.open : ""}`}>
       <div className={styles.gridWrapper}>
         <div className={styles.logo}>
-          <Logo text="tshepiem.dev" />
+          <div className={styles.logo}>
+            <Logo text="tshepiem.dev" onClick={closeMenu} />
+          </div>
         </div>
 
         <div className={styles.nav}>

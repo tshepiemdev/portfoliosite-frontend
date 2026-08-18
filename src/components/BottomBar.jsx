@@ -63,17 +63,18 @@ export default function BottomBar() {
   }, []);
 
   const navLinks = [
-    { name: "Jump to work", id: "projects" },
+    { name: "Jump to work", id: "projects", path: "/projects" },
     { name: "Blog", path: "/blog" },
     { name: "Services", path: "/services" },
   ];
 
   const filteredOptions = navLinks.filter((link) => {
-    if (link.path && link.path === location.pathname) {
-      return false;
-    }
+    if (!link.path) return true;
 
-    return true;
+    return !(
+      location.pathname === link.path ||
+      location.pathname.startsWith(`${link.path}/`)
+    );
   });
 
   const handleScroll = (id) => {

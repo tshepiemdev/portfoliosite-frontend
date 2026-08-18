@@ -18,7 +18,7 @@
 }
 
 .summary {
-  font-size: clamp(1rem, 4vw, 1.45rem);
+  font-size: clamp(1.05rem, 4vw, 1.45rem);
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 600;

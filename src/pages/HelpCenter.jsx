@@ -151,7 +151,6 @@ const helpBottomOptions = [
         url: `mailto:${contactInfo.personal.email}`,
         icon: emailImg,
       },
-
       ...contactInfo.social
         .filter((social) =>
           ["LinkedIn", "Instagram", "Twitter", "Threads"].includes(social.name),
@@ -169,7 +168,6 @@ export default function HelpCenter() {
   const [helpSections, setHelpSections] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchLoading, setSearchLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
   const [openCategories, setOpenCategories] = useState({});
@@ -180,17 +178,6 @@ export default function HelpCenter() {
       [title]: !prev[title],
     }));
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchTerm(searchInput);
-      setSearchLoading(false);
-    }, 300);
-
-    setSearchLoading(true);
-
-    return () => clearTimeout(timer);
-  }, [searchInput]);
 
   const fetchHelpCenter = useCallback(async () => {
     try {
@@ -207,18 +194,13 @@ export default function HelpCenter() {
 
       const sections = (data.data || [])
         .filter((section) => section.isActive)
-
         .sort((a, b) => a.order - b.order)
-
         .map((section) => ({
           ...section,
-
           articles: (section.articles || [])
             .filter((article) => article.isActive)
-
             .sort((a, b) => a.order - b.order),
         }))
-
         .filter((section) => section.articles.length > 0);
 
       setHelpSections(sections);
@@ -249,19 +231,24 @@ export default function HelpCenter() {
     }
 
     return helpSections
-
       .map((section) => ({
         ...section,
-
         articles: section.articles.filter(
           (article) =>
             article.title?.toLowerCase().includes(query) ||
             article.description?.toLowerCase().includes(query),
         ),
       }))
-
       .filter((section) => section.articles.length > 0);
   }, [helpSections, searchTerm]);
+
+  const handleSearchChange = (value) => {
+    setSearchInput(value);
+  };
+
+  const handleSearch = (value) => {
+    setSearchTerm(typeof value === "string" ? value : searchInput);
+  };
 
   const showSearch = !loading && !errorType;
 
@@ -319,44 +306,40 @@ export default function HelpCenter() {
                   <br />
                   never get lost again
                 </h2>
+
                 {showSearch && (
                   <SearchBar
                     value={searchInput}
-                    onChange={setSearchInput}
+                    onChange={handleSearchChange}
+                    onSearch={handleSearch}
                     placeholder="Search help articles"
                     setMarginBottom={0}
                   />
                 )}
               </div>
 
-              {(loading || searchLoading) && (
-                <LoaderView bg="black" border="none" />
-              )}
+              {loading && <LoaderView bg="black" border="none" />}
 
               {!loading && errorType && (
                 <ErrorView errType={errorType} onRetry={fetchHelpCenter} />
               )}
 
-              {!loading &&
-                !searchLoading &&
-                !errorType &&
-                filteredHelp.length === 0 && (
-                  <SearchErrorView
-                    icon={SearchErrorImg}
-                    header={
-                      <>
-                        Your search couldn't <br />
-                        be found in articles
-                      </>
-                    }
-                    subText="Try searching for something else."
-                    bg="black"
-                    border="none"
-                  />
-                )}
+              {!loading && !errorType && filteredHelp.length === 0 && (
+                <SearchErrorView
+                  icon={SearchErrorImg}
+                  header={
+                    <>
+                      Your search couldn't <br />
+                      be found in articles
+                    </>
+                  }
+                  subText="Try searching for something else."
+                  bg="black"
+                  border="none"
+                />
+              )}
 
               {!loading &&
-                !searchLoading &&
                 !errorType &&
                 filteredHelp.map((section) => (
                   <section

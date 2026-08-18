@@ -19,6 +19,7 @@ export default function Blogs() {
 
   const [myBlogs, setMyBlogs] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
@@ -119,8 +120,7 @@ export default function Blogs() {
         .join(" ")
         .toLowerCase();
 
-      const matchesSearch =
-        !query || searchableContent.includes(query);
+      const matchesSearch = !query || searchableContent.includes(query);
 
       return matchesCategory && matchesSearch;
     });
@@ -154,10 +154,7 @@ export default function Blogs() {
   );
 
   const hasNoBlogs =
-    !blogsUnderMaintenance &&
-    !loading &&
-    !errorType &&
-    myBlogs.length === 0;
+    !blogsUnderMaintenance && !loading && !errorType && myBlogs.length === 0;
 
   const hasNoSearchResults =
     !blogsUnderMaintenance &&
@@ -172,7 +169,11 @@ export default function Blogs() {
   };
 
   const handleSearchChange = (value) => {
-    setSearchQuery(value);
+    setSearchInput(value);
+  };
+
+  const handleSearch = (value) => {
+    setSearchQuery(typeof value === "string" ? value : searchInput);
   };
 
   return (
@@ -200,8 +201,9 @@ export default function Blogs() {
 
       {!blogsUnderMaintenance && myBlogs.length > 0 && (
         <SearchBar
-          value={searchQuery}
+          value={searchInput}
           onChange={handleSearchChange}
+          onSearch={handleSearch}
           placeholder="Search"
           setMarginBottom={2}
         />
@@ -240,10 +242,7 @@ export default function Blogs() {
 
           {!loading && errorType && !blogsUnderMaintenance && (
             <div className={styles.fullSpan}>
-              <ErrorView
-                errType={errorType}
-                onRetry={fetchBlogs}
-              />
+              <ErrorView errType={errorType} onRetry={fetchBlogs} />
             </div>
           )}
 
@@ -266,20 +265,22 @@ export default function Blogs() {
             <div className={styles.fullSpan}>
               <SearchErrorView
                 header={
-                  activeCategory !== "All" && !searchQuery.trim()
-                    ? <>No blogs in this category</>
-                    : <>Oops! Blog not found</>
+                  activeCategory !== "All" && !searchQuery.trim() ? (
+                    <>No blogs in this category</>
+                  ) : (
+                    <>Oops! Blog not found</>
+                  )
                 }
                 subText={
                   activeCategory !== "All" && !searchQuery.trim() ? (
                     <>
-                      Couldn't find any blogs in <br />
-                      "{activeCategory}". Try another category.
+                      Couldn't find any blogs in <br />"{activeCategory}". Try
+                      another category.
                     </>
                   ) : (
                     <>
-                      Couldn't find any blogs matching <br />
-                      "{searchQuery.trim()}". Try searching something else.
+                      Couldn't find any blogs matching <br />"
+                      {searchQuery.trim()}". Try searching something else.
                     </>
                   )
                 }

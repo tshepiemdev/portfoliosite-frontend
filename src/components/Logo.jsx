@@ -9,11 +9,16 @@ export default function Logo({
   iconSrc = LogoImg,
   iconSize = 1,
   isClickable = true,
+  onClick,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+
     if (isClickable) {
       if (location.pathname === "/") {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -22,7 +27,6 @@ export default function Logo({
         navigate("/");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    } else {
     }
   };
 

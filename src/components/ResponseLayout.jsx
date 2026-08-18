@@ -37,7 +37,16 @@ export default function ResponseLayout({
   return (
     <div className={styles.layout}>
       {isLoading ? (
-        <LoaderView setHeight={50} />
+        <LoaderView
+          text={
+            <>
+              Hang tight, <br />
+              I'm processing <br />
+              your request
+            </>
+          }
+          setHeight={50}
+        />
       ) : (
         <div className={styles.responseWrapper}>
           <div className={styles.iconWrapper}>
