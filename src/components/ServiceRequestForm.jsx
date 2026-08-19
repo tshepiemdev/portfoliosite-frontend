@@ -396,7 +396,10 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
                 <br />
                 this email address
               </>,
-              "Please check the email address and try again.",
+              <>
+                Please check your email address <br />
+                and retry again.
+              </>,
             );
 
             resetTurnstile();
@@ -407,11 +410,14 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
             showResponse(
               "error",
               <>
-                Couldn't deliver
+                Couldn't complete
                 <br />
                 your request
               </>,
-              "We couldn't deliver the confirmation email. Please try again.",
+              <>
+                Couldn't complete your request. <br />
+                Please retry again.
+              </>,
             );
 
             resetTurnstile();
@@ -426,7 +432,10 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
                 <br />
                 your request
               </>,
-              "We couldn't complete your request. Please try again.",
+              <>
+                Couldn't complete your request. <br />
+                Please retry again.
+              </>,
             );
 
             resetTurnstile();
@@ -437,11 +446,15 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
             showResponse(
               "success",
               <>
-                Request sent
+                Service request sent
                 <br />
                 successfully
               </>,
-              `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${mailRef}`,
+              <>
+                Thank you {form.firstName}. Your message has been received and
+                I'll get back to you soon. <br />
+                Reference: {mailRef}
+              </>,
             );
 
             setForm(initialForm);
@@ -461,11 +474,15 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     showResponse(
       "success",
       <>
-        Request sent
+        Service request sent
         <br />
         successfully
       </>,
-      `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${mailRef}`,
+      <>
+        Thank you {form.firstName}. Your message has been received and I'll get
+        back to you soon. <br />
+        Reference: {mailRef}
+      </>,
     );
 
     setForm(initialForm);
@@ -495,7 +512,10 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
           <br />
           you're offline
         </>,
-        "Please check your internet connection and try again.",
+        <>
+          Please check your internet connection <br />
+          and retry again.
+        </>,
       );
       return;
     }
@@ -503,12 +523,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     if (!turnstileToken) {
       showResponse(
         "error",
+        <>Verification Error</>,
         <>
-          Verification
-          <br />
-          required
+          Please complete the verification <br />
+          to submit your message.
         </>,
-        "Please complete the verification to continue.",
       );
       return;
     }
@@ -587,7 +606,10 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
             <br />
             you're offline
           </>,
-          "Please check your internet connection and try again.",
+          <>
+            Please check your internet connection <br />
+            and retry again.
+          </>,
         );
         return;
       }

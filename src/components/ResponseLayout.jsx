@@ -46,6 +46,7 @@ export default function ResponseLayout({
             </>
           }
           setHeight={50}
+          circleVariant="dynamic"
         />
       ) : (
         <div className={styles.responseWrapper}>

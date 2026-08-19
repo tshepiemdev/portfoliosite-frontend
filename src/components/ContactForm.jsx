@@ -276,7 +276,10 @@ export default function ContactForm({ onResponseStatusChange }) {
                 <br />
                 email address.
               </>,
-              "Please check your email address and try again.",
+              <>
+                Please check your email address <br />
+                and retry again.
+              </>,
             );
 
             resetTurnstile();
@@ -291,7 +294,10 @@ export default function ContactForm({ onResponseStatusChange }) {
                 <br />
                 email address.
               </>,
-              "Please check your email address and try again.",
+              <>
+                Please check your email address <br />
+                and retry again.
+              </>,
             );
 
             resetTurnstile();
@@ -323,7 +329,11 @@ export default function ContactForm({ onResponseStatusChange }) {
                 <br />
                 successfully
               </>,
-              `Thank you ${firstName}. I'll get back to you soon. Reference: ${mailRef}`,
+              <>
+                Thank you {firstName}. Your message has been received and I'll
+                get back to you soon. <br />
+                Reference: {mailRef}
+              </>,
             );
 
             return;
@@ -366,7 +376,10 @@ export default function ContactForm({ onResponseStatusChange }) {
           <br />
           you're offline
         </>,
-        "Please check your internet connection and try again.",
+        <>
+          Please check your internet connection <br />
+          and retry again.
+        </>,
       );
       return;
     }
@@ -374,12 +387,11 @@ export default function ContactForm({ onResponseStatusChange }) {
     if (!turnstileToken) {
       showResponse(
         "error",
+        <>Verification Error</>,
         <>
-          Verification is
-          <br />
-          required to submit
+          Please complete the verification <br />
+          to submit your message.
         </>,
-        "Please complete the verification to continue.",
       );
       return;
     }
@@ -444,7 +456,10 @@ export default function ContactForm({ onResponseStatusChange }) {
             <br />
             you're offline
           </>,
-          "Please check your internet connection and try again.",
+          <>
+            Please check your internet connection <br />
+            and retry again.
+          </>,
         );
       } else {
         showResponse(
@@ -607,12 +622,7 @@ export default function ContactForm({ onResponseStatusChange }) {
         error={submitted ? errors.message : ""}
       />
 
-      <div
-        className={styles.turnstileWrapper}
-        style={{
-          display: turnstileToken ? "none" : "flex",
-        }}
-      >
+      <div className={styles.turnstileWrapper}>
         <Turnstile
           ref={turnstileRef}
           siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}

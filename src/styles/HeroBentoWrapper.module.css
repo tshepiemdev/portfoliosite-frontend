@@ -215,9 +215,8 @@
 
 @media (max-width: 768px) {
   .bentoImageWrapper {
-    width: clamp(80px, 35vw, 140px);
-    height: 100px;
-    aspect-ratio: 1 / 1;
+    width: 220px;
+    height: 9rem;
   }
 
   .bestSkillImg {
@@ -228,8 +227,7 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .bentoImageWrapper {
-    width: clamp(60px, 35vw, 180px);
-    height: 140px;
-    aspect-ratio: 1 / 1;
+    width: 220px;
+    height: 9rem;
   }
 }

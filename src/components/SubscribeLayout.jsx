@@ -278,6 +278,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               </>
             }
             setHeight={40}
+            circleVariant="dynamic"
           />
         </div>
       ) : success ? (

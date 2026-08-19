@@ -18,7 +18,7 @@ import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
 import CloudCodeImg from "../assets/icons/cloud-data.svg";
 import TechStackImg from "../assets/icons/square-terminal.svg";
-import FeaturesImg from "../assets/icons/spark.svg";
+import FeaturesImg from "../assets/icons/star-black.svg";
 import ShippedImg from "../assets/icons/cloud.svg";
 import DiscontinuedImg from "../assets/icons/ban.svg";
 import BuildingImg from "../assets/icons/logo.svg";

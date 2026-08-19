@@ -194,7 +194,7 @@
     grid-auto-rows: minmax(80px, auto);
     align-items: stretch;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   .footerLinksWrapper {

@@ -11,10 +11,23 @@
   transition: all 0.3s ease-in-out;
 }
 
-.loadingCircle {
+.loadingCircle,
+.compact {
   background-color: transparent;
   border: 8px solid #282828;
   border-top: 8px solid #ffffff;
+  border-radius: 16rem;
+  width: 4rem;
+  height: 4rem;
+  animation: spin 1.4s infinite;
+}
+
+.dynamic {
+  background-color: transparent;
+  border: 8px solid white;
+  border-top: 8px solid blueviolet;
+  border-right: 8px solid orangered;
+  border-bottom: 8px solid greenyellow;
   border-radius: 16rem;
   width: 4rem;
   height: 4rem;

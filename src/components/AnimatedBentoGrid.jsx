@@ -106,7 +106,7 @@ export default function AnimatedBentoGrid({
         <div className={styles.overlay}>
           {showLinkTo && (
             <div className={styles.blurWrapper}>
-              <LogoIcon iconColor="white" size={1.85} />
+              <LogoIcon iconColor="white" size={2.2} />
               <span className={styles.span}>Blog</span>
             </div>
           )}

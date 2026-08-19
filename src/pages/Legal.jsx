@@ -102,7 +102,9 @@ export default function Legal() {
             />
           )}
 
-          {!legalUnderMaintenance && loading && <LoaderView />}
+          {!legalUnderMaintenance && loading && (
+            <LoaderView />
+          )}
 
           {!legalUnderMaintenance && !loading && errorType && (
             <ErrorView errType={errorType} onRetry={fetchLegal} />

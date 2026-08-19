@@ -5,9 +5,9 @@ export default function LoaderView({
   textSize = 2,
   bg,
   border,
-  borderColor,
   radius,
   setHeight = 60,
+  circleVariant = "compact",
 }) {
   return (
     <div
@@ -19,7 +19,11 @@ export default function LoaderView({
         borderRadius: `${radius}rem`,
       }}
     >
-      <div className={styles.loadingCircle}></div>
+      <div
+        className={`${styles.loadingCircle} ${
+          circleVariant === "dynamic" ? styles.dynamic : styles.compact
+        }`}
+      ></div>
 
       {text && (
         <span
