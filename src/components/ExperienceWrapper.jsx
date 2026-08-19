@@ -35,7 +35,9 @@ export default function ExperienceWrapper() {
         throw new Error(data?.message || "Failed to fetch experiences");
       }
 
-      const filtered = (data.data || []).filter((e) => e.isActive === true);
+      const filtered = (data.data || [])
+        .filter((e) => e.isActive === true)
+        .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 
       setExperiences(filtered);
     } catch (err) {
@@ -100,7 +102,7 @@ export default function ExperienceWrapper() {
                 position={exp.position}
                 from={exp.from}
                 to={exp.to}
-                timelapse={exp.timelapse}
+                order={exp.order}
                 location={exp.location}
                 responsibilities={exp.responsibilities}
               />

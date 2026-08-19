@@ -11,8 +11,9 @@ export default function ExperienceBox({
   to,
   location,
   responsibilities,
+  order,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(order === 1);
 
   const toggleAccordion = () => {
     setIsOpen((prev) => !prev);
