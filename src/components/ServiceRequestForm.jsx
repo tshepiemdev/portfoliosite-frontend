@@ -164,18 +164,24 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   }, []);
 
   useEffect(() => {
-    if (!services.length || !pricingPackages.length) return;
+    if (!services.length || !pricingPackages.length) {
+      return;
+    }
 
     const serviceParam = searchParams.get("service");
     const packageParam = searchParams.get("package");
 
-    if (!serviceParam) return;
+    if (!serviceParam) {
+      return;
+    }
 
     const service = services.find(
       (item) => item.pricingAlias?.toLowerCase() === serviceParam.toLowerCase(),
     );
 
-    if (!service) return;
+    if (!service) {
+      return;
+    }
 
     const pricingCategory = pricingPackages.find(
       (item) =>
@@ -206,7 +212,9 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
     const service = services.find((item) => item._id === serviceId);
 
-    if (!service) return;
+    if (!service) {
+      return;
+    }
 
     const pricingCategory = pricingPackages.find(
       (item) =>
@@ -224,19 +232,6 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       service: serviceId,
       package: "",
     }));
-  };
-
-  const handleChange = (field) => (e) => {
-    const updated = {
-      ...form,
-      [field]: e.target.value,
-    };
-
-    setForm(updated);
-
-    if (submitted) {
-      setErrors(validate(updated));
-    }
   };
 
   const validate = (values) => {
@@ -321,6 +316,19 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     }
   };
 
+  const handleChange = (field) => (e) => {
+    const updated = {
+      ...form,
+      [field]: e.target.value,
+    };
+
+    setForm(updated);
+
+    if (submitted) {
+      setErrors(validate(updated));
+    }
+  };
+
   const showResponse = (status, title, subtitle) => {
     setResponseData({
       status,
@@ -362,6 +370,110 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
   const handleError = () => {
     closeResponse();
+  };
+
+  const checkEmailStatus = async (mailRef) => {
+    const maxAttempts = 30;
+    const interval = 2000;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/service-request/status/${encodeURIComponent(
+            mailRef,
+          )}`,
+        );
+
+        if (res.ok) {
+          const data = await res.json();
+          const status = data?.status;
+
+          if (status === "bounced") {
+            showResponse(
+              "error",
+              <>
+                Couldn't reach
+                <br />
+                this email address
+              </>,
+              "Please check the email address and try again.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "failed") {
+            showResponse(
+              "error",
+              <>
+                Couldn't deliver
+                <br />
+                your request
+              </>,
+              "We couldn't deliver the confirmation email. Please try again.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "complained") {
+            showResponse(
+              "error",
+              <>
+                Couldn't complete
+                <br />
+                your request
+              </>,
+              "We couldn't complete your request. Please try again.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "delivered") {
+            showResponse(
+              "success",
+              <>
+                Request sent
+                <br />
+                successfully
+              </>,
+              `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${mailRef}`,
+            );
+
+            setForm(initialForm);
+            setSelectedService(null);
+            setPackages([]);
+            setSubmitted(false);
+            setErrors({});
+            resetTurnstile();
+            return;
+          }
+        }
+      } catch {}
+
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+
+    showResponse(
+      "success",
+      <>
+        Request sent
+        <br />
+        successfully
+      </>,
+      `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${mailRef}`,
+    );
+
+    setForm(initialForm);
+    setSelectedService(null);
+    setPackages([]);
+    setSubmitted(false);
+    setErrors({});
+    resetTurnstile();
   };
 
   const submitForm = async () => {
@@ -461,22 +573,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         );
       }
 
-      showResponse(
-        "success",
-        <>
-          Request sent
-          <br />
-          successfully
-        </>,
-        `Thank you ${form.firstName}. I'll review your request and get back to you soon. Reference: ${ref}`,
-      );
-
-      setForm(initialForm);
-      setSelectedService(null);
-      setPackages([]);
-      setSubmitted(false);
-      setErrors({});
-      resetTurnstile();
+      await checkEmailStatus(data.mail_ref || ref);
     } catch (error) {
       const isNetworkError = error instanceof TypeError || !navigator.onLine;
 

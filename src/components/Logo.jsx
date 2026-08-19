@@ -1,16 +1,29 @@
 import styles from "../styles/Logo.module.css";
 import LogoImg from "../assets/images/favicon.svg";
+import LogoImgWhite from "../assets/icons/logo-white.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Logo({
+  iconColor = "default",
   text = "tshepiem.dev",
   color = "#ffffff",
-  size = 1.1,
-  iconSrc = LogoImg,
-  iconSize = 1,
+  size = 1.2,
+  iconSize = 0.85,
   isClickable = true,
   onClick,
 }) {
+  const icons = {
+    default: LogoImg,
+    white: LogoImgWhite,
+  };
+
+  const getIcon = () => {
+    if (iconColor === "white") return icons.white;
+    return icons.default;
+  };
+
+  const icon = getIcon();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,7 +51,7 @@ export default function Logo({
     >
       <img
         className={styles.logoImg}
-        src={iconSrc || LogoImg}
+        src={icon}
         alt="tshepiem.dev"
         style={{ width: `${iconSize}rem`, height: `${iconSize}rem` }}
       />

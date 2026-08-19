@@ -15,7 +15,8 @@ export default function SubscribeLabel({ heading, marginTop }) {
     <div className={styles.wrapper} style={{ marginTop: `${marginTop}rem` }}>
       {heading && (
         <div className={styles.headingWrapper}>
-          <img className={styles.logo} src={LogoImg} alt="Logo" />
+          <AnimatedBentoGrid />
+
           <h4 className={styles.header}>{heading}</h4>
 
           <div className={styles.textsWrapper}>
@@ -27,11 +28,11 @@ export default function SubscribeLabel({ heading, marginTop }) {
               >
                 <span>
                   Subscribe
-                  <img
+                  {/* <img
                     className={styles.arrowUpIcon}
                     src={arrowUp}
                     alt="subscribe"
-                  />
+                  /> */}
                 </span>
               </button>{" "}
               to receive new blogs,
@@ -43,8 +44,6 @@ export default function SubscribeLabel({ heading, marginTop }) {
           <BtnCTAWhiteSmall buttonText={"Read articles"} href={"/blog"} />
         </div>
       )}
-
-      <AnimatedBentoGrid />
 
       <Modal
         isOpen={open}

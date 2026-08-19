@@ -362,7 +362,7 @@ export default function Blogs() {
           <SubscribeLabel
             heading={
               <>
-                Sign up now, <br />
+                Subscribe now, <br />
                 It's completely free
               </>
             }

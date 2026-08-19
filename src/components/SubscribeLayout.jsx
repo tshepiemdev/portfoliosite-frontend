@@ -161,7 +161,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     if (!navigator.onLine) {
       setMessage(
         <>
-          You're offline. Please check your internet <br />
+          Please check your internet <br />
           connection and try again.
         </>,
       );
@@ -345,7 +345,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
           <div
             className={styles.turnstileWrapper}
             style={{
-              display: turnstileToken ? "none" : "block",
+              display: turnstileToken ? "none" : "flex",
             }}
           >
             <Turnstile
@@ -379,7 +379,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
               style={{
                 color: "#ff8d8d",
                 fontSize: "0.8rem",
-                maxWidth:"250px"
+                maxWidth: "250px",
               }}
             >
               {message}

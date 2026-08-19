@@ -5,6 +5,7 @@ import API_URL from "../config/api";
 import Logo from "./Logo";
 import DefaultBentoImage from "../assets/images/fallback_img_16_9_light.svg";
 import nextImg from "../assets/icons/chevron-right.svg";
+import LogoIcon from "./LogoIcon";
 
 const fallbackImages = Array.from({ length: 9 }, (_, i) => ({
   id: i,
@@ -105,16 +106,21 @@ export default function AnimatedBentoGrid({
         <div className={styles.overlay}>
           {showLinkTo && (
             <div className={styles.blurWrapper}>
-              <Logo isClickable={false} />
-
-              {location.pathname !== "/blog" && (
-                <Link className={styles.span} to="/blog">
-                  /blog
-                  <img className={styles.nextIcon} src={nextImg} alt="/blog" />
-                </Link>
-              )}
+              <LogoIcon iconColor="white" size={1.85} />
+              <span className={styles.span}>Blog</span>
             </div>
           )}
+
+          <p className={styles.termsText}>
+            No spam. Unsubscribe anytime. <br />
+            <Link
+              className={styles.linkTo}
+              to={"/legal/tshepiemdev-website-blog-subscription-terms"}
+            >
+              Subscription terms
+            </Link>{" "}
+            apply.
+          </p>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import styles from "../styles/ContactForm.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Turnstile } from "@marsidev/react-turnstile";
 import TextInput from "./TextInput";
@@ -50,6 +50,61 @@ const initialForm = {
   teamSize: "",
 };
 
+const teamSizeOptions = [
+  { value: "solo", label: "Just me" },
+  { value: "small", label: "2 - 10 people" },
+  { value: "medium", label: "11 - 50 people" },
+  { value: "large", label: "51 - 200 people" },
+  { value: "enterprise", label: "200+ people" },
+];
+
+const reasons = [
+  {
+    value: "general_inquiry",
+    label: "General Inquiry",
+  },
+  {
+    value: "job_opportunity",
+    label: "Job Opportunity / Employment",
+  },
+  {
+    value: "collaboration",
+    label: "Collaboration / Partnership",
+  },
+  {
+    value: "consultation",
+    label: "Technical Consultation",
+  },
+  {
+    value: "career_guidance",
+    label: "Career Guidance / Mentorship",
+  },
+  {
+    value: "feedback",
+    label: "Website / Service Feedback",
+  },
+  {
+    value: "report",
+    label: "Report a Problem",
+  },
+  {
+    value: "support",
+    label: "Technical Support",
+  },
+  {
+    value: "review",
+    label: "Leave a Review",
+  },
+  {
+    value: "business_inquiry",
+    label: "Business Inquiry",
+  },
+  {
+    value: "other",
+    label: "Other",
+  },
+];
+
 export default function ContactForm({ onResponseStatusChange }) {
   const [responseData, setResponseData] = useState({
     title: "",
@@ -64,8 +119,6 @@ export default function ContactForm({ onResponseStatusChange }) {
 
   const turnstileRef = useRef(null);
 
-  useDetectLocation(setForm);
-
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
@@ -75,52 +128,7 @@ export default function ContactForm({ onResponseStatusChange }) {
   const teamSizeRef = useRef(null);
   const messageRef = useRef(null);
 
-  const reasons = [
-    {
-      value: "general_inquiry",
-      label: "General Inquiry",
-    },
-    {
-      value: "job_opportunity",
-      label: "Job Opportunity / Employment",
-    },
-    {
-      value: "collaboration",
-      label: "Collaboration / Partnership",
-    },
-    {
-      value: "consultation",
-      label: "Technical Consultation",
-    },
-    {
-      value: "career_guidance",
-      label: "Career Guidance / Mentorship",
-    },
-    {
-      value: "feedback",
-      label: "Website / Service Feedback",
-    },
-    {
-      value: "report",
-      label: "Report a Problem",
-    },
-    {
-      value: "support",
-      label: "Technical Support",
-    },
-    {
-      value: "review",
-      label: "Leave a Review",
-    },
-    {
-      value: "business_inquiry",
-      label: "Business Inquiry",
-    },
-    {
-      value: "other",
-      label: "Other",
-    },
-  ];
+  useDetectLocation(setForm);
 
   const validate = (values) => {
     const newErrors = {};
@@ -225,13 +233,16 @@ export default function ContactForm({ onResponseStatusChange }) {
     onResponseStatusChange("");
   };
 
+  const resetTurnstile = () => {
+    setTurnstileToken("");
+    turnstileRef.current?.reset();
+  };
+
   const clearForm = () => {
     setForm(initialForm);
     setErrors({});
     setSubmitted(false);
-    setTurnstileToken("");
-
-    turnstileRef.current?.reset();
+    resetTurnstile();
   };
 
   const handleSuccessClose = () => {
@@ -241,6 +252,99 @@ export default function ContactForm({ onResponseStatusChange }) {
 
   const handleErrorClose = () => {
     closeResponse();
+  };
+
+  const checkEmailStatus = async (mailRef, firstName) => {
+    const maxAttempts = 30;
+    const interval = 2000;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/contact/status/${encodeURIComponent(mailRef)}`,
+        );
+
+        if (res.ok) {
+          const data = await res.json();
+          const status = data?.confirmationEmailStatus;
+
+          if (status === "bounced") {
+            showResponse(
+              "error",
+              <>
+                Couldn't reach this
+                <br />
+                email address.
+              </>,
+              "Please check your email address and try again.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "failed") {
+            showResponse(
+              "error",
+              <>
+                Couldn't deliver to this
+                <br />
+                email address.
+              </>,
+              "Please check your email address and try again.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "complained") {
+            showResponse(
+              "error",
+              <>
+                Couldn't complete the
+                <br />
+                request.
+              </>,
+              "Please try again later.",
+            );
+
+            resetTurnstile();
+            return;
+          }
+
+          if (status === "delivered") {
+            clearForm();
+
+            showResponse(
+              "success",
+              <>
+                Message sent
+                <br />
+                successfully
+              </>,
+              `Thank you ${firstName}. I'll get back to you soon. Reference: ${mailRef}`,
+            );
+
+            return;
+          }
+        }
+      } catch {}
+
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+
+    showResponse(
+      "error",
+      <>
+        We're still processing
+        <br />
+        your message
+      </>,
+      "Your message was submitted, but we couldn't confirm email delivery yet. Please try again later.",
+    );
+
+    resetTurnstile();
   };
 
   const submitForm = async () => {
@@ -281,6 +385,7 @@ export default function ContactForm({ onResponseStatusChange }) {
     }
 
     const ref = generateRef();
+    const firstName = form.firstName;
 
     showResponse("loading", "", "");
 
@@ -304,13 +409,8 @@ export default function ContactForm({ onResponseStatusChange }) {
           reason:
             reasons.find((r) => r.value === form.reason)?.label || form.reason,
           teamSize:
-            {
-              solo: "Just me",
-              small: "2 - 10 people",
-              medium: "11 - 50 people",
-              large: "51 - 200 people",
-              enterprise: "200+ people",
-            }[form.teamSize] || form.teamSize,
+            teamSizeOptions.find((item) => item.value === form.teamSize)
+              ?.label || form.teamSize,
           message: form.message || "No message provided",
           turnstile_token: turnstileToken,
         }),
@@ -330,27 +430,11 @@ export default function ContactForm({ onResponseStatusChange }) {
         );
       }
 
-      showResponse(
-        "success",
-        <>
-          Message sent
-          <br />
-          successfully
-        </>,
-        `${
-          data.message ||
-          `Thank you ${form.firstName}. I'll get back to you soon.`
-        } Reference: ${ref}`,
-      );
-
-      setForm(initialForm);
-      setSubmitted(false);
-      setErrors({});
-      setTurnstileToken("");
-
-      turnstileRef.current?.reset();
+      await checkEmailStatus(ref, firstName);
     } catch (error) {
       const isNetworkError = error instanceof TypeError || !navigator.onLine;
+
+      resetTurnstile();
 
       if (isNetworkError) {
         showResponse(
@@ -375,9 +459,6 @@ export default function ContactForm({ onResponseStatusChange }) {
             : "Failed to send your message",
         );
       }
-
-      setTurnstileToken("");
-      turnstileRef.current?.reset();
     }
   };
 
@@ -470,13 +551,7 @@ export default function ContactForm({ onResponseStatusChange }) {
           value={form.teamSize}
           required
           onChange={handleChange("teamSize")}
-          options={[
-            { value: "solo", label: "Just me" },
-            { value: "small", label: "2 - 10 people" },
-            { value: "medium", label: "11 - 50 people" },
-            { value: "large", label: "51 - 200 people" },
-            { value: "enterprise", label: "200+ people" },
-          ]}
+          options={teamSizeOptions}
           placeholder="Select team size"
           error={submitted ? errors.teamSize : ""}
         />
@@ -532,13 +607,24 @@ export default function ContactForm({ onResponseStatusChange }) {
         error={submitted ? errors.message : ""}
       />
 
-      <div className={styles.turnstileWrapper}>
+      <div
+        className={styles.turnstileWrapper}
+        style={{
+          display: turnstileToken ? "none" : "flex",
+        }}
+      >
         <Turnstile
           ref={turnstileRef}
           siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-          onSuccess={(token) => setTurnstileToken(token)}
-          onExpire={() => setTurnstileToken("")}
-          onError={() => setTurnstileToken("")}
+          onSuccess={(token) => {
+            setTurnstileToken(token);
+          }}
+          onExpire={() => {
+            setTurnstileToken("");
+          }}
+          onError={() => {
+            setTurnstileToken("");
+          }}
           options={{
             theme: "light",
             size: "flexible",

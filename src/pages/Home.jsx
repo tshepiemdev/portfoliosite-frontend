@@ -155,9 +155,8 @@ export default function Home() {
       <SubscribeLabel
         heading={
           <>
-            Articles of inspiration, <br />
-            detailed tutorials, news <br />
-            and all engineering
+            Subscribe now, <br />
+            It's completely free
           </>
         }
         text={
