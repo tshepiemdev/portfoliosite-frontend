@@ -4,12 +4,13 @@ import useModal from "../hooks/useModal";
 import styles from "../styles/ImagePreviewModal.module.css";
 import closeImg from "../assets/icons/close.svg";
 import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
-import StarImg from "../assets/icons/logo.svg";
 import ArrowImg from "../assets/icons/chevron-down.svg";
 import ReportIcon from "../assets/icons/menu-dots.svg";
 import OptionsMenu from "./OptionsMenu";
 import ShareSiteModal from "../components/ShareSiteModal";
 import Logo from "./Logo";
+
+const modalRoot = document.getElementById("modal-root");
 
 export default function ImagePreviewModal({
   src,
@@ -29,7 +30,6 @@ export default function ImagePreviewModal({
 
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -50,19 +50,31 @@ export default function ImagePreviewModal({
 
     setScale(1);
     setPosition({ x: 0, y: 0 });
+    setDragging(false);
+    lastDistance.current = null;
+    lastTouch.current = null;
   }, [src, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+
       if (currentImage === null) return;
 
       if (e.key === "ArrowRight" && !isLast) {
+        setScale(1);
+        setPosition({ x: 0, y: 0 });
         onNext?.();
       }
 
       if (e.key === "ArrowLeft" && !isFirst) {
+        setScale(1);
+        setPosition({ x: 0, y: 0 });
         onPrev?.();
       }
     };
@@ -72,13 +84,14 @@ export default function ImagePreviewModal({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, currentImage, isFirst, isLast, onNext, onPrev]);
+  }, [isOpen, currentImage, isFirst, isLast, close, onNext, onPrev]);
 
   const handleCloseMenu = () => {
     setIsMenuOpen(false);
   };
 
   const handleOpenShare = () => {
+    setIsMenuOpen(false);
     setIsShareOpen(true);
   };
 
@@ -195,6 +208,7 @@ export default function ImagePreviewModal({
 
     setScale(1);
     setPosition({ x: 0, y: 0 });
+    setDragging(false);
 
     onPrev?.();
   };
@@ -204,20 +218,19 @@ export default function ImagePreviewModal({
 
     setScale(1);
     setPosition({ x: 0, y: 0 });
+    setDragging(false);
 
     onNext?.();
   };
 
-  if (!shouldRender || !src) return null;
-
-  const modalRoot = document.getElementById("modal-root");
-  if (!modalRoot) return null;
+  if (!shouldRender || !src || !modalRoot) return null;
 
   return createPortal(
     <div
       className={styles.overlay}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
     >
       <div
         className={styles.backdrop}
@@ -239,8 +252,8 @@ export default function ImagePreviewModal({
         onTouchEnd={handleTouchEnd}
         draggable={false}
         onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = bigFallbackImg;
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = bigFallbackImg;
         }}
       />
 
@@ -249,9 +262,10 @@ export default function ImagePreviewModal({
           type="button"
           className={styles.closeBtn}
           onClick={close}
-          title="close"
+          title="Close"
+          aria-label="Close image preview"
         >
-          <img className={styles.closeImg} src={closeImg} alt="close" />
+          <img className={styles.closeImg} src={closeImg} alt="" />
         </button>
 
         {hasImages && (
@@ -271,16 +285,20 @@ export default function ImagePreviewModal({
           type="button"
           className={styles.optionsBtn}
           onClick={() => setIsMenuOpen(true)}
-          title="options"
+          title="Options"
+          aria-label="Image options"
         >
-          <img className={styles.optionsImg} src={ReportIcon} alt="options" />
+          <img className={styles.optionsImg} src={ReportIcon} alt="" />
         </button>
       </div>
 
       <div className={styles.bottomWrapper}>
         <div className={styles.wrapper}>
           <Logo isClickable={false} />
-          <span className={styles.labelling}>Image <span>Preview</span></span>
+
+          <span className={styles.labelling}>
+            Image <span>Preview</span>
+          </span>
         </div>
 
         <div className={styles.wrapper}>
@@ -291,12 +309,9 @@ export default function ImagePreviewModal({
                 className={`${styles.navBtn} ${styles.navLeft}`}
                 onClick={handlePrev}
                 disabled={isFirst}
+                aria-label="Previous image"
               >
-                <img
-                  className={styles.arrowImg}
-                  src={ArrowImg}
-                  alt="previous"
-                />
+                <img className={styles.arrowImg} src={ArrowImg} alt="" />
               </button>
 
               <button
@@ -304,8 +319,9 @@ export default function ImagePreviewModal({
                 className={`${styles.navBtn} ${styles.navRight}`}
                 onClick={handleNext}
                 disabled={isLast}
+                aria-label="Next image"
               >
-                <img className={styles.arrowImg} src={ArrowImg} alt="next" />
+                <img className={styles.arrowImg} src={ArrowImg} alt="" />
               </button>
             </div>
           )}

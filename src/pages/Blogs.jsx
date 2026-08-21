@@ -182,7 +182,7 @@ export default function Blogs() {
         title="Blog"
         image={ogImages.blog}
         description="Fresh tutorials, engineering insights, tech news and personal vlogs."
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={window.location.href}
         keywords="developer blog, software development, programming tutorials, coding, web development, technology articles"
         siteName=""
       />

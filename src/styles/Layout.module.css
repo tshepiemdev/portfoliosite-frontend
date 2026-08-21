@@ -46,6 +46,26 @@ html {
   scroll-behavior: smooth;
 }
 
+html.modal-open,
+body.modal-open,
+.layout.modal-open {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.modal-open::-webkit-scrollbar,
+body.modal-open::-webkit-scrollbar,
+.layout.modal-open::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+}
+
 .layout {
   scroll-behavior: smooth;
   font-family: "Inter", interFont, sans-serif;
@@ -66,6 +86,10 @@ html {
   position: relative;
 }
 
+.layout.modal-open {
+  overflow: hidden !important;
+}
+
 .content {
   width: 100%;
   height: fit-content;
@@ -74,4 +98,319 @@ html {
   justify-content: start;
   align-items: start;
   padding-bottom: 6rem;
+}
+
+.overlay {
+  width: 100%;
+  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99998;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease;
+  background-color: rgba(0, 0, 0, 0.888);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  touch-action: auto;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(4);
+  filter: blur(48px) brightness(0.2);
+  -webkit-filter: blur(48px) brightness(0.2);
+  z-index: 1;
+  will-change: transform;
+}
+
+.labelling {
+  font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.labelling span {
+  opacity: 0.5;
+}
+
+.header {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  height: fit-content;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.header::after {
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+}
+
+.bottomWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  height: fit-content;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.bottomWrapper::after {
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper:first-child {
+  align-items: start;
+}
+
+.buttonsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+  margin-left: auto;
+}
+
+.starImg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.imagePositionLbl {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: white;
+  opacity: 0.8;
+}
+
+.image {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  max-height: 80%;
+  object-fit: contain;
+  animation: zoomIn 0.25s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  cursor: grab;
+  touch-action: none;
+  transform-origin: center center;
+}
+
+.image:active {
+  cursor: grabbing;
+}
+
+.closeBtn,
+.optionsBtn {
+  background-color: transparent;
+  border: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+}
+
+.optionsBtn {
+  margin-left: auto;
+}
+
+.closeImg {
+  filter: invert(1);
+  width: 1rem;
+  height: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.optionsImg {
+  filter: invert(1);
+  width: 1.4rem;
+  height: 1.4rem;
+  transition: opacity 0.2s ease;
+}
+
+.closeImg:hover,
+.optionsImg:hover {
+  opacity: 0.5;
+}
+
+.navWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: auto;
+}
+
+.navBtn {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 16rem;
+  padding: 0.2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.navBtn:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1);
+}
+
+.navBtn:active {
+  transform: scale(1.01);
+}
+
+.navBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.navBtn:disabled:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.arrowImg {
+  width: 100%;
+  height: 100%;
+  filter: invert(0);
+  opacity: 0.5;
+}
+
+.navLeft .arrowImg {
+  transform: rotate(90deg);
+}
+
+.navRight .arrowImg {
+  transform: rotate(-90deg);
+}
+
+.navLeft,
+.navRight {
+  cursor: pointer;
+}
+
+.indicatorsWrapper {
+  border-radius: 16rem;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.indicatorDot {
+  flex: 1 2rem;
+  width: 2rem;
+  height: 0.2rem;
+  border-radius: 16rem;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.activeDot {
+  background: white;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .label {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .minilabel {
+    width: 100%;
+    font-size: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .label {
+    width: 90%;
+    font-size: 2rem;
+  }
+
+  .minilabel {
+    width: 90%;
+    font-size: 1.2rem;
+  }
 }

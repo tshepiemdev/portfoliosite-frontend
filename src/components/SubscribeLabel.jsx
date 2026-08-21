@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "../styles/SubscribeLabel.module.css";
 import LogoImg from "../assets/icons/logo-white.svg";
 import Modal from "./Modal";
@@ -10,6 +11,10 @@ import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 export default function SubscribeLabel({ heading, marginTop }) {
   const [open, setOpen] = useState(false);
   const [disableClose, setDisableClose] = useState(false);
+  const location = useLocation();
+
+  const isBlogPage =
+    location.pathname === "/blog" || location.pathname.startsWith("/blog/");
 
   return (
     <div className={styles.wrapper} style={{ marginTop: `${marginTop}rem` }}>
@@ -26,14 +31,7 @@ export default function SubscribeLabel({ heading, marginTop }) {
                 type="button"
                 onClick={() => setOpen(true)}
               >
-                <span>
-                  Subscribe
-                  {/* <img
-                    className={styles.arrowUpIcon}
-                    src={arrowUp}
-                    alt="subscribe"
-                  /> */}
-                </span>
+                <span>Subscribe</span>
               </button>{" "}
               to receive new blogs,
               <br />
@@ -41,7 +39,9 @@ export default function SubscribeLabel({ heading, marginTop }) {
             </p>
           </div>
 
-          <BtnCTAWhiteSmall buttonText={"Read articles"} href={"/blog"} />
+          {!isBlogPage && (
+            <BtnCTAWhiteSmall buttonText="Read articles" href="/blog" />
+          )}
         </div>
       )}
 

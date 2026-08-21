@@ -284,10 +284,10 @@ export default function ProjectPage() {
               <h4 className={styles.mainLabel}>{project.role || "N/A"}</h4>
             </div>
 
-            <div className={styles.box}>
+            {/* <div className={styles.box}>
               <p className={styles.label}>Team size</p>
               <h4 className={styles.mainLabel}>{project.teamSize || "N/A"}</h4>
-            </div>
+            </div> */}
           </div>
 
           <ShareWith

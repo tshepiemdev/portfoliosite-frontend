@@ -234,10 +234,24 @@ export default function ServicePage() {
                 </li>
               )}
 
+              {service.session && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Session Type</p>
+                  <p className={styles.rate}>{service.session}</p>
+                </li>
+              )}
+
               {service.timeline && (
                 <li className={styles.serviceSpecLi}>
                   <p className={styles.label}>Timeline</p>
                   <p className={styles.rate}>{service.timeline}</p>
+                </li>
+              )}
+
+              {service.location && (
+                <li className={styles.serviceSpecLi}>
+                  <p className={styles.label}>Location</p>
+                  <p className={styles.rate}>{service.location}</p>
                 </li>
               )}
             </ul>

@@ -55,6 +55,6 @@
 
   .reviewsList {
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   }
 }

@@ -163,6 +163,7 @@ export default function MeetWrapper() {
               onError={(e) => {
                 e.target.src = bigFallbackImg;
               }}
+              
             />
           </div>
 

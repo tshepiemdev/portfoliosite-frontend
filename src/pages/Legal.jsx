@@ -69,7 +69,7 @@ export default function Legal() {
         title="Legal"
         description="Explore legal information resources concerning products and provided services."
         image={ogImages.legal}
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={window.location.href}
         keywords="legal information, privacy policy, terms of service, business policies, tshepiem.dev"
         siteName=""
       />

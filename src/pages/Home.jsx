@@ -1,4 +1,3 @@
-import { useEffect, useState, useRef } from "react";
 import styles from "../styles/Home.module.css";
 import PageHelmet from "../components/PageHelmet";
 import LandingSection from "../components/LandingSection";
@@ -6,7 +5,6 @@ import SkillListingWrapper from "../components/SkillListingWrapper";
 import QualificationsWrapper from "../components/QualificationsWrapper";
 import ProjectsWrapper from "../components/ProjectsWrapper";
 import ExperienceWrapper from "../components/ExperienceWrapper";
-import SectionDevider from "../components/SectionDevider";
 import OverlayAdvertisement from "../components/OverlayAdvertisement";
 import ReviewsListingWrapper from "../components/ReviewsListingWrapper";
 import HeroBentoWrapper from "../components/HeroBentoWrapper";
@@ -18,6 +16,7 @@ import SectionHeading from "../components/SectionHeading";
 import ogImages from "../config/ogImages";
 import SubscribeLabel from "../components/SubscribeLabel";
 import contactInfo from "../config/contactInfo";
+import LazySection from "../components/LazySection";
 
 export default function Home() {
   return (
@@ -43,7 +42,7 @@ export default function Home() {
         <div className={styles.wrapper}>
           <div className={styles.titlesWrapper}>
             <SectionHeading
-              badgeText={"Hello"}
+              badgeText="Hello"
               title={
                 <>
                   Meet tshepang,
@@ -55,17 +54,19 @@ export default function Home() {
           </div>
 
           <div className={styles.actionsWrapper}>
-            <BtnCTABlack buttonText={"Learn more"} focusTo={"skills"} />
-            <BtnCTAWhite buttonText="Get resume" href={"/resume"} />
+            <BtnCTABlack buttonText="Learn more" focusTo="skills" />
+            <BtnCTAWhite buttonText="Get resume" href="/resume" />
           </div>
         </div>
 
-        <MeetWrapper />
+        <LazySection minHeight="400px">
+          <MeetWrapper />
+        </LazySection>
       </section>
 
       <section id="skills" className={styles.section}>
         <SectionHeading
-          badgeText={"Skills"}
+          badgeText="Skills"
           title={
             <>
               Skills, tools & <br />
@@ -73,14 +74,17 @@ export default function Home() {
             </>
           }
         />
-        <SkillListingWrapper />
+
+        <LazySection minHeight="400px">
+          <SkillListingWrapper />
+        </LazySection>
       </section>
 
       <section id="projects" className={styles.section}>
         <div className={styles.wrapper}>
           <div className={styles.titlesWrapper}>
             <SectionHeading
-              badgeText={"Projects"}
+              badgeText="Projects"
               title={
                 <>
                   Builds, deployments <br />& project releases.
@@ -90,9 +94,9 @@ export default function Home() {
           </div>
 
           <div className={styles.actionsWrapper}>
-            <BtnCTABlack buttonText="Browse all" href={"/projects"} />
+            <BtnCTABlack buttonText="Browse all" href="/projects" />
             <BtnCTAWhite
-              buttonText={"Repositories"}
+              buttonText="Repositories"
               href={
                 contactInfo.social.find((social) => social.name === "GitHub")
                   ?.url
@@ -101,12 +105,14 @@ export default function Home() {
           </div>
         </div>
 
-        <ProjectsWrapper marginTop={1} showBar={true} limit={3} />
+        <LazySection minHeight="600px">
+          <ProjectsWrapper marginTop={1} showBar={true} limit={3} />
+        </LazySection>
       </section>
 
       <section id="qualifications" className={styles.section}>
         <SectionHeading
-          badgeText={"Qualifications"}
+          badgeText="Qualifications"
           title={
             <>
               Continuous professional <br />
@@ -115,12 +121,14 @@ export default function Home() {
           }
         />
 
-        <QualificationsWrapper />
+        <LazySection minHeight="500px">
+          <QualificationsWrapper />
+        </LazySection>
       </section>
 
       <section id="experience" className={styles.section}>
         <SectionHeading
-          badgeText={"experience"}
+          badgeText="experience"
           title={
             <>
               Professional work <br />
@@ -129,12 +137,14 @@ export default function Home() {
           }
         />
 
-        <ExperienceWrapper />
+        <LazySection minHeight="500px">
+          <ExperienceWrapper />
+        </LazySection>
       </section>
 
       <section id="reviews" className={styles.reviewsSection}>
         <SectionHeading
-          badgeText={"reviews"}
+          badgeText="reviews"
           title={
             <>
               What people say <br />
@@ -146,35 +156,38 @@ export default function Home() {
         />
 
         <BtnCTAWhite
-          buttonText={"Leave a review"}
-          href={"/contact?reason=review"}
+          buttonText="Leave a review"
+          href="/contact?reason=review"
         />
-        <ReviewsListingWrapper />
-      </section>
 
-      <SubscribeLabel
-        heading={
-          <>
-            Subscribe now, <br />
-            It's completely free
-          </>
-        }
-        text={
-          <>
-            to receive new <br />
-            blogs, directly into your inbox.
-          </>
-        }
-        marginTop={4}
-      />
+        <LazySection minHeight="500px">
+          <ReviewsListingWrapper />
+        </LazySection>
+      </section>
 
       <section className={styles.subFooterSectionWrapper}>
-        <LargeBanner />
+        <LazySection minHeight="500px">
+          <LargeBanner />
+        </LazySection>
       </section>
 
-      <section className={styles.bentoImagesSectionWrapper}>
-        <HeroBentoWrapper />
-      </section>
+      <LazySection minHeight="400px">
+        <SubscribeLabel
+          heading={
+            <>
+              Subscribe now, <br />
+              It's completely free
+            </>
+          }
+          text={
+            <>
+              to receive new <br />
+              blogs, directly into your inbox.
+            </>
+          }
+          marginTop={4}
+        />
+      </LazySection>
     </main>
   );
 }

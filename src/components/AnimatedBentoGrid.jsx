@@ -2,9 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "../styles/AnimatedBentoGrid.module.css";
 import API_URL from "../config/api";
-import Logo from "./Logo";
 import DefaultBentoImage from "../assets/images/fallback_img_16_9_light.svg";
-import nextImg from "../assets/icons/chevron-right.svg";
 import LogoIcon from "./LogoIcon";
 
 const fallbackImages = Array.from({ length: 9 }, (_, i) => ({
@@ -106,7 +104,7 @@ export default function AnimatedBentoGrid({
         <div className={styles.overlay}>
           {showLinkTo && (
             <div className={styles.blurWrapper}>
-              <LogoIcon iconColor="white" size={2.2} />
+              <LogoIcon size={2.2} />
               <span className={styles.span}>Blog</span>
             </div>
           )}

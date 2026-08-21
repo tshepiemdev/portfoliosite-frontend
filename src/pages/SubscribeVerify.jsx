@@ -104,7 +104,7 @@ export default function SubscribeVerify({ onSuccess }) {
             : "Confirm your subscription to receive new articles from tshepiem.dev."
         }
         robots="noindex, nofollow"
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={window.location.href}
         siteName=""
       />
 

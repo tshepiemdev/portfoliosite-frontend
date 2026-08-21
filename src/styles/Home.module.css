@@ -71,13 +71,14 @@
 
 .subFooterSectionWrapper {
   scroll-margin-top: 3rem;
+  margin: 6rem 0;
   height: fit-content;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 0;
+  padding: 0;
 }
 
 .wrapper {

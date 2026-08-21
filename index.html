@@ -75,9 +75,23 @@
         font-style: normal;
       }
 
+      html.modal-open,
       body.modal-open {
-        overflow: hidden;
-        height: 100%;
+        overflow: hidden !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+
+      html.modal-open::-webkit-scrollbar,
+      body.modal-open::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+
+      body.modal-open {
+        height: 100dvh !important;
+        overscroll-behavior: none;
       }
 
       body {
@@ -91,6 +105,11 @@
         justify-content: center;
         align-items: center;
         background-color: #000000;
+      }
+
+      #modal-root {
+        position: relative;
+        z-index: 99998;
       }
 
       .loaderView {

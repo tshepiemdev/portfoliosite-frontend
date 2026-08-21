@@ -53,6 +53,7 @@ function Project({
             e.target.src = smallFallbackImg;
           }}
           loading="lazy"
+          decoding="async"
         />
 
         <div className={styles.overlaysWrapper}></div>

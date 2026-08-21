@@ -30,6 +30,8 @@ export default function ReviewBentoBox({
               e.target.onerror = null;
               e.target.src = smallFallbackImg;
             }}
+            loading="lazy"
+            decoding="async"
           />
 
           <div className={styles.overlay}>

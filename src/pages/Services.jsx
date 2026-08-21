@@ -88,7 +88,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
         title="Services"
         image={ogImages.services}
         description="Building solutions for start-ups, medium and large-scale enterprise clients."
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={window.location.href}
         keywords="developer services, website development, web applications, mobile apps, software solutions, Tshepiem Dev"
         siteName=""
       />

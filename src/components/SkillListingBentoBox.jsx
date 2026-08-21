@@ -21,6 +21,8 @@ export default function SkillListingBentoBox({
               e.target.onerror = null;
               e.target.src = smallFallbackImg;
             }}
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
