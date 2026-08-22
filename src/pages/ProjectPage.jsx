@@ -179,12 +179,21 @@ export default function ProjectPage() {
 
   const statusImage = statusImages[status.toLowerCase()] || null;
 
+  const projectImages = project.projectImages || [];
+
   const activeImage =
-    selectedIndex !== null
-      ? project.projectImages?.[selectedIndex]
-      : selectedImage;
+    selectedIndex !== null ? projectImages[selectedIndex] : selectedImage;
 
   const isModalOpen = !!activeImage;
+
+  const modalImages =
+    selectedIndex !== null
+      ? projectImages
+      : selectedImage
+        ? [selectedImage]
+        : [];
+
+  const modalImageIndex = selectedIndex !== null ? selectedIndex : 0;
 
   const shareOptions = getShareOptions({
     siteUrl,
@@ -221,6 +230,7 @@ export default function ProjectPage() {
                 alt={project.projectName}
                 onClick={() => {
                   if (!project.projectIcon) return;
+
                   setSelectedIndex(null);
                   setSelectedImage(project.projectIcon);
                 }}
@@ -283,11 +293,6 @@ export default function ProjectPage() {
               <p className={styles.label}>Role</p>
               <h4 className={styles.mainLabel}>{project.role || "N/A"}</h4>
             </div>
-
-            {/* <div className={styles.box}>
-              <p className={styles.label}>Team size</p>
-              <h4 className={styles.mainLabel}>{project.teamSize || "N/A"}</h4>
-            </div> */}
           </div>
 
           <ShareWith
@@ -297,31 +302,42 @@ export default function ProjectPage() {
           />
         </div>
 
-        <div className={styles.projectImagesWrapper}>
-          {(project.projectImages || []).map((item, index) => (
-            <div key={index} className={styles.projectImgWrapper}>
-              <img
-                className={styles.projectImg}
-                src={item || bigFallbackImg}
-                alt={project.projectName}
-                onClick={() => {
-                  const img = project.projectImages?.[index];
-                  if (!img) return;
-
-                  setSelectedImage(null);
-                  setSelectedIndex(index);
-                }}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = bigFallbackImg;
-                }}
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-
         <div className={styles.detailedSection}>
+          <div className={styles.sectionBlock}>
+            <div className={styles.container}>
+              <div className={styles.textsWrapper}>
+                <h3 className={styles.miniHeaderL}>Images</h3>
+                <p className={styles.miniSubtext}>
+                  Production and developement <br />
+                  snapshot. Tap to preview.
+                </p>
+              </div>
+
+              <div className={styles.projectImagesWrapper}>
+                {projectImages.map((item, index) => (
+                  <div key={index} className={styles.projectImgWrapper}>
+                    <img
+                      className={styles.projectImg}
+                      src={item || bigFallbackImg}
+                      alt={project.projectName}
+                      onClick={() => {
+                        if (!item) return;
+
+                        setSelectedImage(null);
+                        setSelectedIndex(index);
+                      }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = bigFallbackImg;
+                      }}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className={styles.sectionBlock}>
             <h3 className={styles.miniHeader}>
               <img
@@ -375,7 +391,7 @@ export default function ProjectPage() {
               </div>
             ) : (
               <NoticeLbl
-                title={"Note"}
+                title="Note"
                 text={
                   "Repository is not publicly available. Project is currently in " +
                   finalBadgeText +
@@ -408,7 +424,7 @@ export default function ProjectPage() {
               </div>
             ) : (
               <NoticeLbl
-                title={"Note"}
+                title="Note"
                 text={
                   "Live deployment is not available. Project is currently in " +
                   finalBadgeText +
@@ -430,25 +446,36 @@ export default function ProjectPage() {
         alt={project.projectName}
         pageName={project.projectName}
         imageDescription={project.projectShortDescription}
+        images={modalImages}
         isOpen={isModalOpen}
         onClose={() => {
           setSelectedImage(null);
           setSelectedIndex(null);
         }}
-        currentImage={selectedIndex}
-        totalImages={(project.projectImages || []).length}
+        currentImage={modalImageIndex}
+        totalImages={modalImages.length}
+        onSelectImage={(index) => {
+          if (selectedIndex === null) return;
+
+          const image = projectImages[index];
+
+          if (!image) return;
+
+          setSelectedIndex(index);
+          setSelectedImage(null);
+        }}
         onNext={() => {
+          if (selectedIndex === null) return;
+
           setSelectedIndex((prev) => {
-            const images = project.projectImages || [];
-
-            if (!images.length) return null;
-
-            const last = images.length - 1;
+            const last = projectImages.length - 1;
 
             return prev < last ? prev + 1 : prev;
           });
         }}
         onPrev={() => {
+          if (selectedIndex === null) return;
+
           setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
         }}
       />

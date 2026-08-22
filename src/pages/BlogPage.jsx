@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToast } from "../components/ToastContext";
 import { useParams, Link } from "react-router-dom";
 import { slugify } from "../utils/slugify";
@@ -38,7 +38,6 @@ export default function BlogPage() {
   const [showFloatingNav, setShowFloatingNav] = useState(true);
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const addView = async (blogSlug) => {
     try {
@@ -139,7 +138,9 @@ export default function BlogPage() {
     observer.observe(detailsRef.current);
 
     return () => {
-      if (detailsRef.current) observer.unobserve(detailsRef.current);
+      if (detailsRef.current) {
+        observer.unobserve(detailsRef.current);
+      }
     };
   }, [blog]);
 
@@ -215,6 +216,18 @@ export default function BlogPage() {
     }
   };
 
+  const handleAuthorImageClick = () => {
+    if (!blog?.authorProfileImg) return;
+
+    setSelectedImage(blog.authorProfileImg);
+  };
+
+  const handleBlogImageClick = (image) => {
+    if (!image) return;
+
+    setSelectedImage(image);
+  };
+
   const shareOptions = getShareOptions({
     siteUrl,
     siteName: blog.title,
@@ -252,6 +265,10 @@ export default function BlogPage() {
             authorName={blog.author}
             authorPic={blog.authorProfileImg}
             totalReadTime={readTime}
+            onAuthorImageClick={(image) => {
+              setSelectedImage(image);
+              setSelectedIndex(null);
+            }}
           />
         </div>
 
@@ -260,7 +277,7 @@ export default function BlogPage() {
             className={styles.blogImg}
             src={blog.imageUrl || bigFallbackImg}
             alt={blog.title}
-            onClick={() => setSelectedImage(blog.imageUrl)}
+            onClick={() => handleBlogImageClick(blog.imageUrl)}
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
@@ -312,7 +329,7 @@ export default function BlogPage() {
                     className={styles.sectionImage}
                     src={sec.sectionImage || bigFallbackImg}
                     alt={blog.title}
-                    onClick={() => setSelectedImage(sec.sectionImage)}
+                    onClick={() => handleBlogImageClick(sec.sectionImage)}
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
@@ -377,40 +394,15 @@ export default function BlogPage() {
       />
 
       <ImagePreviewModal
-        src={
-          selectedIndex !== null
-            ? blog?.imageUrl?.[selectedIndex]
-            : selectedImage
-        }
+        src={selectedImage}
         alt={blog?.title}
         pageName={blog?.title}
         imageDescription={blog?.excerpt}
-        isOpen={selectedIndex !== null || !!selectedImage}
-        onClose={() => {
-          setSelectedImage(null);
-          setSelectedIndex(null);
-        }}
-        currentImage={selectedIndex}
-        totalImages={blog?.imageUrl?.length || 0}
-        onNext={() => {
-          setSelectedIndex((prev) => {
-            if (prev === null) return 0;
-
-            const images = blog?.imageUrl || [];
-            const last = images.length - 1;
-
-            if (last < 0) return null;
-
-            return prev < last ? prev + 1 : prev;
-          });
-        }}
-        onPrev={() => {
-          setSelectedIndex((prev) => {
-            if (prev === null) return 0;
-
-            return prev > 0 ? prev - 1 : prev;
-          });
-        }}
+        images={selectedImage ? [selectedImage] : []}
+        isOpen={!!selectedImage}
+        currentImage={0}
+        totalImages={selectedImage ? 1 : 0}
+        onClose={() => setSelectedImage(null)}
       />
     </div>
   );

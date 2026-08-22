@@ -463,7 +463,10 @@ export default function CvPage() {
         alt={hiMe}
         pageName={hiMe}
         imageDescription={cv?.position}
+        images={selectedImage ? [selectedImage] : []}
         isOpen={!!selectedImage}
+        currentImage={0}
+        totalImages={selectedImage ? 1 : 0}
         onClose={() => setSelectedImage(null)}
       />
 

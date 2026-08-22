@@ -5,12 +5,11 @@ import SkillListingWrapper from "../components/SkillListingWrapper";
 import QualificationsWrapper from "../components/QualificationsWrapper";
 import ProjectsWrapper from "../components/ProjectsWrapper";
 import ExperienceWrapper from "../components/ExperienceWrapper";
-import OverlayAdvertisement from "../components/OverlayAdvertisement";
 import ReviewsListingWrapper from "../components/ReviewsListingWrapper";
 import HeroBentoWrapper from "../components/HeroBentoWrapper";
 import LargeBanner from "../components/LargeBanner";
-import BtnCTAWhite from "../components/BtnCTAWhite";
-import BtnCTABlack from "../components/BtnCTABlack";
+import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
+import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
 import MeetWrapper from "../components/MeetWrapper";
 import SectionHeading from "../components/SectionHeading";
 import ogImages from "../config/ogImages";
@@ -54,8 +53,8 @@ export default function Home() {
           </div>
 
           <div className={styles.actionsWrapper}>
-            <BtnCTABlack buttonText="Learn more" focusTo="skills" />
-            <BtnCTAWhite buttonText="Get resume" href="/resume" />
+            <BtnCTABlackSmall buttonText="Learn more" focusTo="skills" />
+            <BtnCTAWhiteSmall buttonText="Get resume" href="/resume" />
           </div>
         </div>
 
@@ -94,8 +93,8 @@ export default function Home() {
           </div>
 
           <div className={styles.actionsWrapper}>
-            <BtnCTABlack buttonText="Browse all" href="/projects" />
-            <BtnCTAWhite
+            <BtnCTABlackSmall buttonText="Browse all" href="/projects" />
+            <BtnCTAWhiteSmall
               buttonText="Repositories"
               href={
                 contactInfo.social.find((social) => social.name === "GitHub")
@@ -155,7 +154,7 @@ export default function Home() {
           centerContent="center"
         />
 
-        <BtnCTAWhite
+        <BtnCTAWhiteSmall
           buttonText="Leave a review"
           href="/contact?reason=review"
         />

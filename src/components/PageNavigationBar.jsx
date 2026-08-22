@@ -6,7 +6,7 @@ import PopupMenu from "../components/PopupMenu";
 import ShareSiteModal from "../components/ShareSiteModal";
 import menuImg from "../assets/icons/menu-dots.svg";
 
-export default function PageNavigationBar({ showMenu = true }) {
+export default function PageNavigationBar({ showMenu = false }) {
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

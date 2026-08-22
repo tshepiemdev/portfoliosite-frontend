@@ -7,7 +7,6 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-bottom: 1rem;
 }
 
 .navButtonsWrapper {
@@ -45,7 +44,7 @@
   filter: invert(1);
 }
 
-.backBtn{
+.backBtn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,5 +73,3 @@
   filter: invert(1);
   transform: rotate(90deg);
 }
-
-

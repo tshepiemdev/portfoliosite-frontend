@@ -14,24 +14,24 @@
 .loadingCircle,
 .compact {
   background-color: transparent;
-  border: 8px solid #282828;
-  border-top: 8px solid #ffffff;
+  border: 5px solid #282828;
+  border-top: 5px solid #ffffff;
   border-radius: 16rem;
   width: 4rem;
   height: 4rem;
-  animation: spin 1.4s infinite;
+  animation: spin 0.8s infinite;
 }
 
 .dynamic {
   background-color: transparent;
-  border: 8px solid white;
-  border-top: 8px solid blueviolet;
-  border-right: 8px solid orangered;
-  border-bottom: 8px solid greenyellow;
+  border: 5px solid white;
+  border-top: 5px solid blueviolet;
+  border-right: 5px solid orangered;
+  border-bottom: 5px solid greenyellow;
   border-radius: 16rem;
   width: 4rem;
   height: 4rem;
-  animation: spin 1.4s infinite;
+  animation: spin 0.8s infinite;
 }
 
 @keyframes spin {
@@ -51,13 +51,13 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 765px) {
   .loaderView {
     height: 50vh;
   }
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 765px) and (max-width: 1024px) {
   .loaderView {
     height: 30vh;
   }

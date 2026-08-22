@@ -10,9 +10,11 @@ export default function LegalBox({ name, legalFor, link }) {
 
       <div className={styles.metaWrapper}>
         <h2 className={styles.title}>{name}</h2>
+        <p className={styles.for}>
+          Documentaion for {legalFor}{" "}
+          <img className={styles.nextIcon} src={nextIcon} alt="next" />
+        </p>
       </div>
-      
-      <img className={styles.nextIcon} src={nextIcon} alt="next" />
     </Link>
   );
 }

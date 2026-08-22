@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import styles from "../styles/Legal.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
@@ -9,6 +9,8 @@ import API_URL from "../config/api";
 import { slugify } from "../utils/slugify";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
+import starImg from "../assets/icons/logo-black.svg";
+import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 
 export default function Legal() {
   const { settings } = useOutletContext();
@@ -79,10 +81,8 @@ export default function Legal() {
           title={<>Legal</>}
           subtext={
             <>
-              Browse legal information resources <br />
-              concerning products, provided services
-              <br />
-              and affiliated partners.
+              Browse site's and affiliated <br />
+              partners legal resources.
             </>
           }
           textAlign="center"
@@ -102,9 +102,7 @@ export default function Legal() {
             />
           )}
 
-          {!legalUnderMaintenance && loading && (
-            <LoaderView />
-          )}
+          {!legalUnderMaintenance && loading && <LoaderView />}
 
           {!legalUnderMaintenance && !loading && errorType && (
             <ErrorView errType={errorType} onRetry={fetchLegal} />
@@ -131,6 +129,32 @@ export default function Legal() {
             !errorType &&
             myLegal.length > 0 && (
               <div className={styles.legalGridWrapper}>
+                <div className={styles.bento}>
+                  <div className={styles.optionIconWrapper}>
+                    <img
+                      className={styles.optionIcon}
+                      src={starImg}
+                      loading="lazy"
+                    />
+                  </div>
+                  <h2 className={styles.bentoName}>
+                    Centralised space for <br />
+                    legal guidelines and resources
+                  </h2>
+
+                  <p className={styles.description}>
+                    Browse legal information resources <br />
+                    concerning products, provided services
+                    <br />
+                    and affiliated partners.
+                  </p>
+                </div>
+
+                <div className={styles.bento}>
+                  <h4 className={styles.miniHeading}>
+                    All resources <span className={styles.dot}>•</span> <span className={styles.text}>{myLegal.length} listings found</span>
+                  </h4>
+                </div>
                 {myLegal.map((legal) => (
                   <LegalBox
                     key={legal._id}
@@ -139,6 +163,33 @@ export default function Legal() {
                     link={`/legal/${slugify(legal.for + "-" + legal.name)}`}
                   />
                 ))}
+                <div className={styles.bento}>
+                  <div className={styles.optionIconWrapper}>
+                    <img
+                      className={styles.optionIcon}
+                      src={starImg}
+                      loading="lazy"
+                    />
+                  </div>
+                  <h2 className={styles.bentoName}>
+                    Couldn't find what <br />
+                    you were looking for?
+                  </h2>
+
+                  <p className={styles.description}>
+                    It's okay, no need to worry. Head to help center for an
+                    assitance or you may directly contact me at{" "}
+                    <a
+                      className={styles.link}
+                      href="mailto:support@tshepiem.dev"
+                    >
+                      support@tshepiem.dev
+                    </a>{" "}
+                    and I'll get back to you as soon as possible.
+                  </p>
+
+                  <BtnCTAWhiteSmall buttonText={"Head to help center"} href={"/help-center"} />
+                </div>
               </div>
             )}
         </div>

@@ -21,6 +21,7 @@ export default function BlogPageTopTitlesView({
   authorName,
   authorPic,
   totalReadTime,
+  onAuthorImageClick,
 }) {
   const capitalizeFirstLetter = (text) => {
     if (!text) return "";
@@ -60,6 +61,8 @@ export default function BlogPageTopTitlesView({
 
   const publishedAgo = getTimeAgo(publishedAt);
 
+  const authorImage = authorPic?.trim() ? authorPic : myDefaultProfileImage;
+
   return (
     <div className={styles.titlesWrapper}>
       <div className={styles.columnWrapper}>
@@ -84,16 +87,22 @@ export default function BlogPageTopTitlesView({
       <div className={styles.box}>
         <div className={styles.minicontainer}>
           <div className={styles.profileWrapper}>
-            <div className={styles.authorImgWrapper}>
+            <button
+              type="button"
+              className={styles.authorImgWrapper}
+              onClick={() => onAuthorImageClick?.(authorImage)}
+              aria-label={`View ${authorName || "author"} profile image`}
+            >
               <img
                 className={styles.authorImg}
-                src={authorPic?.trim() ? authorPic : myDefaultProfileImage}
-                alt={authorName}
+                src={authorImage}
+                alt={authorName || "Author"}
                 onError={(e) => {
-                  e.target.src = bigFallbackImg;
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = bigFallbackImg;
                 }}
               />
-            </div>
+            </button>
 
             <div className={styles.textsWrapper}>
               <h4 className={styles.author}>
