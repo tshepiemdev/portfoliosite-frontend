@@ -276,13 +276,6 @@ export default function ProjectPage() {
 
           <div className={styles.boxFlex}>
             <div className={styles.box}>
-              <p className={styles.label}>Category</p>
-              <h4 className={styles.mainLabel}>
-                {project.projectCategory || "N/A"}
-              </h4>
-            </div>
-
-            <div className={styles.box}>
               <p className={styles.label}>Ownership</p>
               <h4 className={styles.mainLabel}>
                 {project.projectOwnership || "N/A"}
@@ -290,8 +283,17 @@ export default function ProjectPage() {
             </div>
 
             <div className={styles.box}>
-              <p className={styles.label}>Role</p>
-              <h4 className={styles.mainLabel}>{project.role || "N/A"}</h4>
+              <p className={styles.label}>Year</p>
+              <h4 className={styles.mainLabel}>
+                {project.projectYear || "N/A"}
+              </h4>
+            </div>
+
+            <div className={styles.box}>
+              <p className={styles.label}>Team Size</p>
+              <h4 className={styles.mainLabel}>
+                {project.teamSize === 1 ? "Solo" : project.teamSize || "N/A"}
+              </h4>
             </div>
           </div>
 
