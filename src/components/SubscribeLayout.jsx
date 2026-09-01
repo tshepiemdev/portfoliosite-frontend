@@ -240,7 +240,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         No spam. Unsubscribe anytime.
         <br />
         <Link
-          to="/legal/tshepiemdev-website-blog-subscription-terms"
+          to="/legal/site-blog-subscription-terms"
           className={styles.termsLink}
         >
           Subscription terms

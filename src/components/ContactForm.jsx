@@ -648,14 +648,14 @@ export default function ContactForm({ onResponseStatusChange }) {
         accordance with our{" "}
         <Link
           className={styles.termsLink}
-          to="/legal/tshepiemdev-website-terms-of-use"
+          to="/legal/site-terms-of-use"
         >
           Terms
         </Link>{" "}
         and{" "}
         <Link
           className={styles.termsLink}
-          to="/legal/tshepiemdev-website-privacy-policy"
+          to="/legal/site-privacy-policy"
         >
           Privacy Policy
         </Link>
