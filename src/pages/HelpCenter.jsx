@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "../styles/HelpCenter.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
@@ -27,6 +27,9 @@ import plusImg from "../assets/icons/plus.svg";
 import minusImg from "../assets/icons/minus.svg";
 import handImg from "../assets/icons/hand-wave (1).svg";
 import ogImages from "../config/ogImages";
+import { useLoaderData, useLocation, useRevalidator } from "react-router-dom";
+
+const SITE_URL = "https://tshepiem.dev";
 
 const socialIcons = {
   LinkedIn: linkedInImg,
@@ -164,13 +167,61 @@ const helpBottomOptions = [
   },
 ];
 
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/helpcenters`);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Failed fetching help center");
+    }
+
+    const sections = (data?.data || [])
+      .filter((section) => section.isActive)
+      .sort((a, b) => a.order - b.order)
+      .map((section) => ({
+        ...section,
+        articles: (section.articles || [])
+          .filter((article) => article.isActive)
+          .sort((a, b) => a.order - b.order),
+      }))
+      .filter((section) => section.articles.length > 0);
+
+    return {
+      helpSections: sections,
+      errorType: null,
+    };
+  } catch {
+    return {
+      helpSections: [],
+      errorType: "default",
+    };
+  }
+}
+
 export default function HelpCenter() {
-  const [helpSections, setHelpSections] = useState([]);
+  const location = useLocation();
+  const revalidator = useRevalidator();
+  const { helpSections, errorType } = useLoaderData();
+
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
   const [openCategories, setOpenCategories] = useState({});
+
+  const loading = revalidator.state === "loading";
+  const showSearch = !loading && !errorType;
+  const siteUrl = `${SITE_URL}${location.pathname}`;
+
+  const handleRetry = () => {
+    revalidator.revalidate();
+  };
 
   const toggleCategory = (title) => {
     setOpenCategories((prev) => ({
@@ -178,50 +229,6 @@ export default function HelpCenter() {
       [title]: !prev[title],
     }));
   };
-
-  const fetchHelpCenter = useCallback(async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
-
-      const res = await fetch(`${API_URL}/api/helpcenters`);
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Failed fetching help center");
-      }
-
-      const sections = (data.data || [])
-        .filter((section) => section.isActive)
-        .sort((a, b) => a.order - b.order)
-        .map((section) => ({
-          ...section,
-          articles: (section.articles || [])
-            .filter((article) => article.isActive)
-            .sort((a, b) => a.order - b.order),
-        }))
-        .filter((section) => section.articles.length > 0);
-
-      setHelpSections(sections);
-    } catch (err) {
-      console.error("Help center fetch error:", err);
-
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchHelpCenter();
-  }, [fetchHelpCenter]);
 
   const filteredHelp = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
@@ -250,15 +257,13 @@ export default function HelpCenter() {
     setSearchTerm(typeof value === "string" ? value : searchInput);
   };
 
-  const showSearch = !loading && !errorType;
-
   return (
     <div className={styles.helpCenter}>
       <PageHelmet
         title="Help Center"
         description="Browse help content, documentation, and assistance resources."
         image={ogImages.helpCenter}
-        url={window.location.href}
+        url={siteUrl}
         keywords="help center, documentation, support, tshepiem.dev"
         siteName=""
       />
@@ -321,7 +326,7 @@ export default function HelpCenter() {
               {loading && <LoaderView bg="black" border="none" />}
 
               {!loading && errorType && (
-                <ErrorView errType={errorType} onRetry={fetchHelpCenter} />
+                <ErrorView errType={errorType} onRetry={handleRetry} />
               )}
 
               {!loading && !errorType && filteredHelp.length === 0 && (

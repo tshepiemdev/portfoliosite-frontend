@@ -1,6 +1,5 @@
 import styles from "../styles/MaintenanceView.module.css";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
-import SectionDevider from "../components/SectionDevider";
 import PageTopHeading from "../components/PageTopHeading";
 import LogoImg from "../assets/icons/logo-black.svg";
 
@@ -26,8 +25,9 @@ export default function MaintenanceView({ data, pageName }) {
 
         <div className={styles.wrapper}>
           <h2 className={styles.label}>
-            Please be aware that <span className={styles.spanText}>{pageName}</span>{" "}
-            service is <br />
+            Please be aware that{" "}
+            <span className={styles.spanText}>{pageName}</span> service is{" "}
+            <br />
             currently down for maintenance.
           </h2>
 

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { useOutletContext, useLoaderData, useRevalidator, useLocation } from "react-router-dom";
 import styles from "../styles/Legal.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
@@ -12,58 +11,46 @@ import ogImages from "../config/ogImages";
 import starImg from "../assets/icons/logo-black.svg";
 import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/legals`);
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Failed to fetch legal guidelines");
+    }
+
+    const legalData = (data.data || [])
+      .filter((l) => l.isActive === true)
+      .sort((a, b) => a.order - b.order);
+
+    return { legalData, errorType: null };
+  } catch {
+    return { legalData: [], errorType: "default" };
+  }
+}
+
 export default function Legal() {
   const { settings } = useOutletContext();
+  const location = useLocation();
+  const { legalData: myLegal, errorType } = useLoaderData();
+  const revalidator = useRevalidator();
 
-  const [myLegal, setLegal] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
+  const loading = revalidator.state === "loading";
+  const canonicalUrl = `${SITE_URL}${location.pathname}`;
 
   const legalUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.legal === true;
 
-  const fetchLegal = async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
-
-      const res = await fetch(`${API_URL}/api/legals`);
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Failed to fetch legal guidelines");
-      }
-
-      const legalData = (data.data || [])
-        .filter((l) => l.isActive === true)
-        .sort((a, b) => a.order - b.order);
-
-      setLegal(legalData);
-    } catch (err) {
-      console.log("Fetch error:", err);
-
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchLegal();
-  }, []);
+  const handleRetry = () => revalidator.revalidate();
 
   return (
     <div className={styles.legal}>
@@ -71,7 +58,7 @@ export default function Legal() {
         title="Legal"
         description="Explore legal information resources concerning products and provided services."
         image={ogImages.legal}
-        url={window.location.href}
+        url={canonicalUrl}
         keywords="legal information, privacy policy, terms of service, business policies, tshepiem.dev"
         siteName=""
       />
@@ -105,7 +92,7 @@ export default function Legal() {
           {!legalUnderMaintenance && loading && <LoaderView />}
 
           {!legalUnderMaintenance && !loading && errorType && (
-            <ErrorView errType={errorType} onRetry={fetchLegal} />
+            <ErrorView errType={errorType} onRetry={handleRetry} />
           )}
 
           {!legalUnderMaintenance &&
@@ -120,7 +107,7 @@ export default function Legal() {
                     legal guidelines
                   </>
                 }
-                onRetry={fetchLegal}
+                onRetry={handleRetry}
               />
             )}
 
@@ -131,17 +118,12 @@ export default function Legal() {
               <div className={styles.legalGridWrapper}>
                 <div className={styles.bento}>
                   <div className={styles.optionIconWrapper}>
-                    <img
-                      className={styles.optionIcon}
-                      src={starImg}
-                      loading="lazy"
-                    />
+                    <img className={styles.optionIcon} src={starImg} loading="lazy" />
                   </div>
                   <h2 className={styles.bentoName}>
                     Centralised space for <br />
                     legal guidelines and resources
                   </h2>
-
                   <p className={styles.description}>
                     Browse legal information resources <br />
                     concerning products, provided services
@@ -152,9 +134,11 @@ export default function Legal() {
 
                 <div className={styles.bento}>
                   <h4 className={styles.miniHeading}>
-                    All resources <span className={styles.dot}>•</span> <span className={styles.text}>{myLegal.length} listings found</span>
+                    All resources <span className={styles.dot}>•</span>{" "}
+                    <span className={styles.text}>{myLegal.length} listings found</span>
                   </h4>
                 </div>
+
                 {myLegal.map((legal) => (
                   <LegalBox
                     key={legal._id}
@@ -163,31 +147,23 @@ export default function Legal() {
                     link={`/legal/${slugify(legal.for + "-" + legal.name)}`}
                   />
                 ))}
+
                 <div className={styles.bento}>
                   <div className={styles.optionIconWrapper}>
-                    <img
-                      className={styles.optionIcon}
-                      src={starImg}
-                      loading="lazy"
-                    />
+                    <img className={styles.optionIcon} src={starImg} loading="lazy" />
                   </div>
                   <h2 className={styles.bentoName}>
                     Couldn't find what <br />
                     you were looking for?
                   </h2>
-
                   <p className={styles.description}>
                     It's okay, no need to worry. Head to help center for an
                     assitance or you may directly contact me at{" "}
-                    <a
-                      className={styles.link}
-                      href="mailto:support@tshepiem.dev"
-                    >
+                    <a className={styles.link} href="mailto:support@tshepiem.dev">
                       support@tshepiem.dev
                     </a>{" "}
                     and I'll get back to you as soon as possible.
                   </p>
-
                   <BtnCTAWhiteSmall buttonText={"Head to help center"} href={"/help-center"} />
                 </div>
               </div>

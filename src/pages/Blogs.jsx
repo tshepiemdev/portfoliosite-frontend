@@ -1,5 +1,10 @@
-import { useEffect, useState, useMemo } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useMemo, useState } from "react";
+import {
+  useLoaderData,
+  useOutletContext,
+  useRevalidator,
+  useLocation,
+} from "react-router-dom";
 import styles from "../styles/Blogs.module.css";
 import BlogBox from "../components/BlogBox";
 import LoaderView from "../components/Loader";
@@ -14,64 +19,61 @@ import ogImages from "../config/ogImages";
 import SubscribeLabel from "../components/SubscribeLabel";
 import SearchBar from "../components/SearchBar";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/blogs`);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Oops! Something went wrong");
+    }
+
+    const blogsData = (Array.isArray(data) ? data : data?.data || [])
+      .filter((blog) => blog.isActive === true)
+      .map((blog) => ({
+        ...blog,
+        slug: blog.slug || slugify(blog.title),
+      }));
+
+    return {
+      blogs: blogsData,
+      errorType: null,
+    };
+  } catch {
+    return {
+      blogs: [],
+      errorType: "default",
+    };
+  }
+}
+
 export default function Blogs() {
   const { settings } = useOutletContext();
+  const { blogs: myBlogs, errorType } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
 
-  const [myBlogs, setMyBlogs] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
+
+  const loading = revalidator.state === "loading";
+
+  const canonicalUrl = `${SITE_URL}${location.pathname}`;
 
   const blogsUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.blog === true;
 
-  const fetchBlogs = async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
-
-      const res = await fetch(`${API_URL}/api/blogs`);
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Oops! Something went wrong");
-      }
-
-      const blogsData = (Array.isArray(data) ? data : data?.data || [])
-        .filter((blog) => blog.isActive === true)
-        .map((blog) => ({
-          ...blog,
-          slug: blog.slug || slugify(blog.title),
-        }));
-
-      setMyBlogs(blogsData);
-    } catch (err) {
-      console.log("Fetch error:", err);
-
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
+  const handleRetry = () => revalidator.revalidate();
 
   const categories = useMemo(() => {
     const uniqueCategories = new Map();
@@ -182,7 +184,7 @@ export default function Blogs() {
         title="Blog"
         image={ogImages.blog}
         description="Fresh tutorials, engineering insights, tech news and personal vlogs."
-        url={window.location.href}
+        url={canonicalUrl}
         keywords="developer blog, software development, programming tutorials, coding, web development, technology articles"
         siteName=""
       />
@@ -242,7 +244,7 @@ export default function Blogs() {
 
           {!loading && errorType && !blogsUnderMaintenance && (
             <div className={styles.fullSpan}>
-              <ErrorView errType={errorType} onRetry={fetchBlogs} />
+              <ErrorView errType={errorType} onRetry={handleRetry} />
             </div>
           )}
 
@@ -256,7 +258,7 @@ export default function Blogs() {
                     come back later
                   </>
                 }
-                onRetry={fetchBlogs}
+                onRetry={handleRetry}
               />
             </div>
           )}

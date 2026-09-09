@@ -3,9 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node server.js",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.jsx",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -29,10 +34,13 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "compression": "^1.8.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "express": "^5.2.1",
     "globals": "^16.5.0",
+    "sirv": "^3.0.2",
     "vite": "^7.3.1"
   }
 }

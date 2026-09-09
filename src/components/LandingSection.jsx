@@ -21,6 +21,8 @@ export default function LandingSection() {
             className={styles.badgeIcon}
             src={LogoImg}
             alt="tshepiem.dev, Solutions I've build"
+            width="24px"
+            height="24px"
           />
 
           <p className={styles.message}>Solutions I've build</p>

@@ -15,7 +15,11 @@ export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  const siteUrl = window.location.href;
+  const siteUrl =
+    typeof window !== "undefined"
+      ? window.location.href
+      : "https://tshepiem.dev/";
+
   const shareUrl = imageUrl || siteUrl;
 
   const handleNativeShare = async () => {
@@ -78,7 +82,7 @@ export default function ShareSiteModal({ isOpen, onClose, imageUrl }) {
     },
     {
       icon: messengerImg,
-      name: "Facebook",
+      name: "Messenger",
       url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
         shareUrl,
       )}`,

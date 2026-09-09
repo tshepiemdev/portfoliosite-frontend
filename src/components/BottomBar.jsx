@@ -100,7 +100,10 @@ export default function BottomBar() {
     }
   };
 
-  const siteUrl = window.location.href;
+  const siteUrl =
+    typeof window !== "undefined"
+      ? window.location.href
+      : "https://tshepiem.dev/";
 
   const handleCopyLink = async () => {
     try {

@@ -11,12 +11,13 @@
 }
 
 .loadingCircle {
-  background-color: transparent;
-  border: 8px solid #1a1a1a;
-  border-top: 8px solid #ffffff;
-  border-radius: 16rem;
   width: 4rem;
   height: 4rem;
+  box-sizing: border-box;
+  background: transparent;
+  border: 6px solid #1a1a1a;
+  border-top: 6px solid #ffffff;
+  border-radius: 90rem;
   animation: spin 0.8s infinite;
 }
 

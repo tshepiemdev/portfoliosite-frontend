@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import {
+  useLoaderData,
+  useLocation,
+  useOutletContext,
+  useRevalidator,
+} from "react-router-dom";
 import styles from "../styles/Services.module.css";
 import ServiceBox from "../components/ServiceBox";
 import LoaderView from "../components/Loader";
@@ -11,75 +16,82 @@ import FilterBar from "../components/FilterBar";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/services`);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || `Request failed (${res.status})`);
+    }
+
+    const servicesData = (Array.isArray(data) ? data : data?.data || []).filter(
+      (service) => service.isActive === true,
+    );
+
+    return {
+      services: servicesData,
+      errorType: null,
+    };
+  } catch (err) {
+    if (err instanceof TypeError) {
+      return {
+        services: [],
+        errorType: "server",
+      };
+    }
+
+    return {
+      services: [],
+      errorType: "default",
+    };
+  }
+}
+
 export default function Services({ showFilter = true, marginTop = 0 }) {
   const { settings } = useOutletContext();
+  const { services, errorType } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
 
-  const [services, setServices] = useState([]);
-  const [filteredServices, setFilteredServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const servicesUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.services === true;
 
-  const fetchServices = async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
+  const loading = revalidator.state === "loading";
 
-      const res = await fetch(`${API_URL}/api/services`);
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.message || `Request failed (${res.status})`);
-      }
-
-      const servicesData = (
-        Array.isArray(data) ? data : data?.data || []
-      ).filter((s) => s.isActive === true);
-
-      setServices(servicesData);
-      setFilteredServices(servicesData);
-    } catch (err) {
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchServices();
-  }, []);
+  const filteredServices =
+    selectedCategory === "All"
+      ? services
+      : services.filter(
+          (service) =>
+            service.category?.toLowerCase() === selectedCategory.toLowerCase(),
+        );
 
   const categories = [
     "All",
-    ...new Set(services.map((s) => s.category).filter(Boolean)),
+    ...new Set(services.map((service) => service.category).filter(Boolean)),
   ];
 
   const handleFilterChange = (category) => {
-    if (category === "All") {
-      setFilteredServices(services);
-      return;
-    }
+    setSelectedCategory(category);
+  };
 
-    setFilteredServices(
-      services.filter(
-        (s) => s.category?.toLowerCase() === category.toLowerCase(),
-      ),
-    );
+  const handleRetry = () => {
+    setSelectedCategory("All");
+    revalidator.revalidate();
   };
 
   return (
@@ -88,7 +100,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
         title="Services"
         image={ogImages.services}
         description="Building solutions for start-ups, medium and large-scale enterprise clients."
-        url={window.location.href}
+        url={siteUrl}
         keywords="developer services, website development, web applications, mobile apps, software solutions, Tshepiem Dev"
         siteName=""
       />
@@ -107,16 +119,19 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
             centerContent="center"
           />
 
-          {showFilter && !servicesUnderMaintenance && services.length > 0 && (
-            <div className={styles.filterWrapper}>
-              <FilterBar
-                categories={categories}
-                onFilterChange={handleFilterChange}
-                marginTop={0}
-                marginBottom={2}
-              />
-            </div>
-          )}
+          {showFilter &&
+            !servicesUnderMaintenance &&
+            !errorType &&
+            services.length > 0 && (
+              <div className={styles.filterWrapper}>
+                <FilterBar
+                  categories={categories}
+                  onFilterChange={handleFilterChange}
+                  marginTop={0}
+                  marginBottom={2}
+                />
+              </div>
+            )}
         </div>
 
         <div
@@ -145,7 +160,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
 
           {!servicesUnderMaintenance && !loading && errorType && (
             <div className={styles.fullSpan}>
-              <ErrorView errType={errorType} onRetry={fetchServices} />
+              <ErrorView errType={errorType} onRetry={handleRetry} />
             </div>
           )}
 
@@ -162,7 +177,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
                       listed services
                     </>
                   }
-                  onRetry={fetchServices}
+                  onRetry={handleRetry}
                 />
               </div>
             )}

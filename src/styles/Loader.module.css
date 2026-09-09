@@ -13,22 +13,23 @@
 
 .loadingCircle,
 .compact {
-  background-color: transparent;
-  border: 5px solid #282828;
-  border-top: 5px solid #ffffff;
-  border-radius: 16rem;
   width: 4rem;
   height: 4rem;
+  box-sizing: border-box;
+  background: transparent;
+  border: 6px solid #1a1a1a;
+  border-top: 6px solid #ffffff;
+  border-radius: 90rem;
   animation: spin 0.8s infinite;
 }
 
 .dynamic {
   background-color: transparent;
-  border: 5px solid white;
-  border-top: 5px solid blueviolet;
-  border-right: 5px solid orangered;
-  border-bottom: 5px solid greenyellow;
-  border-radius: 16rem;
+  border: 6px solid white;
+  border-top: 6px solid blueviolet;
+  border-right: 6px solid orangered;
+  border-bottom: 6px solid greenyellow;
+  border-radius: 90rem;
   width: 4rem;
   height: 4rem;
   animation: spin 0.8s infinite;

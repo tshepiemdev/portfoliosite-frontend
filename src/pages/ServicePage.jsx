@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import {
+  Link,
+  useLoaderData,
+  useLocation,
+  useRevalidator,
+} from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/ServicePage.module.css";
 import ServicePageTopTitlesView from "../components/ServicePageTopTitles";
@@ -12,7 +17,6 @@ import logoImg from "../assets/icons/logo.svg";
 import API_URL from "../config/api";
 import contactInfo from "../config/contactInfo";
 import fileIcon from "../assets/icons/folder.svg";
-import nextIcon from "../assets/icons/arrow-up-right.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
 import BadgeImg from "../assets/icons/logo-white.svg";
 import NoticeLbl from "../components/NoticeLbl";
@@ -22,79 +26,90 @@ import ogImages from "../config/ogImages";
 import PageHelmet from "../components/PageHelmet";
 import ErrorMaxView from "../components/ErrorMaxView";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader({ params }) {
+  const { slug } = params;
+
+  try {
+    const [servicesRes, pricingRes] = await Promise.all([
+      fetch(`${API_URL}/api/services`),
+      fetch(`${API_URL}/api/pricings`),
+    ]);
+
+    if (!servicesRes.ok || !pricingRes.ok) {
+      throw new Error("server");
+    }
+
+    let servicesData;
+    let pricingData;
+
+    try {
+      servicesData = await servicesRes.json();
+      pricingData = await pricingRes.json();
+    } catch {
+      throw new Error("server");
+    }
+
+    const services = Array.isArray(servicesData)
+      ? servicesData
+      : servicesData?.data || [];
+
+    const prices = Array.isArray(pricingData)
+      ? pricingData
+      : pricingData?.data || [];
+
+    const found = services.find(
+      (item) => item.slug === slug || slugify(item.name) === slug,
+    );
+
+    if (!found) {
+      return {
+        service: null,
+        pricing: null,
+        notFound: true,
+        error: null,
+      };
+    }
+
+    const matchedPricing = prices.find(
+      (item) => item.type === found.pricingAlias,
+    );
+
+    return {
+      service: found,
+      pricing: matchedPricing || null,
+      notFound: false,
+      error: null,
+    };
+  } catch (err) {
+    return {
+      service: null,
+      pricing: null,
+      notFound: false,
+      error: err instanceof TypeError ? "server" : "default",
+    };
+  }
+}
+
 export default function ServicePage() {
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { personal } = contactInfo;
-  const { slug } = useParams();
-  const [service, setService] = useState(null);
-  const [pricing, setPricing] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(null);
+  const { service, pricing, notFound, error } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
   const { showToast } = useToast();
 
-  const fetchService = async () => {
-    try {
-      setLoading(true);
-      setNotFound(false);
-      setError(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-      const [servicesRes, pricingRes] = await Promise.all([
-        fetch(`${API_URL}/api/services`),
-        fetch(`${API_URL}/api/pricings`),
-      ]);
+  const loading = revalidator.state === "loading";
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
-      if (!servicesRes.ok || !pricingRes.ok) {
-        throw new Error("server");
-      }
-
-      const servicesData = await servicesRes.json();
-      const pricingData = await pricingRes.json();
-
-      const services = Array.isArray(servicesData)
-        ? servicesData
-        : servicesData?.data || [];
-
-      const prices = Array.isArray(pricingData)
-        ? pricingData
-        : pricingData?.data || [];
-
-      const found = services.find(
-        (item) => item.slug === slug || slugify(item.name) === slug,
-      );
-
-      if (!found) {
-        setNotFound(true);
-        return;
-      }
-
-      const matchedPricing = prices.find(
-        (item) => item.type === found.pricingAlias,
-      );
-
-      setService(found);
-      setPricing(matchedPricing);
-    } catch (err) {
-      console.error("Failed to fetch service:", err);
-
-      if (!navigator.onLine) {
-        setError("network");
-      } else {
-        setError("server");
-      }
-    } finally {
-      setLoading(false);
-    }
+  const handleRetry = () => {
+    revalidator.revalidate();
   };
 
-  const siteUrl = typeof window !== "undefined" ? window.location.href : "";
-
-  useEffect(() => {
-    fetchService();
-  }, [slug]);
-
   const handleCopyLink = async () => {
-    const url = window.location.href;
+    const url = `${SITE_URL}${location.pathname}${location.search}`;
 
     try {
       if (navigator.clipboard?.writeText) {
@@ -131,11 +146,11 @@ export default function ServicePage() {
   if (notFound) return <NotFound />;
 
   if (error) {
-    return <ErrorMaxView errType={error} onRetry={fetchService} />;
+    return <ErrorMaxView errType={error} onRetry={handleRetry} />;
   }
 
   if (!service) {
-    return <ErrorMaxView errType="default" onRetry={fetchService} />;
+    return <ErrorMaxView errType="default" onRetry={handleRetry} />;
   }
 
   const starterPackage = pricing?.packages?.find(
@@ -266,6 +281,7 @@ export default function ServicePage() {
               />
               Detailed specifications
             </h3>
+
             <p className={styles.descriptionlabel}>{service.longDescription}</p>
           </div>
 

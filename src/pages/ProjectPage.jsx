@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useRevalidator, useLocation } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import { useToast } from "../components/ToastContext";
 import styles from "../styles/ProjectPage.module.css";
@@ -29,88 +29,77 @@ import NoticeLbl from "../components/NoticeLbl";
 import liveprodImg from "../assets/icons/globe (1).svg";
 import ErrorMaxView from "../components/ErrorMaxView";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader({ params }) {
+  const { slug } = params;
+
+  try {
+    const res = await fetch(`${API_URL}/api/projects`);
+
+    if (!res.ok) {
+      throw new Error("server");
+    }
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("server");
+    }
+
+    const projects = Array.isArray(data) ? data : data?.data || [];
+
+    const found = projects.find(
+      (item) => item.slug === slug || slugify(item.projectName) === slug,
+    );
+
+    if (!found) {
+      return {
+        project: null,
+        notFound: true,
+        error: null,
+      };
+    }
+
+    return {
+      project: found,
+      notFound: false,
+      error: null,
+    };
+  } catch {
+    return {
+      project: null,
+      notFound: false,
+      error: "default",
+    };
+  }
+}
+
 export default function ProjectPage() {
   const { showToast } = useToast();
-  const { slug } = useParams();
+  const { project, notFound, error } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
 
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [views, setViews] = useState(project?.views || 0);
 
   const hasViewed = useRef(false);
 
-  const addView = async (projectSlug) => {
-    try {
-      const res = await fetch(`${API_URL}/api/projects/${projectSlug}/view`, {
-        method: "POST",
-      });
+  const loading = revalidator.state === "loading";
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
-      const data = await res.json();
-
-      if (data.success) {
-        setProject((prev) => ({
-          ...prev,
-          views: data.views,
-        }));
-      }
-    } catch (err) {
-      console.error("Failed to add view", err);
-    }
-  };
-
-  const fetchProject = async () => {
-    try {
-      setLoading(true);
-      setNotFound(false);
-      setError(null);
-
-      const res = await fetch(`${API_URL}/api/projects`);
-
-      if (!res.ok) {
-        throw new Error("server");
-      }
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("server");
-      }
-
-      const projects = Array.isArray(data) ? data : data?.data || [];
-
-      const found = projects.find(
-        (item) => item.slug === slug || slugify(item.projectName) === slug,
-      );
-
-      if (!found) {
-        setNotFound(true);
-        return;
-      }
-
-      setProject(found);
-    } catch (err) {
-      console.error("Failed to fetch project:", err);
-
-      if (!navigator.onLine) {
-        setError("network");
-      } else {
-        setError("server");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    setViews(project?.views || 0);
+  }, [project]);
 
   useEffect(() => {
     hasViewed.current = false;
-    fetchProject();
-  }, [slug]);
+  }, [project?._id]);
 
   useEffect(() => {
     if (!project || hasViewed.current) return;
@@ -121,27 +110,45 @@ export default function ProjectPage() {
 
     hasViewed.current = true;
 
-    const increment = async () => {
-      await addView(project.slug);
-      localStorage.setItem(viewedKey, "true");
+    const addView = async () => {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/projects/${project.slug}/view`,
+          {
+            method: "POST",
+          },
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          setViews(data.views);
+        }
+
+        localStorage.setItem(viewedKey, "true");
+      } catch (err) {
+        console.error("Failed to add view", err);
+      }
     };
 
-    increment();
+    addView();
   }, [project]);
+
+  const handleRetry = () => {
+    revalidator.revalidate();
+  };
 
   if (loading) return <LoaderMaxView />;
 
   if (notFound) return <NotFound />;
 
   if (error) {
-    return <ErrorMaxView errType={error} onRetry={fetchProject} />;
+    return <ErrorMaxView errType={error} onRetry={handleRetry} />;
   }
 
   if (!project) {
-    return <ErrorMaxView errType="default" onRetry={fetchProject} />;
+    return <ErrorMaxView errType="default" onRetry={handleRetry} />;
   }
-
-  const siteUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const handleCopyLink = async () => {
     try {
@@ -297,11 +304,7 @@ export default function ProjectPage() {
             </div>
           </div>
 
-          <ShareWith
-            marginTop={1}
-            options={shareOptions}
-            views={project.views || 0}
-          />
+          <ShareWith marginTop={1} options={shareOptions} views={views} />
         </div>
 
         <div className={styles.detailedSection}>

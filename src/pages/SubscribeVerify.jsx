@@ -8,11 +8,14 @@ import PageTopHeading from "../components/PageTopHeading";
 import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 import LogoImg from "../assets/icons/logo-black.svg";
 
+const SITE_URL = "https://tshepiem.dev";
+
 export default function SubscribeVerify({ onSuccess }) {
   const { token } = useParams();
   const location = useLocation();
 
   const isUnsubscribe = location.pathname.includes("unsubscribe");
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
@@ -71,7 +74,7 @@ export default function SubscribeVerify({ onSuccess }) {
         onSuccess();
       }
     } catch (err) {
-      if (!navigator.onLine) {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
         setErrorType("network");
         setMessage("No internet connection. Please try again.");
       } else if (err instanceof TypeError) {
@@ -104,7 +107,7 @@ export default function SubscribeVerify({ onSuccess }) {
             : "Confirm your subscription to receive new articles from tshepiem.dev."
         }
         robots="noindex, nofollow"
-        url={window.location.href}
+        url={siteUrl}
         siteName=""
       />
 

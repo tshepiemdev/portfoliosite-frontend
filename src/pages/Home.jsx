@@ -24,7 +24,11 @@ export default function Home() {
         title="tshepiem.dev"
         description="Creative developer building scalable, high-performance digital solutions with clean design and efficient engineering."
         image={ogImages.home}
-        url={window.location.href}
+        url={
+          typeof window !== "undefined"
+            ? window.location.href
+            : "https://tshepiem.dev/"
+        }
         keywords="hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa"
         siteName="Creative & Skilled Software Engineer"
       />

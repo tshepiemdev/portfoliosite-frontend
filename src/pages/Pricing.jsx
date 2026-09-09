@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useOutletContext } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import {
+  useLoaderData,
+  useRevalidator,
+  useLocation,
+  useSearchParams,
+  useOutletContext,
+} from "react-router-dom";
 import styles from "../styles/Pricing.module.css";
 import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
@@ -10,112 +16,133 @@ import FilterBar from "../components/FilterBar";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/pricings`);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || `Request failed (${res.status})`);
+    }
+
+    const pricingData = Array.isArray(data?.data) ? data.data : [];
+
+    const flatPackages = pricingData.flatMap((category) =>
+      Array.isArray(category?.packages)
+        ? category.packages
+            .filter((pkg) => pkg?.isActive)
+            .map((pkg) => ({
+              ...pkg,
+              type: category.type,
+            }))
+        : [],
+    );
+
+    const categories = [
+      "All",
+      ...pricingData
+        .filter((category) => category?.isActive && category?.type)
+        .map((category) =>
+          category.type
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
+            .replace(/^./, (char) => char.toUpperCase()),
+        ),
+    ];
+
+    return {
+      allPackages: flatPackages,
+      categories: [...new Set(categories)],
+      errorType: null,
+    };
+  } catch {
+    return {
+      allPackages: [],
+      categories: ["All"],
+      errorType: "default",
+    };
+  }
+}
+
 export default function Pricing() {
   const { settings } = useOutletContext();
-  const [searchParams] = useSearchParams();
+  const { allPackages, categories, errorType } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const serviceParam = searchParams.get("service");
 
-  const activeCategory = serviceParam
-    ? serviceParam
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .replace(/^./, (char) => char.toUpperCase())
-    : "All";
+  const getCategoryFromParam = (param) => {
+    if (!param) {
+      return "All";
+    }
 
-  const [allPackages, setAllPackages] = useState([]);
-  const [filteredPackages, setFilteredPackages] = useState([]);
-  const [categories, setCategories] = useState(["All"]);
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
+    const normalizedParam = param.replace(/\s/g, "").toLowerCase();
+
+    return (
+      categories.find(
+        (category) =>
+          category.replace(/\s/g, "").toLowerCase() === normalizedParam,
+      ) || "All"
+    );
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    getCategoryFromParam(serviceParam),
+  );
+
+  useEffect(() => {
+    setSelectedCategory(getCategoryFromParam(serviceParam));
+  }, [serviceParam, categories]);
+
+  const loading = revalidator.state === "loading";
 
   const pricingUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.pricing === true;
 
-  const fetchPricing = async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
-
-      const res = await fetch(`${API_URL}/api/pricings`);
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.message || `Request failed (${res.status})`);
-      }
-
-      const pricingData = data.data || [];
-
-      const flatPackages = pricingData.flatMap((category) =>
-        category.packages
-          .filter((pkg) => pkg.isActive)
-          .map((pkg) => ({
-            ...pkg,
-            type: category.type,
-          })),
-      );
-
-      const dynamicCategories = [
-        "All",
-        ...pricingData
-          .filter((category) => category.isActive)
-          .map((category) =>
-            category.type
-              .replace(/([a-z])([A-Z])/g, "$1 $2")
-              .replace(/^./, (char) => char.toUpperCase()),
-          ),
-      ];
-
-      setCategories(dynamicCategories);
-      setAllPackages(flatPackages);
-
-      if (serviceParam) {
-        const filtered = flatPackages.filter(
-          (pkg) => pkg.type.toLowerCase() === serviceParam.toLowerCase(),
-        );
-
-        setFilteredPackages(filtered);
-      } else {
-        setFilteredPackages(flatPackages);
-      }
-    } catch (err) {
-      console.log("Pricing fetch error:", err);
-
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
+  const filteredPackages = useMemo(() => {
+    if (selectedCategory === "All") {
+      return allPackages;
     }
-  };
 
-  useEffect(() => {
-    fetchPricing();
-  }, [serviceParam]);
+    const normalizedCategory = selectedCategory
+      .replace(/\s/g, "")
+      .toLowerCase();
+
+    return allPackages.filter(
+      (pkg) =>
+        pkg.type?.replace(/\s/g, "").toLowerCase() === normalizedCategory,
+    );
+  }, [allPackages, selectedCategory]);
 
   const handleFilterChange = (category) => {
+    setSelectedCategory(category);
+
     if (category === "All") {
-      setFilteredPackages(allPackages);
-      return;
+      searchParams.delete("service");
+    } else {
+      const normalizedCategory = category.replace(/\s/g, "").toLowerCase();
+
+      searchParams.set("service", normalizedCategory);
     }
 
-    const filtered = allPackages.filter(
-      (pkg) =>
-        pkg.type.toLowerCase() === category.replace(/\s/g, "").toLowerCase(),
-    );
-
-    setFilteredPackages(filtered);
+    setSearchParams(searchParams);
   };
+
+  const handleRetry = () => {
+    revalidator.revalidate();
+  };
+
+  const siteUrl = `${SITE_URL}${location.pathname}${location.search}`;
 
   return (
     <div className={styles.pricing}>
@@ -123,7 +150,7 @@ export default function Pricing() {
         title="Pricing"
         description="Choose a package that fits your goals whether you're starting out, growing, or scaling big."
         image={ogImages.pricing}
-        url={window.location.href}
+        url={siteUrl}
         keywords="software development pricing, website packages, web application pricing, mobile app development, developer services"
         siteName=""
       />
@@ -154,7 +181,7 @@ export default function Pricing() {
         {!pricingUnderMaintenance && loading && <LoaderView />}
 
         {!pricingUnderMaintenance && !loading && errorType && (
-          <ErrorView errType={errorType} onRetry={fetchPricing} />
+          <ErrorView errType={errorType} onRetry={handleRetry} />
         )}
 
         {!pricingUnderMaintenance &&
@@ -164,7 +191,7 @@ export default function Pricing() {
             <ErrorView
               errType="default"
               errorText="No packages found"
-              onRetry={fetchPricing}
+              onRetry={handleRetry}
             />
           )}
 
@@ -172,7 +199,7 @@ export default function Pricing() {
           <>
             <FilterBar
               categories={categories}
-              defaultCategory={activeCategory}
+              defaultCategory={selectedCategory}
               onFilterChange={handleFilterChange}
               marginTop={0}
               marginBottom={2}
@@ -182,7 +209,7 @@ export default function Pricing() {
               <div className={styles.pricingGrid}>
                 {filteredPackages.map((pkg, index) => (
                   <PricingCard
-                    key={index}
+                    key={pkg._id || index}
                     type={pkg.type}
                     packageType={pkg.package}
                     title={pkg.title}

@@ -1,7 +1,11 @@
 import styles from "../styles/ContactForm.module.css";
+
 import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
+
 import { Turnstile } from "@marsidev/react-turnstile";
+
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import TextareaInput from "./TextareaInput";
@@ -9,8 +13,10 @@ import PhoneInput from "./PhoneInput";
 import ResponseLayout from "./ResponseLayout";
 import BtnCTAWhite from "./BtnCTAWhite";
 import BtnCTABlack from "./BtnCTABlack";
+
 import phoneImg from "../assets/icons/phone-flip.svg";
 import emailImg from "../assets/icons/envelope.svg";
+
 import contactInfo from "../config/contactInfo";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
@@ -38,53 +44,20 @@ const countryOptions = Object.entries(
   .sort((a, b) => a.label.localeCompare(b.label));
 
 const budgetOptions = [
-  {
-    value: "unknown",
-    label: "Not sure yet",
-  },
-  {
-    value: "under-5000",
-    label: "Below R5,000",
-  },
-  {
-    value: "5000-15000",
-    label: "R5,000 - R15,000",
-  },
-  {
-    value: "15000-30000",
-    label: "R15,000 - R30,000",
-  },
-  {
-    value: "30000-60000",
-    label: "R30,000 - R60,000",
-  },
-  {
-    value: "60000-plus",
-    label: "Above R60,000",
-  },
+  { value: "unknown", label: "Not sure yet" },
+  { value: "under-5000", label: "Below R5,000" },
+  { value: "5000-15000", label: "R5,000 - R15,000" },
+  { value: "15000-30000", label: "R15,000 - R30,000" },
+  { value: "30000-60000", label: "R30,000 - R60,000" },
+  { value: "60000-plus", label: "Above R60,000" },
 ];
 
 const startTimeOptions = [
-  {
-    value: "asap",
-    label: "Immediately",
-  },
-  {
-    value: "two-weeks",
-    label: "Within 2 weeks",
-  },
-  {
-    value: "one-month",
-    label: "Within 1 month",
-  },
-  {
-    value: "three-months",
-    label: "2 - 3 months",
-  },
-  {
-    value: "flexible",
-    label: "Flexible",
-  },
+  { value: "asap", label: "Immediately" },
+  { value: "two-weeks", label: "Within 2 weeks" },
+  { value: "one-month", label: "Within 1 month" },
+  { value: "three-months", label: "2 - 3 months" },
+  { value: "flexible", label: "Flexible" },
 ];
 
 const initialForm = {
@@ -106,19 +79,19 @@ const initialForm = {
 };
 
 export default function ServiceRequestForm({ onResponseStatusChange }) {
-  const [searchParams] = useSearchParams();
+  const loaderData = useLoaderData();
 
-  const [services, setServices] = useState([]);
-  const [pricingPackages, setPricingPackages] = useState([]);
+  const services = loaderData?.services || [];
+  const pricingPackages = loaderData?.pricingPackages || [];
+
+  const [searchParams] = useSearchParams();
   const [packages, setPackages] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
-
   const [responseData, setResponseData] = useState({
     title: "",
     subtitle: "",
     status: "",
   });
-
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -138,33 +111,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   useDetectLocation(setForm);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [servicesRes, pricingRes] = await Promise.all([
-          fetch(`${API_URL}/api/services`),
-          fetch(`${API_URL}/api/pricings`),
-        ]);
-
-        const servicesData = await servicesRes.json();
-        const pricingData = await pricingRes.json();
-
-        if (servicesData?.success) {
-          setServices(servicesData.data);
-        }
-
-        if (pricingData?.success) {
-          setPricingPackages(pricingData.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    if (!services.length || !pricingPackages.length) {
+    if (!services.length) {
       return;
     }
 
@@ -189,7 +136,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     );
 
     const selectedPackages =
-      pricingCategory?.packages?.filter((pkg) => pkg.isActive) || [];
+      pricingCategory?.packages?.filter((pkg) => pkg?.isActive) || [];
 
     const selectedPackage = packageParam
       ? selectedPackages.find(
@@ -222,7 +169,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     );
 
     const servicePackages =
-      pricingCategory?.packages?.filter((pkg) => pkg.isActive) || [];
+      pricingCategory?.packages?.filter((pkg) => pkg?.isActive) || [];
 
     setSelectedService(service);
     setPackages(servicePackages);
@@ -280,39 +227,47 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
   const focusFirstError = (validationErrors) => {
     if (validationErrors.firstName) {
-      return firstNameRef.current?.focus();
+      firstNameRef.current?.focus();
+      return;
     }
 
     if (validationErrors.lastName) {
-      return lastNameRef.current?.focus();
+      lastNameRef.current?.focus();
+      return;
     }
 
     if (validationErrors.email) {
-      return emailRef.current?.focus();
+      emailRef.current?.focus();
+      return;
     }
 
     if (validationErrors.country) {
-      return countryRef.current?.focus();
+      countryRef.current?.focus();
+      return;
     }
 
     if (validationErrors.service) {
-      return serviceRef.current?.focus();
+      serviceRef.current?.focus();
+      return;
     }
 
     if (validationErrors.package) {
-      return packageRef.current?.focus();
+      packageRef.current?.focus();
+      return;
     }
 
     if (validationErrors.budget) {
-      return budgetRef.current?.focus();
+      budgetRef.current?.focus();
+      return;
     }
 
     if (validationErrors.startTime) {
-      return startTimeRef.current?.focus();
+      startTimeRef.current?.focus();
+      return;
     }
 
     if (validationErrors.message) {
-      return messageRef.current?.focus();
+      messageRef.current?.focus();
     }
   };
 
@@ -463,6 +418,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
             setSubmitted(false);
             setErrors({});
             resetTurnstile();
+
             return;
           }
         }
@@ -504,7 +460,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       return;
     }
 
-    if (!navigator.onLine) {
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
       showResponse(
         "network",
         <>
@@ -517,6 +473,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
           and retry again.
         </>,
       );
+
       return;
     }
 
@@ -529,6 +486,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
           to submit your message.
         </>,
       );
+
       return;
     }
 
@@ -594,7 +552,9 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
       await checkEmailStatus(data.mail_ref || ref);
     } catch (error) {
-      const isNetworkError = error instanceof TypeError || !navigator.onLine;
+      const isNetworkError =
+        error instanceof TypeError ||
+        (typeof navigator !== "undefined" && !navigator.onLine);
 
       resetTurnstile();
 
@@ -611,6 +571,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
             and retry again.
           </>,
         );
+
         return;
       }
 
@@ -629,10 +590,12 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (typeof window !== "undefined") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
 
     await submitForm();
   };
@@ -640,9 +603,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   const handleRetry = async () => {
     closeResponse();
 
-    await new Promise((resolve) => {
-      requestAnimationFrame(resolve);
-    });
+    if (typeof requestAnimationFrame !== "undefined") {
+      await new Promise((resolve) => {
+        requestAnimationFrame(resolve);
+      });
+    }
 
     await submitForm();
   };
@@ -720,7 +685,6 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         required
         onChange={(e) => {
           const countryCode = e.target.value;
-
           let dialCode = form.phone.code;
 
           try {
@@ -824,17 +788,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         By submitting this form, you agree to be contacted regarding your
         inquiry and acknowledge that your information will be handled in
         accordance with our{" "}
-        <Link
-          className={styles.termsLink}
-          to="/legal/tshepiemdev-website-terms-of-use"
-        >
+        <Link className={styles.termsLink} to="/legal/site-terms-of-use">
           Terms
         </Link>{" "}
         and{" "}
-        <Link
-          className={styles.termsLink}
-          to="/legal/tshepiemdev-website-privacy-policy"
-        >
+        <Link className={styles.termsLink} to="/legal/site-privacy-policy">
           Privacy Policy
         </Link>
         .

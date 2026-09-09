@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useRevalidator, useLocation } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/LegalPage.module.css";
-import LoaderMaxView from "../components/LoaderMax";
 import NotFound from "./NotFound";
 import MarkdownText from "../components/MarkdownText";
 import API_URL from "../config/api";
@@ -11,74 +9,58 @@ import PageTopHeading from "../components/PageTopHeading";
 import ErrorMaxView from "../components/ErrorMaxView";
 import ogImages from "../config/ogImages";
 
-export default function LegalPage() {
-  const { slug } = useParams();
+const SITE_URL = "https://tshepiem.dev";
+const isBrowser = typeof window !== "undefined";
 
-  const [legal, setLegal] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(null);
+export async function loader({ params }) {
+  const { slug } = params;
 
-  const fetchLegal = async () => {
+  try {
+    const res = await fetch(`${API_URL}/api/legals`);
+
+    if (!res.ok) throw new Error("server");
+
+    let data;
     try {
-      setLoading(true);
-      setNotFound(false);
-      setError(null);
-
-      const res = await fetch(`${API_URL}/api/legals`);
-
-      if (!res.ok) {
-        throw new Error("server");
-      }
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("server");
-      }
-
-      const legals = Array.isArray(data) ? data : data?.data || [];
-
-      const found = legals.find(
-        (item) =>
-          item.slug === slug || slugify(item.for + "-" + item.name) === slug,
-      );
-
-      if (!found) {
-        setNotFound(true);
-        return;
-      }
-
-      setLegal(found);
-    } catch (err) {
-      console.error("Failed to fetch legal information:", err);
-
-      if (!navigator.onLine) {
-        setError("network");
-      } else {
-        setError("server");
-      }
-    } finally {
-      setLoading(false);
+      data = await res.json();
+    } catch {
+      throw new Error("server");
     }
-  };
 
-  useEffect(() => {
-    fetchLegal();
-  }, [slug]);
+    const legals = Array.isArray(data) ? data : data?.data || [];
 
-  if (loading) return <LoaderMaxView />;
+    const found = legals.find(
+      (item) =>
+        item.slug === slug || slugify(item.for + "-" + item.name) === slug,
+    );
+
+    if (!found) {
+      return { legal: null, notFound: true, error: null };
+    }
+
+    return { legal: found, notFound: false, error: null };
+  } catch {
+    const isOffline = isBrowser && !navigator.onLine;
+    return { legal: null, notFound: false, error: isOffline ? "network" : "server" };
+  }
+}
+
+export default function LegalPage() {
+  const { legal, notFound, error } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
+
+  const canonicalUrl = `${SITE_URL}${location.pathname}`;
+  const handleRetry = () => revalidator.revalidate();
 
   if (notFound) return <NotFound />;
 
   if (error) {
-    return <ErrorMaxView errType={error} onRetry={fetchLegal} />;
+    return <ErrorMaxView errType={error} onRetry={handleRetry} />;
   }
 
   if (!legal) {
-    return <ErrorMaxView errType="default" onRetry={fetchLegal} />;
+    return <ErrorMaxView errType="default" onRetry={handleRetry} />;
   }
 
   return (
@@ -87,7 +69,7 @@ export default function LegalPage() {
         title={legal.name}
         description={`Legal Information & Notices by ${legal.for}`}
         image={ogImages.legal}
-        url={window.location.href}
+        url={canonicalUrl}
         keywords={`legal, ${legal.name}, ${legal.for}, tshepiem.dev policies`}
         siteName="Legal"
       />

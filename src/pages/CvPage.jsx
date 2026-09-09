@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "../styles/CvPage.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
-import NotFound from "./NotFound";
 import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
-import SectionDevider from "../components/SectionDevider";
 import BtnCTAWhite from "../components/BtnCTAWhite";
 import BtnCTABlack from "../components/BtnCTABlack";
 import ShippedImg from "../assets/icons/cloud.svg";
@@ -16,9 +14,14 @@ import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
 import ImagePreviewModal from "../components/ImagePreviewModal";
 import { convertDriveToPreview, convertDriveToDownload } from "../utils/drive";
-import NextIcon from "../assets/icons/arrow-up-right.svg";
 import { useToast } from "../components/ToastContext";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useLoaderData,
+  useRevalidator,
+} from "react-router-dom";
 import StarImg from "../assets/icons/logo.svg";
 import PageTopHeading from "../components/PageTopHeading";
 import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
@@ -27,54 +30,53 @@ import NextImg from "../assets/icons/arrow-small-right.svg";
 import ogImages from "../config/ogImages";
 import LogoImg from "../assets/icons/logo-black.svg";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader() {
+  try {
+    const res = await fetch(`${API_URL}/api/cvs`);
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Failed to fetch CV");
+    }
+
+    return {
+      cv: data?.data || null,
+      errorType: null,
+    };
+  } catch {
+    return {
+      cv: null,
+      errorType: "default",
+    };
+  }
+}
+
 export default function CvPage() {
   const navigate = useNavigate();
-  const [cv, setCv] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState(null);
+  const location = useLocation();
+  const revalidator = useRevalidator();
+  const { cv, errorType } = useLoaderData();
+
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const { showToast } = useToast();
 
-  const fetchCv = async () => {
-    try {
-      setLoading(true);
-      setErrorType(null);
+  const loading = revalidator.state === "loading";
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
-      const res = await fetch(`${API_URL}/api/cvs`);
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("Invalid server response");
-      }
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Failed to fetch CV");
-      }
-
-      setCv(data.data || null);
-    } catch (err) {
-      console.log("Fetch error:", err);
-
-      if (!navigator.onLine) {
-        setErrorType("network");
-      } else if (err instanceof TypeError) {
-        setErrorType("server");
-      } else {
-        setErrorType("default");
-      }
-    } finally {
-      setLoading(false);
-    }
+  const handleRetry = () => {
+    revalidator.revalidate();
   };
-
-  useEffect(() => {
-    fetchCv();
-  }, []);
 
   const handleDownloadCv = () => {
     if (!cv?.cvLink) {
@@ -124,8 +126,6 @@ export default function CvPage() {
     }
   };
 
-  const siteUrl = typeof window !== "undefined" ? window.location.href : "";
-
   const statusImages = {
     "open-to-work": ShippedImg,
     hired: BuildingImg,
@@ -140,8 +140,6 @@ export default function CvPage() {
         : "open-to-work";
 
   const hiMe = cv?.fullName ? `Hey, I'm ${cv.fullName}` : "Hey";
-
-  const bentoItems = [];
 
   const handleNavigate = (id) => {
     navigate("/");
@@ -161,7 +159,7 @@ export default function CvPage() {
         description="Get my comprehensive, ATS optimized and ready cv"
         image={ogImages.resume}
         url={siteUrl}
-        keywords={`${cv?.fullName}, CV, resume, software developer, developer portfolio`}
+        keywords={`${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`}
         siteName=""
       />
 
@@ -176,6 +174,7 @@ export default function CvPage() {
                 </>
               }
             />
+
             {!loading && !errorType && cv && (
               <div className={styles.ctaButtonsWrapper}>
                 <BtnCTAWhite
@@ -184,9 +183,10 @@ export default function CvPage() {
                 />
 
                 <BtnCTABlack buttonText="Get in touch" href="/contact" />
+
                 <p className={styles.linkyText}>
                   First time here?{" "}
-                  <Link className={styles.linkyTextLink} to={"/"}>
+                  <Link className={styles.linkyTextLink} to="/">
                     <img className={styles.logoImg} src={LogoImg} alt="/" />
                     Explore my portfolio
                     <img className={styles.chevronImg} src={NextImg} alt="/" />
@@ -199,11 +199,11 @@ export default function CvPage() {
           {loading && <LoaderView />}
 
           {!loading && errorType && (
-            <ErrorView errType={errorType} onRetry={fetchCv} />
+            <ErrorView errType={errorType} onRetry={handleRetry} />
           )}
 
           {!loading && !errorType && !cv && (
-            <ErrorView errType="default" onRetry={fetchCv} />
+            <ErrorView errType="default" onRetry={handleRetry} />
           )}
 
           {!loading && !errorType && cv && (
@@ -269,12 +269,14 @@ export default function CvPage() {
                     {cv.links?.map((link, i) => (
                       <div className={styles.vwrapper} key={i}>
                         <p className={styles.sectionLabel}>{link.name}</p>
+
                         <Link
                           className={styles.labelLink}
                           to={link.url}
                           target="_blank"
                         >
                           <p className={styles.linkHolder}>{link.url}</p>
+
                           <img
                             className={styles.chevronImg2}
                             src={ChevronImg}
@@ -291,9 +293,10 @@ export default function CvPage() {
 
                     <div className={styles.vwrapper}>
                       <p className={styles.sectionLabel}>Email</p>
+
                       <Link
                         className={styles.headerlabelLinker}
-                        to={"mailto:" + cv.email}
+                        to={`mailto:${cv.email}`}
                       >
                         {cv.email}
                       </Link>
@@ -301,9 +304,10 @@ export default function CvPage() {
 
                     <div className={styles.vwrapper}>
                       <p className={styles.sectionLabel}>Phone</p>
+
                       <Link
                         className={styles.headerlabelLinker}
-                        to={"tel:" + cv.phone}
+                        to={`tel:${cv.phone}`}
                       >
                         {cv.phone}
                       </Link>
@@ -314,9 +318,10 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Professional Summary</p>
+
                 {cv.professionalSummary?.map((item, index) => (
                   <div className={styles.sectionContentWrapper} key={index}>
-                    {item.text.map((sentence, sentenceIndex) => (
+                    {item.text?.map((sentence, sentenceIndex) => (
                       <h5 key={sentenceIndex} className={styles.summary}>
                         {sentence}
                       </h5>
@@ -325,10 +330,12 @@ export default function CvPage() {
                     <div className={styles.cvSectionImageWrapper}>
                       <img
                         className={styles.cvSectionImage}
-                        src={item?.image.trim()}
+                        src={item?.image?.trim() || bigFallbackImg}
                         alt={item.text}
                         onClick={() => {
-                          setSelectedImage(item?.image);
+                          if (item?.image?.trim()) {
+                            setSelectedImage(item.image);
+                          }
                         }}
                         onError={(e) => {
                           e.target.onerror = null;
@@ -342,12 +349,14 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Education</p>
+
                 {cv.education?.map((edu, i) => (
                   <div className={styles.listWrapper} key={i}>
                     <h5 className={styles.headerlabel}>
                       <span className={styles.spanStar}>• </span>
                       {edu.type}
                     </h5>
+
                     <p className={styles.label}>{edu.name}</p>
                     <p className={styles.label}>{edu.institute}</p>
                     <p className={styles.label}>{edu.year}</p>
@@ -357,16 +366,20 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Experience</p>
+
                 {cv.experience?.map((exp, i) => (
                   <div className={styles.listWrapper} key={i}>
                     <h5 className={styles.headerlabel}>
                       <span className={styles.spanStar}>• </span>
                       {exp.position}
                     </h5>
+
                     <p className={styles.label}>{exp.company}</p>
+
                     <p className={styles.label}>
                       {exp.from} - {exp.to}
                     </p>
+
                     <p className={styles.label}>{exp.location}</p>
                   </div>
                 ))}
@@ -374,20 +387,25 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Projects</p>
+
                 {cv.projects?.map((p, i) => (
                   <div className={styles.sectionContentWrapper} key={i}>
                     <h5 className={styles.headerlabel}>
                       <span className={styles.spanStar}>• </span>
                       {p.name}
                     </h5>
+
                     <p className={styles.label}>{p.type}</p>
+
                     <div className={styles.cvSectionImageWrapper}>
                       <img
                         className={styles.cvSectionImage}
-                        src={p?.image.trim()}
+                        src={p?.image?.trim() || bigFallbackImg}
                         alt={p.name}
                         onClick={() => {
-                          setSelectedImage(p?.image);
+                          if (p?.image?.trim()) {
+                            setSelectedImage(p.image);
+                          }
                         }}
                         onError={(e) => {
                           e.target.onerror = null;
@@ -397,20 +415,20 @@ export default function CvPage() {
                     </div>
                   </div>
                 ))}
-                <BtnCTABlackSmall
-                  buttonText={"Browse all"}
-                  href={"/projects"}
-                />
+
+                <BtnCTABlackSmall buttonText="Browse all" href="/projects" />
               </div>
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Technical Skills</p>
+
                 {cv.technicalSkills?.map((group, i) => (
                   <div className={styles.listWrapper} key={i}>
                     <h5 className={styles.headerlabel}>
                       <span className={styles.spanStar}>• </span>
                       {group.category}
                     </h5>
+
                     <p className={styles.label}>{group.skills?.join(", ")}</p>
                   </div>
                 ))}
@@ -418,6 +436,7 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Soft Skills</p>
+
                 <p className={styles.headerlabelPro}>
                   {cv.softSkills?.join(", ")}
                   <span className={styles.spanStar}>.</span>
@@ -426,6 +445,7 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>References</p>
+
                 <p className={styles.headerlabel}>
                   {cv.references}
                   <span className={styles.spanStar}>*</span>
@@ -434,6 +454,7 @@ export default function CvPage() {
 
               <div className={styles.wrapper}>
                 <p className={styles.sectionLabel}>Document Preview</p>
+
                 <div className={styles.iframeWrapper}>
                   <iframe
                     src={cv?.cvLink ? convertDriveToPreview(cv.cvLink) : ""}
@@ -442,11 +463,13 @@ export default function CvPage() {
                     loading="lazy"
                   />
                 </div>
+
                 <div className={styles.ctaButtonsWrapper}>
                   <BtnCTAWhite
                     buttonText="Download CV"
                     onClick={handleDownloadCv}
                   />
+
                   <BtnCTABlack
                     buttonText="Preview document"
                     onClick={handleOpenCv}

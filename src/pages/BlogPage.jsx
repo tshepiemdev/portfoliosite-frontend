@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  useLoaderData,
+  useRevalidator,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import { useToast } from "../components/ToastContext";
-import { useParams, Link } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/BlogPage.module.css";
 import LoaderMaxView from "../components/LoaderMax";
@@ -23,93 +28,79 @@ import { getShareOptions } from "../utils/shareOptions";
 import { getVideoUrl } from "../utils/getVideoUrl";
 import SubscribeLabel from "../components/SubscribeLabel";
 
+const SITE_URL = "https://tshepiem.dev";
+
+export async function loader({ params }) {
+  const { slug } = params;
+
+  try {
+    const res = await fetch(`${API_URL}/api/blogs`);
+
+    if (!res.ok) {
+      throw new Error("server");
+    }
+
+    let data;
+
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("server");
+    }
+
+    const blogs = Array.isArray(data) ? data : data?.data || [];
+
+    const found = blogs.find(
+      (item) => item.slug === slug || slugify(item.title) === slug,
+    );
+
+    if (!found) {
+      return {
+        blog: null,
+        notFound: true,
+        error: null,
+      };
+    }
+
+    return {
+      blog: found,
+      notFound: false,
+      error: null,
+    };
+  } catch {
+    return {
+      blog: null,
+      notFound: false,
+      error: "default",
+    };
+  }
+}
+
 export default function BlogPage() {
   const { showToast } = useToast();
-  const { slug } = useParams();
+  const { blog, notFound, error } = useLoaderData();
+  const revalidator = useRevalidator();
+  const location = useLocation();
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [blog, setBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(null);
-
-  const detailsRef = useRef(null);
-  const hasViewed = useRef(false);
-  const [showFloatingNav, setShowFloatingNav] = useState(true);
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const addView = async (blogSlug) => {
-    try {
-      const res = await fetch(`${API_URL}/api/blogs/${blogSlug}/view`, {
-        method: "POST",
-      });
+  const detailsRef = useRef(null);
+  const hasViewed = useRef(false);
 
-      const data = await res.json();
+  const [showFloatingNav, setShowFloatingNav] = useState(true);
 
-      if (data.success) {
-        setBlog((prev) => ({
-          ...prev,
-          views: data.views,
-        }));
-      }
-    } catch (err) {
-      console.error("Failed to add view", err);
-    }
-  };
+  const loading = revalidator.state === "loading";
 
-  const fetchBlog = async () => {
-    try {
-      setLoading(true);
-      setNotFound(false);
-      setError(null);
+  const siteUrl = `${SITE_URL}${location.pathname}`;
 
-      const res = await fetch(`${API_URL}/api/blogs`);
-
-      if (!res.ok) {
-        throw new Error("server");
-      }
-
-      let data;
-
-      try {
-        data = await res.json();
-      } catch {
-        throw new Error("server");
-      }
-
-      const blogs = Array.isArray(data) ? data : data?.data || [];
-
-      const found = blogs.find(
-        (item) => item.slug === slug || slugify(item.title) === slug,
-      );
-
-      if (!found) {
-        setNotFound(true);
-        return;
-      }
-
-      setBlog(found);
-    } catch (err) {
-      console.error("Failed to fetch blog:", err);
-
-      if (!navigator.onLine) {
-        setError("network");
-      } else {
-        setError("server");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    hasViewed.current = false;
-    fetchBlog();
-  }, [slug]);
+  const handleRetry = () => revalidator.revalidate();
 
   useEffect(() => {
     if (!blog || hasViewed.current) return;
+
+    if (typeof window === "undefined") return;
 
     const viewedKey = `blog-viewed-${blog._id}`;
 
@@ -117,22 +108,45 @@ export default function BlogPage() {
 
     hasViewed.current = true;
 
-    const increment = async () => {
-      await addView(blog.slug);
-      localStorage.setItem(viewedKey, "true");
+    const addView = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/blogs/${blog.slug}/view`, {
+          method: "POST",
+        });
+
+        let data;
+
+        try {
+          data = await res.json();
+        } catch {
+          return;
+        }
+
+        if (data.success) {
+          localStorage.setItem(viewedKey, "true");
+        }
+      } catch {
+        hasViewed.current = false;
+      }
     };
 
-    increment();
+    addView();
   }, [blog]);
 
   useEffect(() => {
     if (!detailsRef.current) return;
 
+    if (typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         setShowFloatingNav(!entry.isIntersecting);
       },
-      { threshold: 0.1 },
+      {
+        threshold: 0.1,
+      },
     );
 
     observer.observe(detailsRef.current);
@@ -144,16 +158,20 @@ export default function BlogPage() {
     };
   }, [blog]);
 
-  if (loading) return <LoaderMaxView />;
+  if (loading) {
+    return <LoaderMaxView />;
+  }
 
-  if (notFound) return <NotFound />;
+  if (notFound) {
+    return <NotFound />;
+  }
 
   if (error) {
-    return <ErrorMaxView errType={error} onRetry={fetchBlog} />;
+    return <ErrorMaxView errType={error} onRetry={handleRetry} />;
   }
 
   if (!blog) {
-    return <ErrorMaxView errType="default" onRetry={fetchBlog} />;
+    return <ErrorMaxView errType="default" onRetry={handleRetry} />;
   }
 
   const displayDate = blog.publishedAt
@@ -164,13 +182,16 @@ export default function BlogPage() {
       })
     : "";
 
-  const calculateReadTime = (blog) => {
-    if (!blog?.content) return "1 min read";
+  const calculateReadTime = (blogData) => {
+    if (!blogData?.content) {
+      return "1 min read";
+    }
 
     const wordsPerMinute = 220;
-    let text = blog.content.intro || "";
 
-    blog.content.sections?.forEach((sec) => {
+    let text = blogData.content.intro || "";
+
+    blogData.content.sections?.forEach((sec) => {
       text += " " + (sec.heading || "") + " " + (sec.body || "");
     });
 
@@ -182,11 +203,9 @@ export default function BlogPage() {
 
   const readTime = calculateReadTime(blog);
 
-  const siteUrl = typeof window !== "undefined" ? window.location.href : "";
-
   const handleNativeShare = async () => {
     try {
-      if (!navigator.share) {
+      if (typeof navigator === "undefined" || !navigator.share) {
         showToast(
           "error",
           "Sharing not supported",
@@ -208,18 +227,16 @@ export default function BlogPage() {
 
   const handleCopyLink = async () => {
     try {
+      if (typeof navigator === "undefined" || !navigator.clipboard) {
+        throw new Error("Clipboard unavailable");
+      }
+
       await navigator.clipboard.writeText(siteUrl);
 
       showToast("success", "Link copied", "You can now share it anywhere");
     } catch {
       showToast("error", "Copy failed", "Try again");
     }
-  };
-
-  const handleAuthorImageClick = () => {
-    if (!blog?.authorProfileImg) return;
-
-    setSelectedImage(blog.authorProfileImg);
   };
 
   const handleBlogImageClick = (image) => {
@@ -267,7 +284,6 @@ export default function BlogPage() {
             totalReadTime={readTime}
             onAuthorImageClick={(image) => {
               setSelectedImage(image);
-              setSelectedIndex(null);
             }}
           />
         </div>
@@ -292,7 +308,7 @@ export default function BlogPage() {
             {blog.imageSource || "Unspecified image source"}
           </p>
 
-          <div className={styles.sectionBlock}>
+          <div className={styles.sectionBlock} ref={detailsRef}>
             <p className={styles.sectionTextContent}>{blog.content?.intro}</p>
           </div>
 
@@ -353,6 +369,7 @@ export default function BlogPage() {
 
           <div className={styles.bentoWrapperStyle}>
             <p className={styles.label}>Share article</p>
+
             <ShareWith options={shareOptions} />
           </div>
 

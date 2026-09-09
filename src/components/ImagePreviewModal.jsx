@@ -9,8 +9,6 @@ import ReportIcon from "../assets/icons/menu-dots.svg";
 import OptionsMenu from "./OptionsMenu";
 import ShareSiteModal from "../components/ShareSiteModal";
 
-const modalRoot = document.getElementById("modal-root");
-
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 const DOUBLE_CLICK_ZOOM = 2.5;
@@ -136,23 +134,16 @@ export default function ImagePreviewModal({
       const ratio = newZoom / oldZoom;
 
       setPosition((current) => {
-        const nextX =
-          originX - (originX - current.x) * ratio;
+        const nextX = originX - (originX - current.x) * ratio;
 
-        const nextY =
-          originY - (originY - current.y) * ratio;
+        const nextY = originY - (originY - current.y) * ratio;
 
         return clampPosition(nextX, nextY, newZoom);
       });
 
       setZoom(newZoom);
     },
-    [
-      zoom,
-      clampZoom,
-      clampPosition,
-      resetZoom,
-    ],
+    [zoom, clampZoom, clampPosition, resetZoom],
   );
 
   const handleWheel = useCallback(
@@ -166,21 +157,11 @@ export default function ImagePreviewModal({
       e.preventDefault();
       e.stopPropagation();
 
-      const origin = getOrigin(
-        e.clientX,
-        e.clientY,
-      );
+      const origin = getOrigin(e.clientX, e.clientY);
 
-      const direction =
-        e.deltaY < 0
-          ? WHEEL_ZOOM_STEP
-          : -WHEEL_ZOOM_STEP;
+      const direction = e.deltaY < 0 ? WHEEL_ZOOM_STEP : -WHEEL_ZOOM_STEP;
 
-      zoomAtPoint(
-        zoom + direction,
-        origin.x,
-        origin.y,
-      );
+      zoomAtPoint(zoom + direction, origin.x, origin.y);
     },
     [zoom, getOrigin, zoomAtPoint],
   );
@@ -190,28 +171,16 @@ export default function ImagePreviewModal({
       e.preventDefault();
       e.stopPropagation();
 
-      const origin = getOrigin(
-        e.clientX,
-        e.clientY,
-      );
+      const origin = getOrigin(e.clientX, e.clientY);
 
       if (zoom > MIN_ZOOM) {
         resetZoom();
         return;
       }
 
-      zoomAtPoint(
-        DOUBLE_CLICK_ZOOM,
-        origin.x,
-        origin.y,
-      );
+      zoomAtPoint(DOUBLE_CLICK_ZOOM, origin.x, origin.y);
     },
-    [
-      zoom,
-      getOrigin,
-      resetZoom,
-      zoomAtPoint,
-    ],
+    [zoom, getOrigin, resetZoom, zoomAtPoint],
   );
 
   const handlePointerDown = useCallback(
@@ -225,34 +194,21 @@ export default function ImagePreviewModal({
       e.preventDefault();
       e.stopPropagation();
 
-      image.setPointerCapture?.(
-        e.pointerId,
-      );
+      image.setPointerCapture?.(e.pointerId);
 
-      pointersRef.current.set(
-        e.pointerId,
-        {
-          x: e.clientX,
-          y: e.clientY,
-        },
-      );
+      pointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
 
-      if (
-        pointersRef.current.size === 2
-      ) {
-        const points = [
-          ...pointersRef.current.values(),
-        ];
+      if (pointersRef.current.size === 2) {
+        const points = [...pointersRef.current.values()];
 
-        const dx =
-          points[0].x - points[1].x;
+        const dx = points[0].x - points[1].x;
 
-        const dy =
-          points[0].y - points[1].y;
+        const dy = points[0].y - points[1].y;
 
-        const distance = Math.sqrt(
-          dx * dx + dy * dy,
-        );
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
         pinchRef.current = {
           distance,
@@ -285,46 +241,28 @@ export default function ImagePreviewModal({
         return;
       }
 
-      if (
-        !pointersRef.current.has(
-          e.pointerId,
-        )
-      ) {
+      if (!pointersRef.current.has(e.pointerId)) {
         return;
       }
 
       e.preventDefault();
       e.stopPropagation();
 
-      pointersRef.current.set(
-        e.pointerId,
-        {
-          x: e.clientX,
-          y: e.clientY,
-        },
-      );
+      pointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+      });
 
-      if (
-        pointersRef.current.size === 2
-      ) {
-        const points = [
-          ...pointersRef.current.values(),
-        ];
+      if (pointersRef.current.size === 2) {
+        const points = [...pointersRef.current.values()];
 
-        const dx =
-          points[0].x - points[1].x;
+        const dx = points[0].x - points[1].x;
 
-        const dy =
-          points[0].y - points[1].y;
+        const dy = points[0].y - points[1].y;
 
-        const distance = Math.sqrt(
-          dx * dx + dy * dy,
-        );
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (
-          !pinchRef.current ||
-          !pinchRef.current.distance
-        ) {
+        if (!pinchRef.current || !pinchRef.current.distance) {
           pinchRef.current = {
             distance,
             zoom,
@@ -333,13 +271,9 @@ export default function ImagePreviewModal({
           return;
         }
 
-        const scale =
-          distance /
-          pinchRef.current.distance;
+        const scale = distance / pinchRef.current.distance;
 
-        const nextZoom = clampZoom(
-          pinchRef.current.zoom * scale,
-        );
+        const nextZoom = clampZoom(pinchRef.current.zoom * scale);
 
         setZoom(nextZoom);
 
@@ -350,11 +284,7 @@ export default function ImagePreviewModal({
           });
         } else {
           setPosition((current) =>
-            clampPosition(
-              current.x,
-              current.y,
-              nextZoom,
-            ),
+            clampPosition(current.x, current.y, nextZoom),
           );
         }
 
@@ -363,71 +293,44 @@ export default function ImagePreviewModal({
 
       if (
         !dragRef.current ||
-        dragRef.current.pointerId !==
-          e.pointerId ||
+        dragRef.current.pointerId !== e.pointerId ||
         zoom <= MIN_ZOOM
       ) {
         return;
       }
 
-      const deltaX =
-        e.clientX -
-        dragRef.current.startX;
+      const deltaX = e.clientX - dragRef.current.startX;
 
-      const deltaY =
-        e.clientY -
-        dragRef.current.startY;
+      const deltaY = e.clientY - dragRef.current.startY;
 
       setPosition(
         clampPosition(
-          dragRef.current
-            .startPositionX + deltaX,
-          dragRef.current
-            .startPositionY + deltaY,
+          dragRef.current.startPositionX + deltaX,
+          dragRef.current.startPositionY + deltaY,
           zoom,
         ),
       );
     },
-    [
-      zoom,
-      clampZoom,
-      clampPosition,
-    ],
+    [zoom, clampZoom, clampPosition],
   );
 
-  const handlePointerUp = useCallback(
-    (e) => {
-      const image = imgRef.current;
+  const handlePointerUp = useCallback((e) => {
+    const image = imgRef.current;
 
-      if (
-        image?.hasPointerCapture?.(
-          e.pointerId,
-        )
-      ) {
-        image.releasePointerCapture?.(
-          e.pointerId,
-        );
-      }
+    if (image?.hasPointerCapture?.(e.pointerId)) {
+      image.releasePointerCapture?.(e.pointerId);
+    }
 
-      pointersRef.current.delete(
-        e.pointerId,
-      );
+    pointersRef.current.delete(e.pointerId);
 
-      if (
-        pointersRef.current.size < 2
-      ) {
-        pinchRef.current = null;
-      }
+    if (pointersRef.current.size < 2) {
+      pinchRef.current = null;
+    }
 
-      if (
-        dragRef.current?.pointerId ===
-        e.pointerId
-      ) {
-        dragRef.current = null;
-      }
-    },
-    [],
-  );
+    if (dragRef.current?.pointerId === e.pointerId) {
+      dragRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -438,70 +341,43 @@ export default function ImagePreviewModal({
         return;
       }
 
-      if (
-        e.key === "ArrowRight" &&
-        !isLast
-      ) {
+      if (e.key === "ArrowRight" && !isLast) {
         onNext?.();
       }
 
-      if (
-        e.key === "ArrowLeft" &&
-        !isFirst
-      ) {
+      if (e.key === "ArrowLeft" && !isFirst) {
         onPrev?.();
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      handleKeyDown,
-    );
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener(
-        "keydown",
-        handleKeyDown,
-      );
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    isOpen,
-    isFirst,
-    isLast,
-    close,
-    onNext,
-    onPrev,
-  ]);
+  }, [isOpen, isFirst, isLast, close, onNext, onPrev]);
 
   useEffect(() => {
     resetZoom();
-  }, [
-    src,
-    currentImage,
-    resetZoom,
-  ]);
+  }, [src, currentImage, resetZoom]);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const html =
-      document.documentElement;
+    const html = document.documentElement;
+
     const body = document.body;
-    const layout =
-      document.querySelector(
-        ".layout",
-      );
 
-    const previousHtmlOverflow =
-      html.style.overflow;
+    const layout = document.querySelector(".layout");
 
-    const previousBodyOverflow =
-      body.style.overflow;
+    const previousHtmlOverflow = html.style.overflow;
 
-    const previousLayoutOverflow =
-      layout?.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+
+    const previousLayoutOverflow = layout?.style.overflow;
 
     html.style.overflow = "hidden";
+
     body.style.overflow = "hidden";
 
     if (layout) {
@@ -509,15 +385,12 @@ export default function ImagePreviewModal({
     }
 
     return () => {
-      html.style.overflow =
-        previousHtmlOverflow;
+      html.style.overflow = previousHtmlOverflow;
 
-      body.style.overflow =
-        previousBodyOverflow;
+      body.style.overflow = previousBodyOverflow;
 
       if (layout) {
-        layout.style.overflow =
-          previousLayoutOverflow || "";
+        layout.style.overflow = previousLayoutOverflow || "";
       }
     };
   }, [isOpen]);
@@ -527,19 +400,12 @@ export default function ImagePreviewModal({
 
     if (!image) return;
 
-    image.addEventListener(
-      "wheel",
-      handleWheel,
-      {
-        passive: false,
-      },
-    );
+    image.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
 
     return () => {
-      image.removeEventListener(
-        "wheel",
-        handleWheel,
-      );
+      image.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
 
@@ -579,21 +445,21 @@ export default function ImagePreviewModal({
 
   const handleMainImageError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src =
-      bigFallbackImg;
+    e.currentTarget.src = bigFallbackImg;
   };
 
   const handleThumbnailError = (e) => {
     e.currentTarget.onerror = null;
-    e.currentTarget.src =
-      bigFallbackImg;
+    e.currentTarget.src = bigFallbackImg;
   };
 
-  if (
-    !shouldRender ||
-    !src ||
-    !modalRoot
-  ) {
+  if (typeof document === "undefined" || !shouldRender || !src) {
+    return null;
+  }
+
+  const modalRoot = document.getElementById("modal-root");
+
+  if (!modalRoot) {
     return null;
   }
 
@@ -617,49 +483,29 @@ export default function ImagePreviewModal({
           ref={imgRef}
           src={src}
           alt={alt || "Image preview"}
-          className={`${styles.image} ${
-            zoom > 1
-              ? styles.zoomedImage
-              : ""
-          }`}
+          className={`${styles.image} ${zoom > 1 ? styles.zoomedImage : ""}`}
           style={{
             transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${zoom})`,
           }}
           draggable={false}
           onError={handleMainImageError}
-          onDoubleClick={
-            handleDoubleClick
-          }
-          onPointerDown={
-            handlePointerDown
-          }
-          onPointerMove={
-            handlePointerMove
-          }
-          onPointerUp={
-            handlePointerUp
-          }
-          onPointerCancel={
-            handlePointerUp
-          }
+          onDoubleClick={handleDoubleClick}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
         />
       </div>
 
       <div
         className={styles.header}
-        onPointerDown={(e) =>
-          e.stopPropagation()
-        }
-        onPointerMove={(e) =>
-          e.stopPropagation()
-        }
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerMove={(e) => e.stopPropagation()}
         onWheel={(e) => {
           e.preventDefault();
           e.stopPropagation();
         }}
-        onTouchMove={(e) =>
-          e.stopPropagation()
-        }
+        onTouchMove={(e) => e.stopPropagation()}
       >
         <button
           type="button"
@@ -668,38 +514,24 @@ export default function ImagePreviewModal({
           title="Close"
           aria-label="Close image preview"
         >
-          <img
-            className={styles.closeImg}
-            src={closeImg}
-            alt=""
-          />
+          <img className={styles.closeImg} src={closeImg} alt="" />
         </button>
 
         <button
           type="button"
           className={styles.optionsBtn}
-          onClick={() =>
-            setIsMenuOpen(true)
-          }
+          onClick={() => setIsMenuOpen(true)}
           title="Options"
           aria-label="Image options"
         >
-          <img
-            className={styles.optionsImg}
-            src={ReportIcon}
-            alt=""
-          />
+          <img className={styles.optionsImg} src={ReportIcon} alt="" />
         </button>
       </div>
 
       <div className={styles.bottomWrapper}>
         {imageCount > 1 && (
           <div className={styles.wrapper}>
-            <div
-              className={
-                styles.buttonsWrapper
-              }
-            >
+            <div className={styles.buttonsWrapper}>
               <button
                 type="button"
                 className={`${styles.navBtn} ${styles.navLeft}`}
@@ -707,13 +539,7 @@ export default function ImagePreviewModal({
                 disabled={isFirst}
                 aria-label="Previous image"
               >
-                <img
-                  className={
-                    styles.arrowImg
-                  }
-                  src={ArrowImg}
-                  alt=""
-                />
+                <img className={styles.arrowImg} src={ArrowImg} alt="" />
               </button>
 
               <button
@@ -723,13 +549,7 @@ export default function ImagePreviewModal({
                 disabled={isLast}
                 aria-label="Next image"
               >
-                <img
-                  className={
-                    styles.arrowImg
-                  }
-                  src={ArrowImg}
-                  alt=""
-                />
+                <img className={styles.arrowImg} src={ArrowImg} alt="" />
               </button>
             </div>
           </div>
@@ -737,38 +557,24 @@ export default function ImagePreviewModal({
       </div>
 
       <div className={styles.imageList}>
-        {images.map(
-          (image, index) => (
-            <button
-              key={`${image}-${index}`}
-              type="button"
-              className={`${styles.imageListItem} ${
-                index === activeIndex
-                  ? styles.activeImageListItem
-                  : ""
-              }`}
-              onClick={() =>
-                handleSelectImage(
-                  index,
-                )
-              }
-              aria-label={`View image ${
-                index + 1
-              }`}
-            >
-              <img
-                src={image}
-                alt={`${
-                  alt || "Image"
-                } ${index + 1}`}
-                draggable={false}
-                onError={
-                  handleThumbnailError
-                }
-              />
-            </button>
-          ),
-        )}
+        {images.map((image, index) => (
+          <button
+            key={`${image}-${index}`}
+            type="button"
+            className={`${styles.imageListItem} ${
+              index === activeIndex ? styles.activeImageListItem : ""
+            }`}
+            onClick={() => handleSelectImage(index)}
+            aria-label={`View image ${index + 1}`}
+          >
+            <img
+              src={image}
+              alt={`${alt || "Image"} ${index + 1}`}
+              draggable={false}
+              onError={handleThumbnailError}
+            />
+          </button>
+        ))}
       </div>
 
       <OptionsMenu

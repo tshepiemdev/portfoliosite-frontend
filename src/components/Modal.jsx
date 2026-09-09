@@ -3,8 +3,6 @@ import useModal from "../hooks/useModal";
 import styles from "../styles/Modal.module.css";
 import CancelImg from "../assets/icons/x-close.svg";
 
-const modalRoot = document.getElementById("modal-root");
-
 export default function Modal({
   isOpen,
   onClose,
@@ -25,7 +23,15 @@ export default function Modal({
     close();
   };
 
-  if (!shouldRender || !modalRoot) return null;
+  if (typeof document === "undefined" || !shouldRender) {
+    return null;
+  }
+
+  const modalRoot = document.getElementById("modal-root");
+
+  if (!modalRoot) {
+    return null;
+  }
 
   return createPortal(
     <div
