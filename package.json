@@ -17,6 +17,8 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@marsidev/react-turnstile": "^1.6.0",
+    "compression": "^1.8.1",
+    "express": "^5.1.0",
     "i18n-iso-countries": "^7.14.0",
     "libphonenumber-js": "^1.13.8",
     "react": "^19.2.0",
@@ -27,20 +29,18 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.13.1",
     "react-type-animation": "^3.2.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "sirv": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "compression": "^1.8.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
-    "express": "^5.2.1",
     "globals": "^16.5.0",
-    "sirv": "^3.0.2",
     "vite": "^7.3.1"
   }
 }

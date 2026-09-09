@@ -11,6 +11,7 @@ async function getTemplate() {
       "utf-8",
     );
   }
+
   return templateCache;
 }
 
@@ -18,6 +19,7 @@ async function getRender() {
   if (!renderCache) {
     renderCache = (await import("../dist/server/entry-server.js")).render;
   }
+
   return renderCache;
 }
 
@@ -29,7 +31,10 @@ export default async function handler(req, res) {
     const result = await render(req.url);
 
     if (result.redirect) {
-      res.writeHead(302, { Location: result.redirect });
+      res.writeHead(302, {
+        Location: result.redirect,
+      });
+
       res.end();
       return;
     }
@@ -46,8 +51,8 @@ export default async function handler(req, res) {
 
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.status(200).send(html);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
     res.status(500).send("Internal Server Error");
   }
 }

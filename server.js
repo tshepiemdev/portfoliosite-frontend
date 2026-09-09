@@ -67,14 +67,23 @@ app.use(async (req, res, next) => {
       .replace("<!--app-head-->", head ?? "")
       .replace("<!--app-html-->", appHtml + inlineHydration);
 
-    res.status(200).set({ "Content-Type": "text/html" }).send(html);
-  } catch (e) {
-    vite?.ssrFixStacktrace(e);
-    console.error(e.stack);
-    res.status(500).end(e.stack);
+    res
+      .status(200)
+      .set({
+        "Content-Type": "text/html; charset=utf-8",
+      })
+      .send(html);
+  } catch (error) {
+    vite?.ssrFixStacktrace(error);
+    console.error(error.stack);
+    res.status(500).end(error.stack);
   }
 });
 
-app.listen(port, () => {
-  console.log(`SSR dev server running at http://localhost:${port}`);
-});
+export default app;
+
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`SSR server running at http://localhost:${port}`);
+  });
+}

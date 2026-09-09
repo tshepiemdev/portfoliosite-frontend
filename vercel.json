@@ -3,7 +3,7 @@
   "outputDirectory": "dist/client",
   "rewrites": [
     {
-      "source": "/((?!assets/|fonts/|favicon\\.svg|robots\\.txt|sitemap\\.xml|og-banner\\.png).*)",
+      "source": "/((?!assets|fonts|favicon\\.svg|robots\\.txt|sitemap\\.xml|og-banner\\.png).*)",
       "destination": "/api/ssr"
     }
   ]
