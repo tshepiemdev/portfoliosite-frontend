@@ -23,13 +23,19 @@ if (!isProduction) {
   app.use(vite.middlewares);
 } else {
   const compression = (await import("compression")).default;
-  const sirv = (await import("sirv")).default;
 
   app.use(compression());
-  app.use(base, sirv("./dist/client", { extensions: [] }));
 }
 
 app.use(async (req, res, next) => {
+  console.log(
+    "SSR REQUEST:",
+    req.method,
+    req.originalUrl,
+    "NODE_ENV:",
+    process.env.NODE_ENV,
+  );
+
   if (req.path.includes(".") && !req.path.endsWith(".html")) {
     next();
     return;
@@ -43,10 +49,13 @@ app.use(async (req, res, next) => {
 
     if (!isProduction) {
       template = await fs.readFile("./index.html", "utf-8");
+
       template = await vite.transformIndexHtml(url, template);
+
       render = (await vite.ssrLoadModule("/src/entry-server.jsx")).render;
     } else {
       template = await fs.readFile("./dist/client/index.html", "utf-8");
+
       render = (await import("./dist/server/entry-server.js")).render;
     }
 
@@ -65,7 +74,8 @@ app.use(async (req, res, next) => {
 
     const html = template
       .replace("<!--app-head-->", head ?? "")
-      .replace("<!--app-html-->", appHtml + inlineHydration);
+      .replace("<!--app-html-->", appHtml)
+      .replace("<!--app-hydration-->", inlineHydration);
 
     res
       .status(200)
@@ -75,10 +85,23 @@ app.use(async (req, res, next) => {
       .send(html);
   } catch (error) {
     vite?.ssrFixStacktrace(error);
+
     console.error(error.stack);
+
     res.status(500).end(error.stack);
   }
 });
+
+if (isProduction) {
+  const sirv = (await import("sirv")).default;
+
+  app.use(
+    base,
+    sirv("./dist/client", {
+      extensions: [],
+    }),
+  );
+}
 
 export default app;
 

@@ -47,12 +47,15 @@ export default async function handler(req, res) {
 
     const html = template
       .replace("<!--app-head-->", head ?? "")
-      .replace("<!--app-html-->", appHtml + inlineHydration);
+      .replace("<!--app-html-->", appHtml)
+      .replace("<!--app-hydration-->", inlineHydration);
 
     res.setHeader("Content-Type", "text/html; charset=utf-8");
+
     res.status(200).send(html);
   } catch (error) {
     console.error(error);
+
     res.status(500).send("Internal Server Error");
   }
 }

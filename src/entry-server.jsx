@@ -28,7 +28,11 @@ export async function render(url) {
     <StrictMode>
       <HelmetProvider context={helmetContext}>
         <ToastProvider>
-          <StaticRouterProvider router={router} context={context} />
+          <StaticRouterProvider
+            router={router}
+            context={context}
+            hydrate={false}
+          />
         </ToastProvider>
       </HelmetProvider>
     </StrictMode>,
