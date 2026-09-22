@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import styles from "../styles/HelpCenter.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
-import PageHelmet from "../components/PageHelmet";
 import HelpCenterBox from "../components/HelpCenterBox";
 import API_URL from "../config/api";
 import SearchBar from "../components/SearchBar";
@@ -27,9 +26,8 @@ import plusImg from "../assets/icons/plus.svg";
 import minusImg from "../assets/icons/minus.svg";
 import handImg from "../assets/icons/hand-wave (1).svg";
 import ogImages from "../config/ogImages";
-import { useLoaderData, useLocation, useRevalidator } from "react-router-dom";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 
 const socialIcons = {
   LinkedIn: linkedInImg,
@@ -206,8 +204,18 @@ export async function loader() {
   }
 }
 
+export function meta() {
+  return createMeta({
+    title: "Help Center",
+    description:
+      "Browse help content, documentation, and assistance resources.",
+    image: ogImages.helpCenter,
+    url: "/help-center",
+    keywords: "help center, documentation, support, tshepiem.dev",
+  });
+}
+
 export default function HelpCenter() {
-  const location = useLocation();
   const revalidator = useRevalidator();
   const { helpSections, errorType } = useLoaderData();
 
@@ -217,7 +225,6 @@ export default function HelpCenter() {
 
   const loading = revalidator.state === "loading";
   const showSearch = !loading && !errorType;
-  const siteUrl = `${SITE_URL}${location.pathname}`;
 
   const handleRetry = () => {
     revalidator.revalidate();
@@ -259,15 +266,6 @@ export default function HelpCenter() {
 
   return (
     <div className={styles.helpCenter}>
-      <PageHelmet
-        title="Help Center"
-        description="Browse help content, documentation, and assistance resources."
-        image={ogImages.helpCenter}
-        url={siteUrl}
-        keywords="help center, documentation, support, tshepiem.dev"
-        siteName=""
-      />
-
       <div className={styles.helpCenterWrapper}>
         <PageTopHeading
           title="Help Center"

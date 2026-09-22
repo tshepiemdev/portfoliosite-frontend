@@ -1,13 +1,11 @@
 import { useState } from "react";
 import styles from "../styles/Contact.module.css";
 import ServiceRequestForm from "../components/ServiceRequestForm";
-import PageHelmet from "../components/PageHelmet";
 import PageTopHeading from "../components/PageTopHeading";
 import serviceImg from "../assets/icons/logo-black.svg";
 import ogImages from "../config/ogImages";
 import API_URL from "../config/api";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader() {
   try {
@@ -56,20 +54,23 @@ export async function loader() {
   }
 }
 
+export function meta() {
+  return createMeta({
+    title: "Request a Service",
+    description:
+      "From concept to completion, let's make it happen. Select the service that fits your needs and I'll review your requirements to provide the right solution.",
+    image: ogImages.request_service,
+    url: "/service-request",
+    keywords:
+      "request a service, software development services, website development, web application development, mobile app development, backend development, UI development, custom software solutions",
+  });
+}
+
 export default function ServiceRequest() {
   const [responseStatus, setResponseStatus] = useState("");
 
   return (
     <div className={styles.contact}>
-      <PageHelmet
-        title="Request a Service"
-        description="From concept to completion, let's make it happen. Select the service that fits your needs and I'll review your requirements to provide the right solution."
-        image={ogImages.request_service}
-        url={`${SITE_URL}/service-request`}
-        keywords="request a service, software development services, website development, web application development, mobile app development, backend development, UI development, custom software solutions"
-        siteName=""
-      />
-
       <div className={styles.contactWrapper}>
         {!responseStatus && (
           <PageTopHeading

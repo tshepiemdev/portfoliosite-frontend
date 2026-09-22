@@ -2,20 +2,32 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import styles from "../styles/SubscribeVerify.module.css";
 import LoaderView from "../components/Loader";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import PageTopHeading from "../components/PageTopHeading";
 import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 import LogoImg from "../assets/icons/logo-black.svg";
+import createMeta from "../config/seo";
 
-const SITE_URL = "https://tshepiem.dev";
+export function meta({ params }) {
+  const isUnsubscribe = params?.token && false;
+
+  return createMeta({
+    title: isUnsubscribe
+      ? "Blog subscription cancellation"
+      : "Blog subscription verification",
+    description: isUnsubscribe
+      ? "Manage your tshepiem.dev blog subscription."
+      : "Confirm your subscription to receive new articles from tshepiem.dev.",
+    robots: "noindex, nofollow",
+    url: `/subscribe/verify/${params?.token || ""}`,
+  });
+}
 
 export default function SubscribeVerify({ onSuccess }) {
   const { token } = useParams();
   const location = useLocation();
 
   const isUnsubscribe = location.pathname.includes("unsubscribe");
-  const siteUrl = `${SITE_URL}${location.pathname}`;
 
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
@@ -95,22 +107,6 @@ export default function SubscribeVerify({ onSuccess }) {
 
   return (
     <div className={styles.wrapper}>
-      <PageHelmet
-        title={
-          isUnsubscribe
-            ? "Blog subscription cancellation"
-            : "Blog subscription verification"
-        }
-        description={
-          isUnsubscribe
-            ? "Manage your tshepiem.dev blog subscription."
-            : "Confirm your subscription to receive new articles from tshepiem.dev."
-        }
-        robots="noindex, nofollow"
-        url={siteUrl}
-        siteName=""
-      />
-
       <div className={styles.contentWrapper}>
         <PageTopHeading
           icon={LogoImg}

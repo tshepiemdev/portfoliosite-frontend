@@ -1,28 +1,23 @@
-import { useLocation } from "react-router-dom";
 import styles from "../styles/Projects.module.css";
-import PageHelmet from "../components/PageHelmet";
 import ProjectsWrapper from "../components/ProjectsWrapper";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
+import createMeta from "../config/seo";
 
-const SITE_URL = "https://tshepiem.dev";
+export function meta() {
+  return createMeta({
+    title: "Projects",
+    description: "Builds, deployments & project releases.",
+    image: ogImages.projects,
+    url: "/projects",
+    keywords:
+      "projects, software development, developer portfolio, web applications, mobile apps, programming",
+  });
+}
 
 export default function Projects() {
-  const location = useLocation();
-
-  const siteUrl = `${SITE_URL}${location.pathname}`;
-
   return (
     <div className={styles.projects}>
-      <PageHelmet
-        title="Projects"
-        description="Builds, deployments & project releases."
-        image={ogImages.projects}
-        url={siteUrl}
-        keywords="projects, software development, developer portfolio, web applications, mobile apps, programming"
-        siteName=""
-      />
-
       <div className={styles.projectsWrapper}>
         <PageTopHeading
           title={<>Projects</>}

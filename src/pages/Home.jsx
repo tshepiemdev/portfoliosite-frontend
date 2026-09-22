@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.css";
-import PageHelmet from "../components/PageHelmet";
+import createMeta from "../config/seo";
 import LandingSection from "../components/LandingSection";
 import SkillListingWrapper from "../components/SkillListingWrapper";
 import QualificationsWrapper from "../components/QualificationsWrapper";
@@ -12,27 +12,25 @@ import BtnCTAWhiteSmall from "../components/BtnCTAWhiteSmall";
 import BtnCTABlackSmall from "../components/BtnCTABlackSmall";
 import MeetWrapper from "../components/MeetWrapper";
 import SectionHeading from "../components/SectionHeading";
-import ogImages from "../config/ogImages";
-import SubscribeLabel from "../components/SubscribeLabel";
 import contactInfo from "../config/contactInfo";
 import LazySection from "../components/LazySection";
+import SubscribeLabel from "../components/SubscribeLabel";
+
+export function meta() {
+  return createMeta({
+    title: "tshepiem.dev | Creative & Skilled Developer",
+    description:
+      "Creative developer building scalable, high-performance digital solutions with clean design and efficient engineering.",
+    image: "/og-banner.png",
+    url: "/",
+    keywords:
+      "hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa",
+  });
+}
 
 export default function Home() {
   return (
-    <main className={styles.home}>
-      <PageHelmet
-        title="tshepiem.dev"
-        description="Creative developer building scalable, high-performance digital solutions with clean design and efficient engineering."
-        image={ogImages.home}
-        url={
-          typeof window !== "undefined"
-            ? window.location.href
-            : "https://tshepiem.dev/"
-        }
-        keywords="hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa"
-        siteName="Creative & Skilled Software Engineer"
-      />
-
+    <div className={styles.home}>
       <section id="hero" className={styles.landingSectionWrapper}>
         <LandingSection />
       </section>
@@ -191,6 +189,6 @@ export default function Home() {
           marginTop={4}
         />
       </LazySection>
-    </main>
+    </div>
   );
 }

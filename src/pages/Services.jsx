@@ -1,26 +1,21 @@
 import { useState } from "react";
-import {
-  useLoaderData,
-  useLocation,
-  useOutletContext,
-  useRevalidator,
-} from "react-router-dom";
+import { useLoaderData, useOutletContext, useRevalidator } from "react-router";
 import styles from "../styles/Services.module.css";
 import ServiceBox from "../components/ServiceBox";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import { slugify } from "../utils/slugify";
 import FilterBar from "../components/FilterBar";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader() {
   try {
-    const res = await fetch(`${API_URL}/api/services`);
+    const res = await fetch(`${API_URL}/api/services`, {
+      signal: AbortSignal.timeout(4000),
+    });
 
     let data;
 
@@ -43,7 +38,7 @@ export async function loader() {
       errorType: null,
     };
   } catch (err) {
-    if (err instanceof TypeError) {
+    if (err instanceof TypeError || err?.name === "TimeoutError") {
       return {
         services: [],
         errorType: "server",
@@ -57,11 +52,22 @@ export async function loader() {
   }
 }
 
+export function meta() {
+  return createMeta({
+    title: "Services",
+    url: "/services",
+    image: ogImages.services,
+    description:
+      "Building solutions for start-ups, medium and large-scale enterprise clients.",
+    keywords:
+      "developer services, website development, web applications, mobile apps, software solutions, Tshepiem Dev",
+  });
+}
+
 export default function Services({ showFilter = true, marginTop = 0 }) {
   const { settings } = useOutletContext();
   const { services, errorType } = useLoaderData();
   const revalidator = useRevalidator();
-  const location = useLocation();
 
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -69,8 +75,6 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
     import.meta.env.PROD && settings?.maintenancePages?.services === true;
 
   const loading = revalidator.state === "loading";
-
-  const siteUrl = `${SITE_URL}${location.pathname}`;
 
   const filteredServices =
     selectedCategory === "All"
@@ -96,15 +100,6 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
 
   return (
     <div className={styles.services}>
-      <PageHelmet
-        title="Services"
-        image={ogImages.services}
-        description="Building solutions for start-ups, medium and large-scale enterprise clients."
-        url={siteUrl}
-        keywords="developer services, website development, web applications, mobile apps, software solutions, Tshepiem Dev"
-        siteName=""
-      />
-
       <div className={styles.servicesWrapper}>
         <div className={styles.topWrapper}>
           <PageTopHeading
@@ -144,7 +139,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
                 errType="default"
                 errorText={
                   <>
-                    Under maintenace. <br />
+                    Under maintenance. <br />
                     Please check back later.
                   </>
                 }
@@ -173,7 +168,7 @@ export default function Services({ showFilter = true, marginTop = 0 }) {
                   errType="default"
                   errorText={
                     <>
-                      Couln't find any <br />
+                      Couldn't find any <br />
                       listed services
                     </>
                   }

@@ -17,7 +17,6 @@ import copyLinkImg from "../assets/icons/link.svg";
 import threadsImg from "../assets/icons/threads.svg";
 import xImg from "../assets/icons/twitter-alt.svg";
 import linkedInImg from "../assets/icons/linkedin (2).svg";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareSiteModal from "../components/ShareSiteModal";
@@ -27,6 +26,7 @@ import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
 import { getVideoUrl } from "../utils/getVideoUrl";
 import SubscribeLabel from "../components/SubscribeLabel";
+import createMeta from "../config/seo";
 
 const SITE_URL = "https://tshepiem.dev";
 
@@ -76,6 +76,29 @@ export async function loader({ params }) {
   }
 }
 
+export function meta({ data, params }) {
+  if (!data?.blog) {
+    return createMeta({
+      title: "Blog",
+      description:
+        "Read articles about software development, programming, technology, coding, and digital experiences.",
+      url: `/blog/${params.slug}`,
+      robots: "noindex, nofollow",
+    });
+  }
+
+  const blog = data.blog;
+
+  return createMeta({
+    title: blog.title,
+    description: blog.excerpt,
+    image: blog.imageUrl,
+    url: `/blog/${blog.slug || params.slug}`,
+    keywords: `${blog.category}, software development, programming, technology, coding`,
+    siteName: "Blog",
+  });
+}
+
 export default function BlogPage() {
   const { showToast } = useToast();
   const { blog, notFound, error } = useLoaderData();
@@ -83,7 +106,6 @@ export default function BlogPage() {
   const location = useLocation();
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState(null);
 
   const detailsRef = useRef(null);
@@ -261,15 +283,6 @@ export default function BlogPage() {
 
   return (
     <div className={styles.blogPage}>
-      <PageHelmet
-        title={blog.title}
-        description={blog.excerpt}
-        image={blog.imageUrl}
-        url={siteUrl}
-        keywords={`${blog.category}, software development, programming, technology, coding`}
-        siteName="Blog"
-      />
-
       <div className={styles.blogWrapper}>
         <div className={styles.topSection}>
           <BlogPageTopTitlesView

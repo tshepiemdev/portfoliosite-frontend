@@ -2,12 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import {
   useLoaderData,
   useRevalidator,
-  useLocation,
   useSearchParams,
   useOutletContext,
 } from "react-router-dom";
 import styles from "../styles/Pricing.module.css";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
@@ -15,8 +13,7 @@ import PricingCard from "../components/PricingCard";
 import FilterBar from "../components/FilterBar";
 import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader() {
   try {
@@ -72,11 +69,22 @@ export async function loader() {
   }
 }
 
+export function meta() {
+  return createMeta({
+    title: "Pricing",
+    description:
+      "Choose a package that fits your goals whether you're starting out, growing, or scaling big.",
+    image: ogImages.pricing,
+    url: "/pricing",
+    keywords:
+      "software development pricing, website packages, web application pricing, mobile app development, developer services",
+  });
+}
+
 export default function Pricing() {
   const { settings } = useOutletContext();
   const { allPackages, categories, errorType } = useLoaderData();
   const revalidator = useRevalidator();
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const serviceParam = searchParams.get("service");
@@ -142,19 +150,8 @@ export default function Pricing() {
     revalidator.revalidate();
   };
 
-  const siteUrl = `${SITE_URL}${location.pathname}${location.search}`;
-
   return (
     <div className={styles.pricing}>
-      <PageHelmet
-        title="Pricing"
-        description="Choose a package that fits your goals whether you're starting out, growing, or scaling big."
-        image={ogImages.pricing}
-        url={siteUrl}
-        keywords="software development pricing, website packages, web application pricing, mobile app development, developer services"
-        siteName=""
-      />
-
       <div className={styles.pricingWrapper}>
         <PageTopHeading
           title={<>Pricing</>}

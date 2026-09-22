@@ -3,14 +3,12 @@ import {
   useLoaderData,
   useOutletContext,
   useRevalidator,
-  useLocation,
 } from "react-router-dom";
 import styles from "../styles/Blogs.module.css";
 import BlogBox from "../components/BlogBox";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
 import SearchErrorView from "../components/SearchErrorView";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import FilterBar from "../components/FilterBar";
 import { slugify } from "../utils/slugify";
@@ -18,8 +16,7 @@ import PageTopHeading from "../components/PageTopHeading";
 import ogImages from "../config/ogImages";
 import SubscribeLabel from "../components/SubscribeLabel";
 import SearchBar from "../components/SearchBar";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader() {
   try {
@@ -56,19 +53,28 @@ export async function loader() {
   }
 }
 
+export function meta() {
+  return createMeta({
+    title: "Blog",
+    image: ogImages.blog,
+    description:
+      "Fresh tutorials, engineering insights, tech news and personal vlogs.",
+    url: "/blog",
+    keywords:
+      "developer blog, software development, programming tutorials, coding, web development, technology articles",
+  });
+}
+
 export default function Blogs() {
   const { settings } = useOutletContext();
   const { blogs: myBlogs, errorType } = useLoaderData();
   const revalidator = useRevalidator();
-  const location = useLocation();
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const loading = revalidator.state === "loading";
-
-  const canonicalUrl = `${SITE_URL}${location.pathname}`;
 
   const blogsUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.blog === true;
@@ -180,15 +186,6 @@ export default function Blogs() {
 
   return (
     <div className={styles.blogs}>
-      <PageHelmet
-        title="Blog"
-        image={ogImages.blog}
-        description="Fresh tutorials, engineering insights, tech news and personal vlogs."
-        url={canonicalUrl}
-        keywords="developer blog, software development, programming tutorials, coding, web development, technology articles"
-        siteName=""
-      />
-
       <PageTopHeading
         title={<>Blog</>}
         subtext={

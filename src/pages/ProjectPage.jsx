@@ -10,7 +10,6 @@ import copyLinkImg from "../assets/icons/link.svg";
 import linkedInImg from "../assets/icons/linkedin (2).svg";
 import xImg from "../assets/icons/twitter-alt.svg";
 import threadsImg from "../assets/icons/threads.svg";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import ShareSiteModal from "../components/ShareSiteModal";
 import ImagePreviewModal from "../components/ImagePreviewModal";
@@ -28,8 +27,7 @@ import { getShareOptions } from "../utils/shareOptions";
 import NoticeLbl from "../components/NoticeLbl";
 import liveprodImg from "../assets/icons/globe (1).svg";
 import ErrorMaxView from "../components/ErrorMaxView";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader({ params }) {
   const { slug } = params;
@@ -77,6 +75,29 @@ export async function loader({ params }) {
   }
 }
 
+export function meta({ data, params }) {
+  if (!data?.project) {
+    return createMeta({
+      title: "Project",
+      description:
+        "View project details, technologies, features, and resources.",
+      url: `/projects/${params.slug}`,
+      robots: "noindex, nofollow",
+    });
+  }
+
+  const project = data.project;
+
+  return createMeta({
+    title: project.projectName,
+    description: project.projectShortDescription,
+    image: project.projectIcon,
+    url: `/projects/${project.slug || params.slug}`,
+    keywords: `${project.projectName}, ${project.projectType}, ${project.projectCategory}, software development, portfolio project`,
+    siteName: "Project",
+  });
+}
+
 export default function ProjectPage() {
   const { showToast } = useToast();
   const { project, notFound, error } = useLoaderData();
@@ -91,7 +112,7 @@ export default function ProjectPage() {
   const hasViewed = useRef(false);
 
   const loading = revalidator.state === "loading";
-  const siteUrl = `${SITE_URL}${location.pathname}`;
+  const siteUrl = `https://tshepiem.dev${location.pathname}`;
 
   useEffect(() => {
     setViews(project?.views || 0);
@@ -218,15 +239,6 @@ export default function ProjectPage() {
 
   return (
     <div className={styles.projectPage}>
-      <PageHelmet
-        title={project.projectName}
-        description={project.projectShortDescription}
-        image={project.projectIcon}
-        url={siteUrl}
-        keywords={`${project.projectName}, ${project.projectType}, ${project.projectCategory}, software development, portfolio project`}
-        siteName="Project"
-      />
-
       <div className={styles.projectWrapper}>
         <div className={styles.topWrapper}>
           <div className={styles.boxFlexP}>

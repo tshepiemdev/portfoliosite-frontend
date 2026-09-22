@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../styles/CvPage.module.css";
 import LoaderView from "../components/Loader";
 import ErrorView from "../components/ErrorView";
-import PageHelmet from "../components/PageHelmet";
 import API_URL from "../config/api";
 import BtnCTAWhite from "../components/BtnCTAWhite";
 import BtnCTABlack from "../components/BtnCTABlack";
@@ -17,7 +16,6 @@ import { convertDriveToPreview, convertDriveToDownload } from "../utils/drive";
 import { useToast } from "../components/ToastContext";
 import {
   Link,
-  useLocation,
   useNavigate,
   useLoaderData,
   useRevalidator,
@@ -29,8 +27,7 @@ import ChevronImg from "../assets/icons/chevron-right.svg";
 import NextImg from "../assets/icons/arrow-small-right.svg";
 import ogImages from "../config/ogImages";
 import LogoImg from "../assets/icons/logo-black.svg";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader() {
   try {
@@ -60,9 +57,20 @@ export async function loader() {
   }
 }
 
+export function meta({ data }) {
+  const cv = data?.cv;
+
+  return createMeta({
+    title: "Get my resume",
+    description: "Get my comprehensive, ATS optimized and ready cv",
+    image: ogImages.resume,
+    url: "/cv",
+    keywords: `${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`,
+  });
+}
+
 export default function CvPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const revalidator = useRevalidator();
   const { cv, errorType } = useLoaderData();
 
@@ -72,7 +80,6 @@ export default function CvPage() {
   const { showToast } = useToast();
 
   const loading = revalidator.state === "loading";
-  const siteUrl = `${SITE_URL}${location.pathname}`;
 
   const handleRetry = () => {
     revalidator.revalidate();
@@ -141,28 +148,8 @@ export default function CvPage() {
 
   const hiMe = cv?.fullName ? `Hey, I'm ${cv.fullName}` : "Hey";
 
-  const handleNavigate = (id) => {
-    navigate("/");
-
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 200);
-  };
-
   return (
     <div className={styles.cvPage}>
-      <PageHelmet
-        title="Get my resume"
-        description="Get my comprehensive, ATS optimized and ready cv"
-        image={ogImages.resume}
-        url={siteUrl}
-        keywords={`${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`}
-        siteName=""
-      />
-
       <div className={styles.cvWrapper}>
         <div className={styles.allWrapper}>
           <div className={styles.columnWrapper}>

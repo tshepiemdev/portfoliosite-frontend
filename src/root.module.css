@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "interFont";
+  src: url("/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-optical-sizing: auto;
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "hostGroteskFont";
+  src: url("/fonts/HostGrotesk-VariableFont_wght.ttf") format("truetype");
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "instrumentSerifFont";
+  src: url("/fonts/InstrumentSerif-Regular.ttf") format("truetype");
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:global(html.modal-open),
+:global(body.modal-open) {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+:global(html.modal-open::-webkit-scrollbar),
+:global(body.modal-open::-webkit-scrollbar) {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+:global(body.modal-open) {
+  height: 100dvh !important;
+  overscroll-behavior: none;
+}
+
+:global(html),
+:global(body) {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: #000000;
+}
+
+:global(body) {
+  overflow-x: hidden;
+}
+
+:global(#modal-root) {
+  position: relative;
+  z-index: 99998;
+}

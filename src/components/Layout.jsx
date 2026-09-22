@@ -3,7 +3,7 @@ import {
   useLocation,
   useLoaderData,
   useRevalidator,
-} from "react-router-dom";
+} from "react-router";
 import styles from "../styles/Layout.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -16,21 +16,32 @@ import ScrollToTop from "./ScrollToTop";
 import API_URL from "../config/api";
 
 const SETTINGS_CACHE_KEY = "site_settings";
+const SERVER_CACHE_MS = 60_000;
 const isBrowser = typeof window !== "undefined";
+
+let serverSettings = null;
+let serverSettingsAt = 0;
 
 const getPageName = (pathname) => {
   if (pathname === "/") return "home";
   if (pathname === "/contact" || pathname === "/get-in-touch") return "contact";
   if (pathname === "/service-request") return "serviceRequest";
   if (pathname === "/hire-me") return "hireMe";
-  if (pathname === "/services" || pathname.startsWith("/services/"))
+  if (pathname === "/services" || pathname.startsWith("/services/")) {
     return "services";
-  if (pathname === "/projects" || pathname.startsWith("/projects/"))
+  }
+  if (pathname === "/projects" || pathname.startsWith("/projects/")) {
     return "projects";
-  if (pathname === "/legal" || pathname.startsWith("/legal/")) return "legal";
-  if (pathname === "/blog" || pathname.startsWith("/blog/")) return "blogs";
-  if (pathname === "/help-center" || pathname.startsWith("/help-center/"))
+  }
+  if (pathname === "/legal" || pathname.startsWith("/legal/")) {
+    return "legal";
+  }
+  if (pathname === "/blog" || pathname.startsWith("/blog/")) {
+    return "blogs";
+  }
+  if (pathname === "/help-center" || pathname.startsWith("/help-center/")) {
     return "helpCenter";
+  }
   if (pathname === "/cv" || pathname === "/resume") return "cv";
   if (pathname === "/pricing") return "pricing";
 
@@ -66,21 +77,56 @@ const cacheSettings = (settings) => {
 };
 
 export async function loader() {
-  try {
-    const response = await fetch(`${API_URL}/api/settings`);
+  if (serverSettings && Date.now() - serverSettingsAt < SERVER_CACHE_MS) {
+    return { settings: serverSettings, error: null };
+  }
 
-    if (!response.ok) throw new Error("server");
+  try {
+    const response = await fetch(`${API_URL}/api/settings`, {
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (!response.ok) {
+      throw new Error("server");
+    }
 
     const data = await response.json();
 
-    if (!data.success || !data.data) throw new Error("server");
+    if (!data.success || !data.data) {
+      throw new Error("server");
+    }
 
-    cacheSettings(data.data);
+    serverSettings = data.data;
+    serverSettingsAt = Date.now();
 
     return {
       settings: data.data,
       error: null,
     };
+  } catch {
+    if (serverSettings) {
+      return {
+        settings: serverSettings,
+        error: null,
+      };
+    }
+
+    return {
+      settings: null,
+      error: "server",
+    };
+  }
+}
+
+export async function clientLoader({ serverLoader }) {
+  try {
+    const data = await serverLoader();
+
+    if (data.settings) {
+      cacheSettings(data.settings);
+    }
+
+    return data;
   } catch {
     const cached = getCachedSettings();
 
@@ -91,17 +137,15 @@ export async function loader() {
       };
     }
 
-    const isOffline = isBrowser && !navigator.onLine;
-
     return {
       settings: null,
-      error: isOffline ? "network" : "server",
+      error: navigator.onLine ? "server" : "network",
     };
   }
 }
 
-export function shouldRevalidate() {
-  return false;
+export function shouldRevalidate({ defaultShouldRevalidate }) {
+  return defaultShouldRevalidate;
 }
 
 export default function Layout() {
@@ -109,7 +153,9 @@ export default function Layout() {
   const revalidator = useRevalidator();
   const location = useLocation();
 
-  const handleRetry = () => revalidator.revalidate();
+  const handleRetry = () => {
+    revalidator.revalidate();
+  };
 
   if (error && import.meta.env.PROD && !settings) {
     return <ErrorMaxView errType={error} onRetry={handleRetry} />;
@@ -130,6 +176,7 @@ export default function Layout() {
       <div className={styles.layout}>
         <ScrollToTop />
         {!globalMaintenance && <Header />}
+
         <MaintenanceView data={settings} pageName={pageName} />
 
         {!globalMaintenance && (

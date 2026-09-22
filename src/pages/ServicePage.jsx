@@ -2,8 +2,8 @@ import { useState } from "react";
 import {
   Link,
   useLoaderData,
-  useLocation,
   useRevalidator,
+  useLocation,
 } from "react-router-dom";
 import { slugify } from "../utils/slugify";
 import styles from "../styles/ServicePage.module.css";
@@ -23,10 +23,8 @@ import NoticeLbl from "../components/NoticeLbl";
 import { getShareOptions } from "../utils/shareOptions";
 import { useToast } from "../components/ToastContext";
 import ogImages from "../config/ogImages";
-import PageHelmet from "../components/PageHelmet";
 import ErrorMaxView from "../components/ErrorMaxView";
-
-const SITE_URL = "https://tshepiem.dev";
+import createMeta from "../config/seo";
 
 export async function loader({ params }) {
   const { slug } = params;
@@ -92,6 +90,30 @@ export async function loader({ params }) {
   }
 }
 
+export function meta({ data, params }) {
+  if (!data?.service) {
+    return createMeta({
+      title: "Service",
+      description:
+        "Explore service details, specifications, technologies, and available options.",
+      url: `/services/${params.slug}`,
+      robots: "noindex, nofollow",
+    });
+  }
+
+  const service = data.service;
+
+  return createMeta({
+    title: service.name,
+    description: service.shortDescription,
+    image: ogImages.services,
+    url: `/services/${service.slug || params.slug}`,
+    keywords: `${service.name}, ${service.category}, hire developer, software development, custom solutions`,
+    siteName: "tshepiem.dev",
+    titleSuffix: "Service",
+  });
+}
+
 export default function ServicePage() {
   const { personal } = contactInfo;
   const { service, pricing, notFound, error } = useLoaderData();
@@ -102,14 +124,14 @@ export default function ServicePage() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const loading = revalidator.state === "loading";
-  const siteUrl = `${SITE_URL}${location.pathname}`;
+  const siteUrl = `https://tshepiem.dev${location.pathname}`;
 
   const handleRetry = () => {
     revalidator.revalidate();
   };
 
   const handleCopyLink = async () => {
-    const url = `${SITE_URL}${location.pathname}${location.search}`;
+    const url = `https://tshepiem.dev${location.pathname}${location.search}`;
 
     try {
       if (navigator.clipboard?.writeText) {
@@ -173,15 +195,6 @@ export default function ServicePage() {
 
   return (
     <div className={styles.servicePage}>
-      <PageHelmet
-        title={service.name}
-        description={service.shortDescription}
-        image={ogImages.services}
-        url={siteUrl}
-        keywords={`${service.name}, ${service.category}, hire developer, software development, custom solutions`}
-        siteName="Service"
-      />
-
       <div className={styles.serviceWrapper}>
         <ServicePageTopTitlesView
           icon={service.icon}

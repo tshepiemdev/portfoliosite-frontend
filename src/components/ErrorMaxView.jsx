@@ -1,16 +1,10 @@
-import React from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../styles/ErrorMaxView.module.css";
-import PageHelmet from "./PageHelmet";
-import SectionDevider from "./SectionDevider";
 import PageTopHeading from "./PageTopHeading";
 import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
-import LogoImg from "../assets/icons/logo-black.svg";
 import ErrorImg from "../assets/icons/triangle-warning-black.svg";
 import InternetErrorImg from "../assets/icons/no-network.svg";
 import ServerErrorImg from "../assets/icons/thunderstorm-risk (1).svg";
-import chevronImg from "../assets/icons/chevron-down.svg";
 
 export default function ErrorMaxView({
   errType,
@@ -18,8 +12,6 @@ export default function ErrorMaxView({
   errorSubtext,
   onRetry,
 }) {
-  const [showTroubleshooting, setShowTroubleshooting] = useState(false);
-
   const icons = {
     network: InternetErrorImg,
     server: ServerErrorImg,
