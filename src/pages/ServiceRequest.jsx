@@ -76,12 +76,12 @@ export default function ServiceRequest() {
           <PageTopHeading
             icon={serviceImg}
             title={<>Request a service.</>}
-            miniTitle={
-              <>
-                From concept to completion, <br />
-                let's make it happen.
-              </>
-            }
+            // miniTitle={
+            //   <>
+            //     From concept to completion, <br />
+            //     let's make it happen.
+            //   </>
+            // }
             subtext={
               <>
                 Select the service that fits your needs and <br />

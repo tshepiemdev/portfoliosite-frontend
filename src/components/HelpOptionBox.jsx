@@ -18,6 +18,7 @@ export default function HelpOptionBox({
   focusTo,
   isFeatured = false,
   isPopular = false,
+  hoverBg,
   options = [],
 }) {
   return (
@@ -25,8 +26,6 @@ export default function HelpOptionBox({
       className={`${styles.helpBox} ${isPopular ? styles.popular : ""}`}
       style={{ backgroundColor: bg }}
     >
-      {/* {isFeatured && <FeaturedBadge text="Popular" bgColor={"#ff9604"}/>} */}
-
       {icon && (
         <div className={styles.optionIconWrapper}>
           <img
@@ -94,6 +93,7 @@ export default function HelpOptionBox({
               href={focusTo ? undefined : optionCTALink}
               focusTo={focusTo}
               buttonText={optionCTAText}
+              hoverBg={hoverBg}
             />
           ) : (
             <BtnCTABlackSmall

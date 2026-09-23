@@ -8,7 +8,7 @@ export default function Logo({
   text = "tshepiem.dev",
   color = "#ffffff",
   size = 1.2,
-  iconSize = 0.85,
+  iconSize = 1.4,
   isClickable = true,
   onClick,
 }) {

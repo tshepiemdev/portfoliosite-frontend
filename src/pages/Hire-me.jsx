@@ -39,6 +39,7 @@ const hireOptions = [
     color: "",
     isFeatured: true,
     isPopular: true,
+    hoverBg: "rgba(255, 255, 255, 0.5)",
     optionCTAText: "Open form",
   },
   {
@@ -212,6 +213,7 @@ export default function HireMe() {
               optionCTAText={option.optionCTAText}
               isFeatured={option.isFeatured}
               isPopular={option.isPopular}
+              hoverBg={option.hoverBg}
               options={option.options}
               type={option.type}
             />
@@ -235,6 +237,8 @@ export default function HireMe() {
               optionCTALink={option.url}
               optionCTAText={option.optionCTAText}
               isFeatured={option.isFeatured}
+              isPopular={option.isPopular}
+              hoverBg={option.hoverBg}
               options={option.options}
               type={option.type}
             />

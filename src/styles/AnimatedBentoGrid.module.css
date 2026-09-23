@@ -5,6 +5,7 @@
   border-radius: 1rem;
   background: #121212;
   aspect-ratio: 16 / 18;
+    background-color: #1a1a1a;
 }
 
 .trackWrapper {
@@ -79,7 +80,7 @@
   justify-content: center;
   align-items: center;
   cursor: default;
-  gap: 0.2rem;
+  gap: 0.5rem;
 }
 
 .span {

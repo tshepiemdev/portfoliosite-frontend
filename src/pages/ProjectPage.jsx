@@ -21,6 +21,7 @@ import FeaturesImg from "../assets/icons/star-black.svg";
 import ShippedImg from "../assets/icons/cloud.svg";
 import DiscontinuedImg from "../assets/icons/ban.svg";
 import BuildingImg from "../assets/icons/logo.svg";
+import smallFallbackImg from "../assets/images/fallback-light.svg";
 import bigFallbackImg from "../assets/images/fallback_img_16_9_light.svg";
 import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
@@ -245,7 +246,7 @@ export default function ProjectPage() {
             <div className={styles.projectIconWrapper}>
               <img
                 className={styles.projectIcon}
-                src={project.projectIcon || bigFallbackImg}
+                src={project.projectIcon || smallFallbackImg}
                 alt={project.projectName}
                 onClick={() => {
                   if (!project.projectIcon) return;
@@ -255,7 +256,7 @@ export default function ProjectPage() {
                 }}
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = bigFallbackImg;
+                  e.target.src = smallFallbackImg;
                 }}
                 loading="lazy"
               />

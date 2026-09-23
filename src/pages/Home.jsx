@@ -14,17 +14,16 @@ import MeetWrapper from "../components/MeetWrapper";
 import SectionHeading from "../components/SectionHeading";
 import contactInfo from "../config/contactInfo";
 import LazySection from "../components/LazySection";
-import SubscribeLabel from "../components/SubscribeLabel";
 
 export function meta() {
   return createMeta({
-    title: "tshepiem.dev | Creative & Skilled Developer",
+    title: "tshepiem.dev | Creative & Skilled Developer: Building Software Solutions",
     description:
-      "Creative developer building scalable, high-performance digital solutions with clean design and efficient engineering.",
+      "Software engineer building practical, scalable software and applications with clean code, thoughtful architecture, and modern technologies.",
     image: "/og-banner.png",
     url: "/",
     keywords:
-      "hire developer, software developer, web developer, React developer, Node.js developer, JavaScript, TypeScript, C#, South Africa",
+      "software engineer, software developer, application developer, programmer, React developer, Node.js developer, C# developer, JavaScript, TypeScript, South Africa, Pretoria",
   });
 }
 
@@ -171,24 +170,6 @@ export default function Home() {
           <LargeBanner />
         </LazySection>
       </section>
-
-      <LazySection minHeight="400px">
-        <SubscribeLabel
-          heading={
-            <>
-              Subscribe now, <br />
-              It's completely free
-            </>
-          }
-          text={
-            <>
-              to receive new <br />
-              blogs, directly into your inbox.
-            </>
-          }
-          marginTop={4}
-        />
-      </LazySection>
     </div>
   );
 }

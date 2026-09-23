@@ -11,7 +11,7 @@ export default function LargeBanner() {
       <div className={styles.overlay} />
 
       <div className={styles.content}>
-        <Logo isClickable={false} />
+        <Logo size={1.5} iconColor="white" isClickable={false} />
 
         <SectionHeading
           title={
@@ -24,7 +24,12 @@ export default function LargeBanner() {
           centerContent="center"
         />
 
-        <BtnCTAWhite buttonText="Hire me now" href="/hire-me" setRadius={90}/>
+        <BtnCTAWhite
+          buttonText="Hire me now"
+          href="/hire-me"
+          setRadius={90}
+          hoverBg="rgba(255, 255, 255, 0.5)"
+        />
       </div>
     </div>
   );

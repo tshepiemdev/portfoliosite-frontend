@@ -26,7 +26,7 @@
 
 .phoneRow:focus-within {
   outline: 1px solid rgba(255, 166, 0, 0.5);
-  border: 1px solid orange;
+  border: 1px solid orangered;
   opacity: 1;
 }
 

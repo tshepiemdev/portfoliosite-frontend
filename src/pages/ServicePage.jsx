@@ -106,7 +106,7 @@ export function meta({ data, params }) {
   return createMeta({
     title: service.name,
     description: service.shortDescription,
-    image: ogImages.services,
+    image: ogImages.service,
     url: `/services/${service.slug || params.slug}`,
     keywords: `${service.name}, ${service.category}, hire developer, software development, custom solutions`,
     siteName: "tshepiem.dev",

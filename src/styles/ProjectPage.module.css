@@ -189,7 +189,7 @@
 }
 
 .building {
-  color: #ff9604;
+  color: orangered;
   font-weight: 600;
 }
 
@@ -356,7 +356,7 @@
   font-size: 1.8rem;
   margin-bottom: auto;
   text-decoration: underline;
-  text-decoration-color: orange;
+  text-decoration-color: orangered;
 }
 
 .sectionBackupText {

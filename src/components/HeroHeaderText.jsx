@@ -1,5 +1,5 @@
 import styles from "../styles/HeroHeaderText.module.css";
-import WriteImg from "../assets/icons/terminal (1).svg";
+import WriteImg from "../assets/icons/logo.svg";
 import EngineerImg from "../assets/icons/objects-column (1).svg";
 
 export default function HeroHeaderText() {

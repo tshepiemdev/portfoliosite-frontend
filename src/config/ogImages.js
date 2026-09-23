@@ -5,6 +5,7 @@ const ogImages = {
 
   home: `${CLOUDINARY_BASE}/og-banner.png`,
   services: `${CLOUDINARY_BASE}/services.png`,
+  service: `${CLOUDINARY_BASE}/service.png`,
   projects: `${CLOUDINARY_BASE}/projects.png`,
   blog: `${CLOUDINARY_BASE}/blog.png`,
   contact: `${CLOUDINARY_BASE}/contact.png`,

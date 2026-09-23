@@ -11,8 +11,10 @@ export default function BtnCTAWhiteSmall({
   download = false,
   fullWidth = false,
   setRadius,
+  hoverBg = "orangered",
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -57,9 +59,15 @@ export default function BtnCTAWhiteSmall({
   return (
     <button
       className={`${styles.btnCTA} ${fullWidth ? styles.full : styles.auto}`}
-      style={setRadius ? { borderRadius: `${setRadius}rem` } : undefined}
+      style={{
+        borderRadius: setRadius ? `${setRadius}rem` : undefined,
+        backgroundColor: isHovered ? hoverBg : "#ffffff",
+        borderColor: isHovered ? "rgba(255, 255, 255, 0.2)" : "#ffffff",
+      }}
       type="button"
       onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {buttonText}
     </button>

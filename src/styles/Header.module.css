@@ -54,7 +54,7 @@
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .miniMenu {

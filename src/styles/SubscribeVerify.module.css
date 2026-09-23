@@ -49,7 +49,7 @@
 }
 
 .linkTo:hover {
-  color: orange;
+  color: orangered;
 }
 
 @media (max-width: 768px) {

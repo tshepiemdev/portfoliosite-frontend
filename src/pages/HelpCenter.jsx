@@ -53,6 +53,7 @@ const helpOptions = [
     focusTo: "helpArticles",
     isFeatured: true,
     isPopular: true,
+    hoverBg: "rgba(255, 255, 255, 0.5)",
     optionCTAText: "Browse help articles",
   },
   {
@@ -284,7 +285,7 @@ export default function HelpCenter() {
           <div className={styles.helpOptionsWrapper}>
             {helpOptions.map((option) => (
               <HelpOptionBox
-                key={option.optionCTAText}
+                key={option.optionCTAText || option.name}
                 icon={option.icon}
                 name={option.name}
                 description={option.description}
@@ -292,6 +293,7 @@ export default function HelpCenter() {
                 optionCTAText={option.optionCTAText}
                 isFeatured={option.isFeatured}
                 isPopular={option.isPopular}
+                hoverBg={option.hoverBg}
                 options={option.options}
                 type={option.type}
                 focusTo={option.focusTo}
@@ -424,6 +426,7 @@ export default function HelpCenter() {
                 optionCTAText={option.optionCTAText}
                 isFeatured={option.isFeatured}
                 isPopular={option.isPopular}
+                hoverBg={option.hoverBg}
                 options={option.options}
                 type={option.type}
                 focusTo={option.focusTo}

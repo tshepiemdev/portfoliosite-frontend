@@ -42,8 +42,7 @@
 }
 
 .btnCTA:hover {
-  background-color: #ff9604;
+  background-color: var(--hover-bg);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: 0.1s ease-in-out;
-  /* transform: scaleY(1.1) scaleX(1.1); */
 }

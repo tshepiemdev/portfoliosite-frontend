@@ -28,12 +28,12 @@ export default function Contact() {
           <PageTopHeading
             icon={serviceImg}
             title={<>Get in touch</>}
-            miniTitle={
-              <>
-                Whether it's a question or <br />
-                an opportunity, let's talk.
-              </>
-            }
+            // miniTitle={
+            //   <>
+            //     Whether it's a question or <br />
+            //     an opportunity, let's talk.
+            //   </>
+            // }
             titleSize={2}
             miniTitleSize={2.2}
             subtext={

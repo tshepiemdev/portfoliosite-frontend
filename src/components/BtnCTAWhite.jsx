@@ -15,7 +15,9 @@ export default function BtnCTAWhite({
   download = false,
   focusTo,
   fullWidth = false,
-  setRadius
+  setRadius,
+  hoverBg = "orangered",
+  hoverWhite = false,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -59,10 +61,15 @@ export default function BtnCTAWhite({
     }
   };
 
+  const hoverBackground = hoverWhite ? "rgba(255, 255, 255, 0.3)" : hoverBg;
+
   return (
     <button
       className={`${styles.btnCTA} ${fullWidth ? styles.full : styles.auto}`}
-      style={setRadius ? { borderRadius: `${setRadius}rem` } : undefined}
+      style={{
+        ...(setRadius ? { borderRadius: `${setRadius}rem` } : {}),
+        "--hover-bg": hoverBackground,
+      }}
       type={type}
       onClick={handleClick}
     >

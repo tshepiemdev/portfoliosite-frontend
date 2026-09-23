@@ -12,7 +12,7 @@
   isolation: isolate;
   border-radius: 0.8rem;
   background-color: orangered;
-  border: 0.2rem solid rgba(255, 232, 188, 0.1);
+  border: 0.1rem solid rgba(255, 240, 211, 0.1);
 }
 
 .bannerWrapper::before {

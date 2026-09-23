@@ -17,6 +17,7 @@ export default function HiremeOptionBox({
   optionCTALink,
   isFeatured = false,
   isPopular = false,
+  hoverBg,
   options = [],
 }) {
   return (
@@ -24,8 +25,6 @@ export default function HiremeOptionBox({
       className={`${styles.hiremeBox} ${isPopular ? styles.popular : ""}`}
       style={{ backgroundColor: bg }}
     >
-      {/* {isFeatured && <FeaturedBadge text="Popular" bgColor={"#ff9604"}/>} */}
-
       {icon && (
         <div className={styles.optionIconWrapper}>
           <img
@@ -61,10 +60,13 @@ export default function HiremeOptionBox({
 
       {optionCTALink && (
         <div className={styles.controlWrapper}>
-          {isFeatured && (
-            <BtnCTAWhiteSmall href={optionCTALink} buttonText={optionCTAText} />
-          )}
-          {!isFeatured && (
+          {isFeatured ? (
+            <BtnCTAWhiteSmall
+              href={optionCTALink}
+              buttonText={optionCTAText}
+              hoverBg={hoverBg}
+            />
+          ) : (
             <BtnCTABlackSmall href={optionCTALink} buttonText={optionCTAText} />
           )}
         </div>
