@@ -34,8 +34,8 @@
 }
 
 .inputField:focus {
-  outline: 1px solid rgba(255, 166, 0, 0.5);
-  border: 1px solid orangered;
+  outline: 2px solid rgba(0, 0, 255, 0.5);
+  border: 1px solid blue;
   opacity: 1;
 }
 

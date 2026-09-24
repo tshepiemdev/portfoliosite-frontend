@@ -72,7 +72,7 @@ export function meta({ data, params }) {
 
   return createMeta({
     title: legal.name,
-    description: `Legal Information & Notices by ${legal.for}`,
+    description: `Legal Information & Notices`,
     image: ogImages.legal,
     url: `/legal/${legal.slug || params.slug}`,
     keywords: `legal, ${legal.name}, ${legal.for}, tshepiem.dev policies`,

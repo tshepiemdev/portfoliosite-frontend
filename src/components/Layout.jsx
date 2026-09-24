@@ -9,7 +9,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SectionDevider from "../components/SectionDevider";
 import MaintenanceView from "./MaintenanceView";
-import ErrorMaxView from "./ErrorMaxView";
 import BottomBar from "./BottomBar";
 import AnalyticsTracker from "./AnalyticsTracker";
 import ScrollToTop from "./ScrollToTop";
@@ -78,7 +77,10 @@ const cacheSettings = (settings) => {
 
 export async function loader() {
   if (serverSettings && Date.now() - serverSettingsAt < SERVER_CACHE_MS) {
-    return { settings: serverSettings, error: null };
+    return {
+      settings: serverSettings,
+      error: null,
+    };
   }
 
   try {
@@ -113,7 +115,7 @@ export async function loader() {
 
     return {
       settings: null,
-      error: "server",
+      error: null,
     };
   }
 }
@@ -139,7 +141,7 @@ export async function clientLoader({ serverLoader }) {
 
     return {
       settings: null,
-      error: navigator.onLine ? "server" : "network",
+      error: null,
     };
   }
 }

@@ -81,7 +81,7 @@ export function meta({ data, params }) {
     return createMeta({
       title: "Blog",
       description:
-        "Read articles about software development, programming, technology, coding, and digital experiences.",
+        "Fresh tutorials, engineering insights, tech news and personal vlogs.",
       url: `/blog/${params.slug}`,
       robots: "noindex, nofollow",
     });
@@ -107,6 +107,9 @@ export default function BlogPage() {
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(blog?.likes || 0);
+  const [isLiking, setIsLiking] = useState(false);
 
   const detailsRef = useRef(null);
   const hasViewed = useRef(false);
@@ -153,6 +156,15 @@ export default function BlogPage() {
     };
 
     addView();
+  }, [blog]);
+
+  useEffect(() => {
+    if (!blog || typeof window === "undefined") return;
+
+    const likedKey = `blog-liked-${blog._id}`;
+
+    setIsLiked(localStorage.getItem(likedKey) === "true");
+    setLikes(blog.likes || 0);
   }, [blog]);
 
   useEffect(() => {
@@ -225,6 +237,93 @@ export default function BlogPage() {
 
   const readTime = calculateReadTime(blog);
 
+  const handleLike = async () => {
+    if (!blog || isLiking) return;
+
+    const likedKey = `blog-liked-${blog._id}`;
+    const currentlyLiked = isLiked;
+    const method = currentlyLiked ? "DELETE" : "POST";
+    const url = `${API_URL}/api/blogs/${blog.slug}/like`;
+
+    setIsLiking(true);
+
+    try {
+      console.log("LIKE ACTION:", {
+        method,
+        url,
+        slug: blog.slug,
+        currentlyLiked,
+      });
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const responseText = await res.text();
+
+      console.log("LIKE RESPONSE:", {
+        status: res.status,
+        statusText: res.statusText,
+        body: responseText,
+      });
+
+      let data;
+
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error(
+          `${currentlyLiked ? "Unlike" : "Like"} failed: Invalid server response`,
+        );
+      }
+
+      if (!res.ok || data?.success !== true) {
+        throw new Error(
+          data?.message || `${currentlyLiked ? "Unlike" : "Like"} failed`,
+        );
+      }
+
+      if (typeof data.likes !== "number") {
+        throw new Error("Invalid likes count returned by server");
+      }
+
+      setLikes(data.likes);
+
+      if (currentlyLiked) {
+        setIsLiked(false);
+        localStorage.removeItem(likedKey);
+
+        if ("vibrate" in navigator) {
+          navigator.vibrate(25);
+        }
+
+        showToast("success", "Article unliked", "Your like has been removed");
+      } else {
+        setIsLiked(true);
+        localStorage.setItem(likedKey, "true");
+
+        if ("vibrate" in navigator) {
+          navigator.vibrate(50);
+        }
+
+        showToast("success", "Article liked", "Thanks for your support");
+      }
+    } catch (err) {
+      console.error("LIKE ACTION ERROR:", err);
+
+      showToast(
+        "error",
+        currentlyLiked ? "Unlike failed" : "Like failed",
+        err instanceof Error ? err.message : "Please try again",
+      );
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
   const handleNativeShare = async () => {
     try {
       if (typeof navigator === "undefined" || !navigator.share) {
@@ -292,9 +391,13 @@ export default function BlogPage() {
             shortDescription={blog.excerpt}
             shareOptions={shareOptions}
             views={blog.views || 0}
+            likes={likes}
+            isLiked={isLiked}
+            isLiking={isLiking}
             authorName={blog.author}
             authorPic={blog.authorProfileImg}
             totalReadTime={readTime}
+            onLike={handleLike}
             onAuthorImageClick={(image) => {
               setSelectedImage(image);
             }}

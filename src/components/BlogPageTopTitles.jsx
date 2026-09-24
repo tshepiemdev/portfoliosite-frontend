@@ -17,11 +17,15 @@ export default function BlogPageTopTitlesView({
   shortDescription,
   shareOptions,
   views = 0,
+  likes = 0,
+  isLiked = false,
+  isLiking = false,
   publishedAt,
   authorName,
   authorPic,
   totalReadTime,
   onAuthorImageClick,
+  onLike,
 }) {
   const capitalizeFirstLetter = (text) => {
     if (!text) return "";
@@ -68,6 +72,7 @@ export default function BlogPageTopTitlesView({
       <div className={styles.columnWrapper}>
         <div className={styles.rowWrapper}>
           <p className={styles.type}>{capitalizeFirstLetter(category)}</p>
+
           <p className={styles.label}>Blog</p>
         </div>
 
@@ -81,7 +86,15 @@ export default function BlogPageTopTitlesView({
       <p className={styles.summary}>{shortDescription}</p>
 
       <div className={styles.wrapper}>
-        <ShareWith options={shareOptions} views={views} />
+        <ShareWith
+          options={shareOptions}
+          views={views}
+          likes={likes}
+          isLiked={isLiked}
+          isLiking={isLiking}
+          onLike={onLike}
+          marginLeft={1}
+        />
       </div>
 
       <div className={styles.box}>
@@ -115,9 +128,7 @@ export default function BlogPageTopTitlesView({
               </h4>
 
               <p className={styles.status}>
-                Published
-                <img className={styles.chevron} src={chevronRight} alt="" />
-                <span>{publishedAgo}</span>
+                Published • <span>{publishedAgo}</span>
               </p>
             </div>
           </div>

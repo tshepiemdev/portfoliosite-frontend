@@ -1,17 +1,39 @@
 import CounterView from "./CounterView";
+import LikeButton from "./LikeButton";
 import styles from "../styles/ShareWith.module.css";
 
-export default function ShareWith({ marginTop = 0, options = [], views }) {
+export default function ShareWith({
+  marginTop = 0,
+  marginLeft = 0,
+  options = [],
+  views,
+  likes,
+  isLiked,
+  isLiking,
+  onLike,
+}) {
   return (
     <div
       className={styles.shareWithWrapper}
       style={{ marginTop: `${marginTop}rem` }}
     >
+      {(typeof likes === "number" || onLike) && (
+        <LikeButton
+          likes={likes}
+          isLiked={isLiked}
+          isLiking={isLiking}
+          onLike={onLike}
+        />
+      )}
+
       {typeof views === "number" && (
         <CounterView count={views} text={"Viewed times"} />
       )}
 
-      <ul className={styles.shareWithUl}>
+      <ul
+        className={styles.shareWithUl}
+        style={{ marginLeft: `${marginLeft}rem` }}
+      >
         {options
           .filter((item) => item.icon)
           .map((item) => (

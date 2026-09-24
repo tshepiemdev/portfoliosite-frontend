@@ -1,6 +1,6 @@
 import styles from "../styles/ContactForm.module.css";
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Turnstile } from "@marsidev/react-turnstile";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
@@ -105,7 +105,41 @@ const reasons = [
   },
 ];
 
+const reasonAliases = {
+  job: "job_opportunity",
+  employment: "job_opportunity",
+  job_opportunity: "job_opportunity",
+  collaboration: "collaboration",
+  partnership: "collaboration",
+  consultation: "consultation",
+  technical_consultation: "consultation",
+  career: "career_guidance",
+  career_guidance: "career_guidance",
+  mentorship: "career_guidance",
+  feedback: "feedback",
+  report: "report",
+  problem: "report",
+  support: "support",
+  technical_support: "support",
+  review: "review",
+  business: "business_inquiry",
+  business_inquiry: "business_inquiry",
+  general: "general_inquiry",
+  general_inquiry: "general_inquiry",
+  other: "other",
+  tutoring: "business_inquiry",
+  website: "business_inquiry",
+  webapp: "business_inquiry",
+  mobile: "business_inquiry",
+  backend: "business_inquiry",
+  desktop: "business_inquiry",
+  ui: "business_inquiry",
+  maintenance: "business_inquiry",
+};
+
 export default function ContactForm({ onResponseStatusChange }) {
+  const [searchParams] = useSearchParams();
+
   const [responseData, setResponseData] = useState({
     title: "",
     subtitle: "",
@@ -113,22 +147,53 @@ export default function ContactForm({ onResponseStatusChange }) {
   });
 
   const [form, setForm] = useState(initialForm);
+
   const [errors, setErrors] = useState({});
+
   const [submitted, setSubmitted] = useState(false);
+
   const [turnstileToken, setTurnstileToken] = useState("");
 
   const turnstileRef = useRef(null);
 
   const firstNameRef = useRef(null);
+
   const lastNameRef = useRef(null);
+
   const emailRef = useRef(null);
+
   const phoneRef = useRef(null);
+
   const countryRef = useRef(null);
+
   const reasonRef = useRef(null);
+
   const teamSizeRef = useRef(null);
+
   const messageRef = useRef(null);
 
   useDetectLocation(setForm);
+
+  useEffect(() => {
+    const reasonParam = searchParams.get("reason")?.trim().toLowerCase();
+
+    if (!reasonParam) {
+      return;
+    }
+
+    const resolvedReason =
+      reasonAliases[reasonParam] ||
+      (reasons.some((item) => item.value === reasonParam) ? reasonParam : "");
+
+    if (!resolvedReason) {
+      return;
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      reason: resolvedReason,
+    }));
+  }, [searchParams]);
 
   const validate = (values) => {
     const newErrors = {};
@@ -361,6 +426,7 @@ export default function ContactForm({ onResponseStatusChange }) {
     const validationErrors = validate(form);
 
     setErrors(validationErrors);
+
     setSubmitted(true);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -381,6 +447,7 @@ export default function ContactForm({ onResponseStatusChange }) {
           and retry again.
         </>,
       );
+
       return;
     }
 
@@ -393,10 +460,12 @@ export default function ContactForm({ onResponseStatusChange }) {
           to submit your message.
         </>,
       );
+
       return;
     }
 
     const ref = generateRef();
+
     const firstName = form.firstName;
 
     showResponse("loading", "", "");
@@ -646,17 +715,11 @@ export default function ContactForm({ onResponseStatusChange }) {
         By submitting this form, you agree to be contacted regarding your
         inquiry and acknowledge that your information will be handled in
         accordance with our{" "}
-        <Link
-          className={styles.termsLink}
-          to="/legal/site-terms-of-use"
-        >
+        <Link className={styles.termsLink} to="/legal/site-terms-of-use">
           Terms
         </Link>{" "}
         and{" "}
-        <Link
-          className={styles.termsLink}
-          to="/legal/site-privacy-policy"
-        >
+        <Link className={styles.termsLink} to="/legal/site-privacy-policy">
           Privacy Policy
         </Link>
         .

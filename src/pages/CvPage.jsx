@@ -62,7 +62,7 @@ export function meta({ data }) {
 
   return createMeta({
     title: "Get my resume",
-    description: "Get my comprehensive, ATS optimized and ready cv",
+    description: "Your next developer could be one click away. Explore my resume and see what I can bring to your team.",
     image: ogImages.resume,
     url: "/cv",
     keywords: `${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`,
@@ -195,16 +195,7 @@ export default function CvPage() {
 
           {!loading && !errorType && cv && (
             <div className={styles.cvGrid}>
-              <div
-                className={styles.wrapper}
-                style={{
-                  background: `url(${
-                    cv.profileImage?.trim()
-                      ? cv.profileImage
-                      : myDefaultProfileImage
-                  })`,
-                }}
-              >
+              <div className={styles.wrapper}>
                 <div className={styles.boxFlexP}>
                   <div className={styles.cvIconWrapper}>
                     <img

@@ -15,7 +15,7 @@ export default function PageTopHeading({
 }) {
   return (
     <div className={styles.wrapper} style={{ alignItems: centerContent }}>
-      {showNav && <PageNavigationBar />}
+      {/* {showNav && <PageNavigationBar />} */}
 
       {icon && (
         <div className={styles.iconWrapper}>
