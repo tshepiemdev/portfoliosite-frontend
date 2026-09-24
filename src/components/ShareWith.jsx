@@ -27,7 +27,7 @@ export default function ShareWith({
       )}
 
       {typeof views === "number" && (
-        <CounterView count={views} text={"views"} />
+        <CounterView count={views} text={"Views"} />
       )}
 
       <ul
