@@ -2,47 +2,41 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  gap: 0.8rem;
-  margin-top: 10rem;
-  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8rem;
+  margin-bottom: 0rem;
+  border: 2px dashed #1a1a1a;
+  border-radius: 1rem;
+  padding: 5rem 0rem;
+}
+
+.loadingWrapper {
+  width: 100%;
+  min-height: 20rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .responseWrapper {
   width: 100%;
+  max-width: 58rem;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
-}
-
-.textsWrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  gap: 1rem;
-}
-
-.ctasWrapper {
-  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
+  text-align: center;
 }
 
 .iconWrapper {
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0rem;
-  flex-shrink: 0;
+  width: 3.25rem;
+  height: 3.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  margin-bottom: 1rem;
+  flex-shrink: 0;
+  margin-bottom: 1.75rem;
 }
 
 .icon {
@@ -50,28 +44,99 @@
   height: 100%;
 }
 
+.textsWrapper {
+  width: 100%;
+  max-width: 48rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
 .title {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0;
   font-family: "Host Grotesk", hostGroteskFont, "Inter", interFont, sans-serif;
-  font-size: clamp(2.6rem, 5vw, 3.5rem);
+  font-size: clamp(1.25rem, 4vw, 2.6rem);
   font-weight: 600;
   line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-align: center;
 }
 
 .subtitle {
-  font-size: 1rem;
-  font-weight: 500;
+  width: 60%;
+  max-width: 42rem;
+  margin: 0;
+  font-family: "Inter", interFont, sans-serif;
+  font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+  font-weight: 450;
+  line-height: 1.6;
   color: #8a8a8a;
-  width: 50%;
+  text-wrap: pretty;
+  text-align: center;
+}
+
+.email {
+  color: inherit;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.ctasWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 2.25rem;
 }
 
 @media (max-width: 768px) {
+  .layout {
+    min-height: 22rem;
+    margin-top: 8rem;
+    margin-bottom: 3rem;
+  }
+
+  .loadingWrapper {
+    min-height: 18rem;
+  }
+
+  .responseWrapper {
+    max-width: 100%;
+  }
+
+  .iconWrapper {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .textsWrapper {
+    gap: 1rem;
+  }
+
+
+
   .subtitle {
+    max-width: 100%;
     width: 90%;
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 }
+@media (min-width: 769px) and (max-width: 1024px) {
+  .layout {
+    margin-top: 6rem;
+  }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-    .subtitle {
-    width: 50%;
+  .subtitle {
+    max-width: 38rem;
   }
 }

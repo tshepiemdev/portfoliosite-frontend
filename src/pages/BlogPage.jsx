@@ -26,6 +26,7 @@ import ShareWith from "../components/ShareWith";
 import { getShareOptions } from "../utils/shareOptions";
 import { getVideoUrl } from "../utils/getVideoUrl";
 import SubscribeLabel from "../components/SubscribeLabel";
+import LikeButton from "../components/LikeButton";
 import createMeta from "../config/seo";
 
 const SITE_URL = "https://tshepiem.dev";
@@ -484,9 +485,16 @@ export default function BlogPage() {
           ))}
 
           <div className={styles.bentoWrapperStyle}>
-            <p className={styles.label}>Share article</p>
+            <p className={styles.label}>Like & share this article</p>
 
-            <ShareWith options={shareOptions} />
+            <ShareWith
+              options={shareOptions}
+              likes={likes}
+              isLiked={isLiked}
+              isLiking={isLiking}
+              onLike={handleLike}
+              marginLeft={1}
+            />
           </div>
 
           <div className={styles.bentoWrapper}>

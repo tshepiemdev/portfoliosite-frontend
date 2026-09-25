@@ -62,7 +62,8 @@ export function meta({ data }) {
 
   return createMeta({
     title: "Get my resume",
-    description: "Your next developer could be one click away. Explore my resume and see what I can bring to your team.",
+    description:
+      "Your next developer could be one click away. Explore my resume and see what I can bring to your team.",
     image: ogImages.resume,
     url: "/cv",
     keywords: `${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`,
@@ -157,7 +158,7 @@ export default function CvPage() {
               title={
                 <>
                   Get my comprehensive, <br />
-                  ATS optimized resume.
+                  ATS-friendly resume.
                 </>
               }
             />

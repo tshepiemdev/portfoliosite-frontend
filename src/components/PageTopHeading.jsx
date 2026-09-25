@@ -12,19 +12,24 @@ export default function PageTopHeading({
   textAlign = "start",
   centerContent = "start",
   showNav = false,
+  titleLevel = 1,
+  miniTitleLevel = 2,
 }) {
+  const TitleTag = `h${titleLevel}`;
+  const MiniTitleTag = `h${miniTitleLevel}`;
+
   return (
     <div className={styles.wrapper} style={{ alignItems: centerContent }}>
-      {/* {showNav && <PageNavigationBar />} */}
+      {showNav && <PageNavigationBar />}
 
       {icon && (
         <div className={styles.iconWrapper}>
-          <img className={styles.icon} src={icon} alt={title} />
+          <img className={styles.icon} src={icon} alt="" />
         </div>
       )}
 
       {title && (
-        <h1
+        <TitleTag
           className={styles.title}
           style={{
             width: titleWidth,
@@ -33,11 +38,11 @@ export default function PageTopHeading({
           }}
         >
           {title}
-        </h1>
+        </TitleTag>
       )}
 
       {miniTitle && (
-        <h2
+        <MiniTitleTag
           className={styles.miniTitle}
           style={{
             width: titleWidth,
@@ -48,7 +53,7 @@ export default function PageTopHeading({
           }}
         >
           {miniTitle}
-        </h2>
+        </MiniTitleTag>
       )}
 
       {subtext && (

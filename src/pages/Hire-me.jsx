@@ -220,10 +220,10 @@ export default function HireMe() {
           ))}
         </div>
 
-        <h1 className={styles.minititle}>
+        <h2 className={styles.minititle}>
           Recommended. What to <br />
           explore while you're here
-        </h1>
+        </h2>
 
         <div className={styles.whileHereOptions}>
           {whileStillHere.map((option, index) => (

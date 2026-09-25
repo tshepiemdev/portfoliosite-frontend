@@ -12,7 +12,7 @@ export default function QualificationBox({
       <div className={styles.qualificationBoxMeta}>
         <h2 className={styles.type}>{type}</h2>
 
-        <h1 className={styles.name}>{name}</h1>
+        <h2 className={styles.name}>{name}</h2>
         <div className={styles.wrapper}>
           <p className={styles.institute}>{institute}</p>
         </div>

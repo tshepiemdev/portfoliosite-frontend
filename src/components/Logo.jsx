@@ -57,7 +57,7 @@ export default function Logo({
       />
 
       {text && (
-        <h1
+        <span
           className={styles.wordmarkText}
           style={{
             fontSize: `${size}rem`,
@@ -65,7 +65,7 @@ export default function Logo({
           }}
         >
           {text}
-        </h1>
+        </span>
       )}
     </div>
   );

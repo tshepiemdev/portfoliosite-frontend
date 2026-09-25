@@ -12,12 +12,12 @@ export default function SectionHeading({
     <div className={styles.wrapper} style={{ alignItems: centerContent }}>
       {badgeText && <BadgeChip badgeText={badgeText} />}
 
-      <h1
+      <h2
         className={styles.title}
         style={{ width: titleWidth, textAlign: textAlign }}
       >
         {title}
-      </h1>
+      </h2>
     </div>
   );
 }

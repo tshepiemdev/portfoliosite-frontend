@@ -27,7 +27,10 @@
   transition:
     width 500ms cubic-bezier(0.22, 1, 0.36, 1),
     border-radius 300ms ease,
-    box-shadow 300ms ease;
+    box-shadow 300ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease,
+    filter 500ms ease;
 }
 
 .bottomBarHoverWrapper {
@@ -37,11 +40,28 @@
   z-index: 999;
   width: fit-content;
   transform: translateX(-50%);
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease,
+    visibility 500ms ease,
+    filter 500ms ease;
 }
 
 .bottomBarHoverWrapper:hover {
   transform: translateX(-50%) translateY(-0.2rem) scale(1.05);
+}
+
+.hideBottomBar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(3rem) scale(0.55);
+  filter: blur(8px);
+}
+
+.hideBottomBar:hover {
+  transform: translateX(-50%) translateY(3rem) scale(0.55);
+  filter: blur(8px);
 }
 
 @keyframes bottomBarEnter {
@@ -244,7 +264,6 @@
   outline: none;
   text-decoration: none;
   color: inherit;
-  text-decoration: none;
   padding: 0.5rem;
   border-radius: 0.8rem;
   cursor: pointer;

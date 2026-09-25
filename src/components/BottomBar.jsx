@@ -24,6 +24,23 @@ export default function BottomBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  const hiddenRoutes = [
+  "/contact",
+  "/get-in-touch",
+  "/service-request",
+  "/legal",
+  "/subscribe/verify",
+  "/subscribe/unsubscribe",
+  "/not-found",
+];
+
+  const shouldHideOnRoute = hiddenRoutes.some(
+    (route) =>
+      location.pathname === route ||
+      location.pathname.startsWith(`${route}/`)
+  );
 
   function toggleMenu() {
     setIsMenuOpen((prev) => !prev);
@@ -48,24 +65,74 @@ export default function BottomBar() {
   useEffect(() => {
     function checkProjects() {
       const el = document.getElementById("projects");
-      if (!el) return;
+
+      if (!el) {
+        setShowProjects(true);
+        return;
+      }
 
       const rect = el.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 200;
+      const isVisible =
+        rect.top < window.innerHeight && rect.bottom > 200;
 
       setShowProjects(!isVisible);
     }
 
     checkProjects();
+
     window.addEventListener("scroll", checkProjects);
 
-    return () => window.removeEventListener("scroll", checkProjects);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", checkProjects);
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+
+    if (!footer) {
+      setIsFooterVisible(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.01,
+      }
+    );
+
+    observer.observe(footer);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (shouldHideOnRoute) {
+      setIsMenuOpen(false);
+      setIsShareOpen(false);
+      setIsFooterVisible(false);
+    }
+  }, [shouldHideOnRoute]);
 
   const navLinks = [
-    { name: "Jump to work", id: "projects", path: "/projects" },
-    { name: "Blog", path: "/blog" },
-    { name: "Services", path: "/services" },
+    {
+      name: "Jump to work",
+      id: "projects",
+      path: "/projects",
+    },
+    {
+      name: "Blog",
+      path: "/blog",
+    },
+    {
+      name: "Services",
+      path: "/services",
+    },
   ];
 
   const filteredOptions = navLinks.filter((link) => {
@@ -82,6 +149,7 @@ export default function BottomBar() {
 
     const scrollToSection = () => {
       const el = document.getElementById(id);
+
       if (!el) return;
 
       el.scrollIntoView({
@@ -108,10 +176,20 @@ export default function BottomBar() {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(siteUrl);
-      showToast("success", "Page Link copied", "Ready to share");
+
+      showToast(
+        "success",
+        "Page Link copied",
+        "Ready to share"
+      );
+
       setIsMenuOpen(false);
     } catch {
-      showToast("error", "Failed to copy", "Try again manually");
+      showToast(
+        "error",
+        "Failed to copy",
+        "Try again manually"
+      );
     }
   };
 
@@ -153,16 +231,29 @@ export default function BottomBar() {
   ];
 
   const handleOptionClick = (option) => {
-    if (option.action) option.action();
+    if (option.action) {
+      option.action();
+    }
+
     setIsMenuOpen(false);
   };
 
+  if (shouldHideOnRoute) {
+    return null;
+  }
+
   return (
     <>
-      <div className={styles.bottomBarHoverWrapper}>
+      <div
+        className={`${styles.bottomBarHoverWrapper} ${
+          isFooterVisible ? styles.hideBottomBar : ""
+        }`}
+      >
         <div
           ref={menuRef}
-          className={`${styles.BottomBar} ${isMenuOpen ? styles.open : ""}`}
+          className={`${styles.BottomBar} ${
+            isMenuOpen ? styles.open : ""
+          }`}
         >
           <div className={styles.listsWrapper}>
             <button
@@ -173,19 +264,29 @@ export default function BottomBar() {
 
             <ul className={styles.optionsUl}>
               {filteredMenuOptions.map((option) => (
-                <li key={option.name} className={styles.optionsLi}>
+                <li
+                  key={option.name}
+                  className={styles.optionsLi}
+                >
                   {option.link ? (
                     <Link
                       className={styles.linkTo}
                       to={option.link}
-                      onClick={() => handleOptionClick(option)}
+                      onClick={() =>
+                        handleOptionClick(option)
+                      }
                     >
                       <img
                         className={styles.icon}
-                        src={option.icon || IconFallbackImg}
+                        src={
+                          option.icon ||
+                          IconFallbackImg
+                        }
                         alt={option.name}
                       />
+
                       {option.name}
+
                       <img
                         className={styles.nextImg}
                         src={nextChevronImg}
@@ -196,13 +297,19 @@ export default function BottomBar() {
                     <button
                       type="button"
                       className={styles.linkToButton}
-                      onClick={() => handleOptionClick(option)}
+                      onClick={() =>
+                        handleOptionClick(option)
+                      }
                     >
                       <img
                         className={styles.icon}
-                        src={option.icon || IconFallbackImg}
+                        src={
+                          option.icon ||
+                          IconFallbackImg
+                        }
                         alt={option.name}
                       />
+
                       {option.name}
                     </button>
                   )}
@@ -212,17 +319,26 @@ export default function BottomBar() {
 
             <ul className={styles.contactOptionsUl}>
               {contactOptions.map((option) => (
-                <li key={option.name} className={styles.contactOptionsLi}>
+                <li
+                  key={option.name}
+                  className={styles.contactOptionsLi}
+                >
                   <a
                     className={styles.contactOptionsLinkTo}
                     href={option.href}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() =>
+                      setIsMenuOpen(false)
+                    }
                   >
                     <img
                       className={styles.icon2}
-                      src={option.icon || IconFallbackImg}
+                      src={
+                        option.icon ||
+                        IconFallbackImg
+                      }
                       alt={option.name}
                     />
+
                     {option.name}
                   </a>
                 </li>
@@ -257,7 +373,8 @@ export default function BottomBar() {
                   <li
                     key={link.name}
                     className={`${styles.li} ${
-                      link.id === "projects" && !showProjects
+                      link.id === "projects" &&
+                      !showProjects
                         ? styles.hideLi
                         : ""
                     }`}
@@ -266,12 +383,17 @@ export default function BottomBar() {
                       <button
                         type="button"
                         className={styles.a}
-                        onClick={() => handleScroll(link.id)}
+                        onClick={() =>
+                          handleScroll(link.id)
+                        }
                       >
                         {link.name}
                       </button>
                     ) : (
-                      <NavLink to={link.path} className={styles.a}>
+                      <NavLink
+                        to={link.path}
+                        className={styles.a}
+                      >
                         {link.name}
                       </NavLink>
                     )}
@@ -281,8 +403,16 @@ export default function BottomBar() {
             </div>
 
             <ImgButton
-              buttonImgSrc={isMenuOpen ? closeImg : toggleSidebarImg}
-              altText={isMenuOpen ? "close menu" : "open menu"}
+              buttonImgSrc={
+                isMenuOpen
+                  ? closeImg
+                  : toggleSidebarImg
+              }
+              altText={
+                isMenuOpen
+                  ? "close menu"
+                  : "open menu"
+              }
               onClick={toggleMenu}
               setMarginLeft={"0.5rem"}
             />

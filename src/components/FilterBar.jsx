@@ -43,11 +43,36 @@ export default function FilterBar({
       });
     };
 
+    const focusActiveCategory = () => {
+      const activeBtn = buttonRefs.current[activeCategory];
+
+      if (!activeBtn) return;
+
+      activeBtn.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    };
+
     updateIndicator();
+
+    requestAnimationFrame(() => {
+      focusActiveCategory();
+      updateIndicator();
+    });
+
+    const timeout = setTimeout(() => {
+      focusActiveCategory();
+      updateIndicator();
+    }, 100);
 
     window.addEventListener("resize", updateIndicator);
 
-    return () => window.removeEventListener("resize", updateIndicator);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("resize", updateIndicator);
+    };
   }, [activeCategory, finalCategories]);
 
   const handleClick = (category) => {
@@ -76,7 +101,9 @@ export default function FilterBar({
           {finalCategories.map((category) => (
             <li key={category} className={styles.li}>
               <button
-                ref={(el) => (buttonRefs.current[category] = el)}
+                ref={(el) => {
+                  buttonRefs.current[category] = el;
+                }}
                 className={`${styles.a} ${
                   activeCategory === category ? styles.active : ""
                 }`}

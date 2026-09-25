@@ -72,7 +72,7 @@ export default function ExperienceBox({
         tabIndex={0}
       >
         <div className={styles.experienceBoxMeta}>
-          {position && <h1 className={styles.position}>{position}</h1>}
+          {position && <h2 className={styles.position}>{position}</h2>}
 
           {company && (
             <div className={styles.wrapper}>

@@ -8,7 +8,7 @@ export default function HeroHeaderText() {
       Simply I don't just <br />
       write code
       <span className={styles.spanImgBg}>
-        <div className={styles.wrapper}>
+        <span className={styles.wrapper}>
           <img
             className={styles.spanImg}
             src={WriteImg}
@@ -16,12 +16,12 @@ export default function HeroHeaderText() {
             decoding="async"
             fetchPriority="high"
           />
-        </div>
+        </span>
       </span>
       . I build <br />
       efficient solutions
       <span className={styles.spanImgBg}>
-        <div className={styles.wrapper}>
+        <span className={styles.wrapper}>
           <img
             className={styles.spanImg}
             src={EngineerImg}
@@ -29,7 +29,7 @@ export default function HeroHeaderText() {
             decoding="async"
             fetchPriority="high"
           />
-        </div>
+        </span>
       </span>
     </h1>
   );

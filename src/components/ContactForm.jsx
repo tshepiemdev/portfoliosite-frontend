@@ -154,6 +154,8 @@ export default function ContactForm({ onResponseStatusChange }) {
 
   const [turnstileToken, setTurnstileToken] = useState("");
 
+  const [responseEmail, setResponseEmail] = useState("");
+
   const turnstileRef = useRef(null);
 
   const firstNameRef = useRef(null);
@@ -300,126 +302,30 @@ export default function ContactForm({ onResponseStatusChange }) {
 
   const resetTurnstile = () => {
     setTurnstileToken("");
+
     turnstileRef.current?.reset();
   };
 
   const clearForm = () => {
     setForm(initialForm);
+
     setErrors({});
+
     setSubmitted(false);
+
     resetTurnstile();
   };
 
   const handleSuccessClose = () => {
     clearForm();
+
+    setResponseEmail("");
+
     closeResponse();
   };
 
   const handleErrorClose = () => {
     closeResponse();
-  };
-
-  const checkEmailStatus = async (mailRef, firstName) => {
-    const maxAttempts = 30;
-    const interval = 2000;
-
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      try {
-        const res = await fetch(
-          `${API_URL}/api/contact/status/${encodeURIComponent(mailRef)}`,
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          const status = data?.confirmationEmailStatus;
-
-          if (status === "bounced") {
-            showResponse(
-              "error",
-              <>
-                Couldn't reach this
-                <br />
-                email address.
-              </>,
-              <>
-                Please check your email address <br />
-                and retry again.
-              </>,
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "failed") {
-            showResponse(
-              "error",
-              <>
-                Couldn't deliver to this
-                <br />
-                email address.
-              </>,
-              <>
-                Please check your email address <br />
-                and retry again.
-              </>,
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "complained") {
-            showResponse(
-              "error",
-              <>
-                Couldn't complete the
-                <br />
-                request.
-              </>,
-              "Please try again later.",
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "delivered") {
-            clearForm();
-
-            showResponse(
-              "success",
-              <>
-                Message sent
-                <br />
-                successfully
-              </>,
-              <>
-                Thank you {firstName}. Your message has been received and I'll
-                get back to you soon. <br />
-                Reference: {mailRef}
-              </>,
-            );
-
-            return;
-          }
-        }
-      } catch {}
-
-      await new Promise((resolve) => setTimeout(resolve, interval));
-    }
-
-    showResponse(
-      "error",
-      <>
-        We're still processing
-        <br />
-        your message
-      </>,
-      "Your message was submitted, but we couldn't confirm email delivery yet. Please try again later.",
-    );
-
-    resetTurnstile();
   };
 
   const submitForm = async () => {
@@ -431,21 +337,15 @@ export default function ContactForm({ onResponseStatusChange }) {
 
     if (Object.keys(validationErrors).length > 0) {
       focusFirstError(validationErrors);
+
       return;
     }
 
     if (!navigator.onLine) {
       showResponse(
         "network",
-        <>
-          Looks like
-          <br />
-          you're offline
-        </>,
-        <>
-          Please check your internet connection <br />
-          and retry again.
-        </>,
+        <>Looks like you're offline</>,
+        <>Please check your internet connection and retry again.</>,
       );
 
       return;
@@ -455,10 +355,7 @@ export default function ContactForm({ onResponseStatusChange }) {
       showResponse(
         "error",
         <>Verification Error</>,
-        <>
-          Please complete the verification <br />
-          to submit your message.
-        </>,
+        <>Please complete the verification to submit your message.</>,
       );
 
       return;
@@ -467,6 +364,8 @@ export default function ContactForm({ onResponseStatusChange }) {
     const ref = generateRef();
 
     const firstName = form.firstName;
+
+    const submittedEmail = form.email;
 
     showResponse("loading", "", "");
 
@@ -511,7 +410,18 @@ export default function ContactForm({ onResponseStatusChange }) {
         );
       }
 
-      await checkEmailStatus(ref, firstName);
+      setResponseEmail(submittedEmail);
+
+      clearForm();
+
+      showResponse(
+        "success",
+        <>Message sent successfully as {submittedEmail}</>,
+        <>
+          Thank you {firstName}. Your message has been received and I'll get
+          back to you soon. Reference: {ref}
+        </>,
+      );
     } catch (error) {
       const isNetworkError = error instanceof TypeError || !navigator.onLine;
 
@@ -520,24 +430,13 @@ export default function ContactForm({ onResponseStatusChange }) {
       if (isNetworkError) {
         showResponse(
           "network",
-          <>
-            Looks like
-            <br />
-            you're offline
-          </>,
-          <>
-            Please check your internet connection <br />
-            and retry again.
-          </>,
+          <>Looks like you're offline</>,
+          <>Please check your internet connection and retry again.</>,
         );
       } else {
         showResponse(
           "error",
-          <>
-            Failed to send
-            <br />
-            your message
-          </>,
+          <>Failed to send your message</>,
           error instanceof Error
             ? error.message
             : "Failed to send your message",

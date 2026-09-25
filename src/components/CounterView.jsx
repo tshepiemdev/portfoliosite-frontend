@@ -2,7 +2,7 @@ import styles from "../styles/CounterView.module.css";
 import eyeImg from "../assets/icons/eye.svg";
 import formatCount from "../utils/formatCount";
 
-export default function CounterView({ count = 0, text = "" }) {
+export default function  CounterView({ count = 0, text = "" }) {
   const safeText = text?.trim() || "Counter item";
 
   return (

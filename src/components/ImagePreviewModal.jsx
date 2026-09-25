@@ -28,6 +28,7 @@ export default function ImagePreviewModal({
   onPrev,
   onSelectImage,
 }) {
+  const stageRef = useRef(null);
   const imgRef = useRef(null);
   const pointersRef = useRef(new Map());
   const dragRef = useRef(null);
@@ -35,7 +36,7 @@ export default function ImagePreviewModal({
 
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(MIN_ZOOM);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const imageCount = images.length || totalImages || 1;
@@ -73,7 +74,7 @@ export default function ImagePreviewModal({
     (x, y, scale = zoom) => {
       const { width, height } = getImageSize();
 
-      if (!width || !height || scale <= 1) {
+      if (!width || !height || scale <= MIN_ZOOM) {
         return {
           x: 0,
           y: 0,
@@ -135,7 +136,6 @@ export default function ImagePreviewModal({
 
       setPosition((current) => {
         const nextX = originX - (originX - current.x) * ratio;
-
         const nextY = originY - (originY - current.y) * ratio;
 
         return clampPosition(nextX, nextY, newZoom);
@@ -148,12 +148,6 @@ export default function ImagePreviewModal({
 
   const handleWheel = useCallback(
     (e) => {
-      const image = imgRef.current;
-
-      if (!image || e.target !== image) {
-        return;
-      }
-
       e.preventDefault();
       e.stopPropagation();
 
@@ -185,16 +179,20 @@ export default function ImagePreviewModal({
 
   const handlePointerDown = useCallback(
     (e) => {
-      const image = imgRef.current;
-
-      if (!image || e.target !== image) {
+      if (e.pointerType === "mouse" && e.button !== 0) {
         return;
       }
 
       e.preventDefault();
       e.stopPropagation();
 
-      image.setPointerCapture?.(e.pointerId);
+      const stage = stageRef.current;
+
+      if (!stage) {
+        return;
+      }
+
+      stage.setPointerCapture?.(e.pointerId);
 
       pointersRef.current.set(e.pointerId, {
         x: e.clientX,
@@ -205,7 +203,6 @@ export default function ImagePreviewModal({
         const points = [...pointersRef.current.values()];
 
         const dx = points[0].x - points[1].x;
-
         const dy = points[0].y - points[1].y;
 
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -235,12 +232,6 @@ export default function ImagePreviewModal({
 
   const handlePointerMove = useCallback(
     (e) => {
-      const image = imgRef.current;
-
-      if (!image || e.target !== image) {
-        return;
-      }
-
       if (!pointersRef.current.has(e.pointerId)) {
         return;
       }
@@ -257,7 +248,6 @@ export default function ImagePreviewModal({
         const points = [...pointersRef.current.values()];
 
         const dx = points[0].x - points[1].x;
-
         const dy = points[0].y - points[1].y;
 
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -300,7 +290,6 @@ export default function ImagePreviewModal({
       }
 
       const deltaX = e.clientX - dragRef.current.startX;
-
       const deltaY = e.clientY - dragRef.current.startY;
 
       setPosition(
@@ -315,10 +304,10 @@ export default function ImagePreviewModal({
   );
 
   const handlePointerUp = useCallback((e) => {
-    const image = imgRef.current;
+    const stage = stageRef.current;
 
-    if (image?.hasPointerCapture?.(e.pointerId)) {
-      image.releasePointerCapture?.(e.pointerId);
+    if (stage?.hasPointerCapture?.(e.pointerId)) {
+      stage.releasePointerCapture?.(e.pointerId);
     }
 
     pointersRef.current.delete(e.pointerId);
@@ -333,7 +322,9 @@ export default function ImagePreviewModal({
   }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -362,22 +353,19 @@ export default function ImagePreviewModal({
   }, [src, currentImage, resetZoom]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     const html = document.documentElement;
-
     const body = document.body;
-
     const layout = document.querySelector(".layout");
 
     const previousHtmlOverflow = html.style.overflow;
-
     const previousBodyOverflow = body.style.overflow;
-
     const previousLayoutOverflow = layout?.style.overflow;
 
     html.style.overflow = "hidden";
-
     body.style.overflow = "hidden";
 
     if (layout) {
@@ -386,7 +374,6 @@ export default function ImagePreviewModal({
 
     return () => {
       html.style.overflow = previousHtmlOverflow;
-
       body.style.overflow = previousBodyOverflow;
 
       if (layout) {
@@ -396,16 +383,18 @@ export default function ImagePreviewModal({
   }, [isOpen]);
 
   useEffect(() => {
-    const image = imgRef.current;
+    const stage = stageRef.current;
 
-    if (!image) return;
+    if (!stage) {
+      return;
+    }
 
-    image.addEventListener("wheel", handleWheel, {
+    stage.addEventListener("wheel", handleWheel, {
       passive: false,
     });
 
     return () => {
-      image.removeEventListener("wheel", handleWheel);
+      stage.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
 
@@ -423,21 +412,27 @@ export default function ImagePreviewModal({
   };
 
   const handlePrev = () => {
-    if (isFirst) return;
+    if (isFirst) {
+      return;
+    }
 
     resetZoom();
     onPrev?.();
   };
 
   const handleNext = () => {
-    if (isLast) return;
+    if (isLast) {
+      return;
+    }
 
     resetZoom();
     onNext?.();
   };
 
   const handleSelectImage = (index) => {
-    if (index === activeIndex) return;
+    if (index === activeIndex) {
+      return;
+    }
 
     resetZoom();
     onSelectImage?.(index);
@@ -464,36 +459,31 @@ export default function ImagePreviewModal({
   }
 
   return createPortal(
-    <div
-      className={styles.overlay}
-      onWheel={(e) => {
-        if (e.target !== imgRef.current) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }}
-      onTouchMove={(e) => {
-        if (e.target !== imgRef.current) {
-          e.preventDefault();
-        }
-      }}
-    >
-      <div className={styles.imageStage}>
+    <div className={styles.overlay}>
+      <div
+        ref={stageRef}
+        className={styles.imageStage}
+        onDoubleClick={handleDoubleClick}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
+      >
         <img
           ref={imgRef}
           src={src}
           alt={alt || "Image preview"}
-          className={`${styles.image} ${zoom > 1 ? styles.zoomedImage : ""}`}
+          className={`${styles.image} ${
+            zoom > MIN_ZOOM ? styles.zoomedImage : ""
+          }`}
           style={{
             transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${zoom})`,
           }}
           draggable={false}
           onError={handleMainImageError}
-          onDoubleClick={handleDoubleClick}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
         />
       </div>
 

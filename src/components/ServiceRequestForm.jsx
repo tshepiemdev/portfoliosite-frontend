@@ -1,11 +1,7 @@
 import styles from "../styles/ContactForm.module.css";
-
 import { useEffect, useRef, useState } from "react";
-
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
-
 import { Turnstile } from "@marsidev/react-turnstile";
-
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import TextareaInput from "./TextareaInput";
@@ -13,10 +9,8 @@ import PhoneInput from "./PhoneInput";
 import ResponseLayout from "./ResponseLayout";
 import BtnCTAWhite from "./BtnCTAWhite";
 import BtnCTABlack from "./BtnCTABlack";
-
 import phoneImg from "../assets/icons/phone-flip.svg";
 import emailImg from "../assets/icons/envelope.svg";
-
 import contactInfo from "../config/contactInfo";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
@@ -82,30 +76,47 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
   const loaderData = useLoaderData();
 
   const services = loaderData?.services || [];
+
   const pricingPackages = loaderData?.pricingPackages || [];
 
   const [searchParams] = useSearchParams();
+
   const [packages, setPackages] = useState([]);
+
   const [selectedService, setSelectedService] = useState(null);
+
   const [responseData, setResponseData] = useState({
     title: "",
     subtitle: "",
     status: "",
   });
+
   const [form, setForm] = useState(initialForm);
+
   const [errors, setErrors] = useState({});
+
   const [submitted, setSubmitted] = useState(false);
+
   const [turnstileToken, setTurnstileToken] = useState("");
 
   const firstNameRef = useRef(null);
+
   const lastNameRef = useRef(null);
+
   const emailRef = useRef(null);
+
   const countryRef = useRef(null);
+
   const serviceRef = useRef(null);
+
   const packageRef = useRef(null);
+
   const budgetRef = useRef(null);
+
   const startTimeRef = useRef(null);
+
   const messageRef = useRef(null);
+
   const turnstileRef = useRef(null);
 
   useDetectLocation(setForm);
@@ -116,6 +127,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     }
 
     const serviceParam = searchParams.get("service");
+
     const packageParam = searchParams.get("package");
 
     if (!serviceParam) {
@@ -145,6 +157,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       : null;
 
     setSelectedService(service);
+
     setPackages(selectedPackages);
 
     setForm((prev) => ({
@@ -172,6 +185,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       pricingCategory?.packages?.filter((pkg) => pkg?.isActive) || [];
 
     setSelectedService(service);
+
     setPackages(servicePackages);
 
     setForm((prev) => ({
@@ -306,20 +320,27 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
   const resetTurnstile = () => {
     setTurnstileToken("");
+
     turnstileRef.current?.reset();
   };
 
   const clearForm = () => {
     setForm(initialForm);
+
     setSelectedService(null);
+
     setPackages([]);
+
     setErrors({});
+
     setSubmitted(false);
+
     resetTurnstile();
   };
 
   const handleSuccess = () => {
     clearForm();
+
     closeResponse();
   };
 
@@ -327,151 +348,24 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
     closeResponse();
   };
 
-  const checkEmailStatus = async (mailRef) => {
-    const maxAttempts = 30;
-    const interval = 2000;
-
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      try {
-        const res = await fetch(
-          `${API_URL}/api/service-request/status/${encodeURIComponent(
-            mailRef,
-          )}`,
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          const status = data?.status;
-
-          if (status === "bounced") {
-            showResponse(
-              "error",
-              <>
-                Couldn't reach
-                <br />
-                this email address
-              </>,
-              <>
-                Please check your email address <br />
-                and retry again.
-              </>,
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "failed") {
-            showResponse(
-              "error",
-              <>
-                Couldn't complete
-                <br />
-                your request
-              </>,
-              <>
-                Couldn't complete your request. <br />
-                Please retry again.
-              </>,
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "complained") {
-            showResponse(
-              "error",
-              <>
-                Couldn't complete
-                <br />
-                your request
-              </>,
-              <>
-                Couldn't complete your request. <br />
-                Please retry again.
-              </>,
-            );
-
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "delivered") {
-            showResponse(
-              "success",
-              <>
-                Service request sent
-                <br />
-                successfully
-              </>,
-              <>
-                Thank you {form.firstName}. Your message has been received and
-                I'll get back to you soon. <br />
-                Reference: {mailRef}
-              </>,
-            );
-
-            setForm(initialForm);
-            setSelectedService(null);
-            setPackages([]);
-            setSubmitted(false);
-            setErrors({});
-            resetTurnstile();
-
-            return;
-          }
-        }
-      } catch {}
-
-      await new Promise((resolve) => setTimeout(resolve, interval));
-    }
-
-    showResponse(
-      "success",
-      <>
-        Service request sent
-        <br />
-        successfully
-      </>,
-      <>
-        Thank you {form.firstName}. Your message has been received and I'll get
-        back to you soon. <br />
-        Reference: {mailRef}
-      </>,
-    );
-
-    setForm(initialForm);
-    setSelectedService(null);
-    setPackages([]);
-    setSubmitted(false);
-    setErrors({});
-    resetTurnstile();
-  };
-
   const submitForm = async () => {
     const validationErrors = validate(form);
 
     setErrors(validationErrors);
+
     setSubmitted(true);
 
     if (Object.keys(validationErrors).length > 0) {
       focusFirstError(validationErrors);
+
       return;
     }
 
     if (typeof navigator !== "undefined" && !navigator.onLine) {
       showResponse(
         "network",
-        <>
-          Looks like
-          <br />
-          you're offline
-        </>,
-        <>
-          Please check your internet connection <br />
-          and retry again.
-        </>,
+        <>Looks like you're offline</>,
+        <>Please check your internet connection and retry again.</>,
       );
 
       return;
@@ -481,10 +375,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       showResponse(
         "error",
         <>Verification Error</>,
-        <>
-          Please complete the verification <br />
-          to submit your message.
-        </>,
+        <>Please complete the verification to submit your message.</>,
       );
 
       return;
@@ -550,7 +441,22 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         );
       }
 
-      await checkEmailStatus(data.mail_ref || ref);
+      const firstName = form.firstName;
+
+      const submittedEmail = form.email;
+
+      const mailRef = data.mail_ref || ref;
+
+      clearForm();
+
+      showResponse(
+        "success",
+        <>Service request sent successfully as {submittedEmail}</>,
+        <>
+          Thank you {firstName}. Your message has been received and I'll get
+          back to you soon. Reference: {mailRef}
+        </>,
+      );
     } catch (error) {
       const isNetworkError =
         error instanceof TypeError ||
@@ -561,15 +467,8 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
       if (isNetworkError) {
         showResponse(
           "network",
-          <>
-            Looks like
-            <br />
-            you're offline
-          </>,
-          <>
-            Please check your internet connection <br />
-            and retry again.
-          </>,
+          <>Looks like you're offline</>,
+          <>Please check your internet connection and retry again.</>,
         );
 
         return;
@@ -577,11 +476,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
 
       showResponse(
         "error",
-        <>
-          Failed to send
-          <br />
-          your request
-        </>,
+        <>Failed to send your request</>,
         error instanceof Error ? error.message : "Failed to send your request",
       );
     }
@@ -685,6 +580,7 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         required
         onChange={(e) => {
           const countryCode = e.target.value;
+
           let dialCode = form.phone.code;
 
           try {

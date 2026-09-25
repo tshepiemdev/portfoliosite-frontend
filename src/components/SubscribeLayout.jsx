@@ -32,6 +32,7 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         }
 
         const data = await res.json();
+
         setSubscriberCount(data?.count || 0);
       } catch {}
     };
@@ -72,71 +73,6 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     } catch {}
   };
 
-  const checkEmailStatus = async (emailId) => {
-    const maxAttempts = 30;
-    const interval = 2000;
-
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      try {
-        const res = await fetch(
-          `${API_URL}/api/subscriptions/email-status/${encodeURIComponent(
-            emailId,
-          )}`,
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          const status = data?.status;
-
-          if (status === "bounced") {
-            setLocalLoading(false);
-            setSuccess(false);
-            setMessage("Couldn't reach this email address.");
-            setDisableClose(false);
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "failed") {
-            setLocalLoading(false);
-            setSuccess(false);
-            setMessage("Couldn't deliver to this email address.");
-            setDisableClose(false);
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "complained") {
-            setLocalLoading(false);
-            setSuccess(false);
-            setMessage("Couldn't complete the subscription.");
-            setDisableClose(false);
-            resetTurnstile();
-            return;
-          }
-
-          if (status === "delivered") {
-            setEmail("");
-            setWebsite("");
-            resetTurnstile();
-            setLocalLoading(false);
-            setSuccess(true);
-            setMessage("");
-            setDisableClose(true);
-            return;
-          }
-        }
-      } catch {}
-
-      await new Promise((resolve) => setTimeout(resolve, interval));
-    }
-
-    setLocalLoading(false);
-    setSuccess(true);
-    setMessage("");
-    setDisableClose(true);
-  };
-
   const handleSubscribe = async () => {
     if (loading) {
       return;
@@ -161,7 +97,8 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
     if (!navigator.onLine) {
       setMessage(
         <>
-          Please check your internet <br />
+          Please check your internet
+          <br />
           connection and try again.
         </>,
       );
@@ -213,11 +150,14 @@ export default function SubscribeLayout({ onSuccess, setDisableClose }) {
         );
       }
 
-      if (!data?.emailId) {
-        throw new Error("Couldn't track the confirmation email.");
-      }
+      setEmail("");
+      setWebsite("");
+      resetTurnstile();
 
-      await checkEmailStatus(data.emailId);
+      setLocalLoading(false);
+      setSuccess(true);
+      setMessage("");
+      setDisableClose(true);
     } catch (err) {
       const errorMessage =
         err instanceof Error

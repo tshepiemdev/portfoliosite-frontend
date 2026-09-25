@@ -11,6 +11,7 @@ export default function ResponseLayout({
   status,
   title,
   subtitle,
+  email,
   onSuccess,
   onError,
   onRetry,
@@ -34,20 +35,39 @@ export default function ResponseLayout({
       network: "No internet connection",
     }[status] || "Response";
 
+  const resolvedTitle =
+    title ||
+    {
+      error: "Something went wrong",
+      network: "You're offline",
+    }[status] ||
+    "Please wait";
+
+  const resolvedSubtitle =
+    subtitle ||
+    {
+      error: "We couldn't send your message. Please try again.",
+      network:
+        "Your message wasn't sent because your internet connection was unavailable.",
+    }[status] ||
+    "";
+
   return (
     <div className={styles.layout}>
       {isLoading ? (
-        <LoaderView
-          text={
-            <>
-              Hang tight, <br />
-              I'm processing <br />
-              your request
-            </>
-          }
-          setHeight={50}
-          circleVariant="dynamic"
-        />
+        <div className={styles.loadingWrapper}>
+          <LoaderView
+            text={
+              <>
+                Sending your message
+                <br />
+                Please wait a moment
+              </>
+            }
+            setHeight={50}
+            circleVariant="dynamic"
+          />
+        </div>
       ) : (
         <div className={styles.responseWrapper}>
           <div className={styles.iconWrapper}>
@@ -55,26 +75,39 @@ export default function ResponseLayout({
           </div>
 
           <div className={styles.textsWrapper}>
-            <h2 className={styles.title}>{title}</h2>
-            <p className={styles.subtitle}>{subtitle}</p>
+            <h2 className={styles.title}>{resolvedTitle}</h2>
+
+            <p className={styles.subtitle}>
+              {resolvedSubtitle}
+
+              {isSuccess && email && (
+                <>
+                  {" "}
+                  We’ll get back to you at{" "}
+                  <span className={styles.email}>{email}</span>.
+                </>
+              )}
+            </p>
           </div>
 
           <div className={styles.ctasWrapper}>
             {isSuccess && (
-              <BtnCTAWhite buttonText="Okay Got It" onClick={onSuccess} />
+              <BtnCTAWhite buttonText="Okay, got it" onClick={onSuccess} setRadius={90}/>
             )}
 
             {isError && (
               <>
-                <BtnCTAWhite buttonText="Resubmit message" onClick={onRetry} />
-                <BtnCTABlack buttonText="Cancel" onClick={onError} />
+                <BtnCTAWhite buttonText="Try again" onClick={onRetry} />
+
+                <BtnCTABlack buttonText="Go back" onClick={onError} />
               </>
             )}
 
             {isNetwork && (
               <>
-                <BtnCTAWhite buttonText="Retry submission" onClick={onRetry} />
-                <BtnCTABlack buttonText="Cancel" onClick={onError} />
+                <BtnCTAWhite buttonText="Try again" onClick={onRetry} />
+
+                <BtnCTABlack buttonText="Go back" onClick={onError} />
               </>
             )}
           </div>
