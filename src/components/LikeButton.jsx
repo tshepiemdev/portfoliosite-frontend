@@ -25,7 +25,7 @@ export default function LikeButton({
         aria-hidden="true"
       />
 
-      <span>{formatCount(likes)}</span>
+      {likes > 0 && <span>{formatCount(likes)}</span>}
     </button>
   );
 }
