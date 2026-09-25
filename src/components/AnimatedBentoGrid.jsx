@@ -113,7 +113,7 @@ export default function AnimatedBentoGrid({
             No spam. Unsubscribe anytime. <br />
             <Link
               className={styles.linkTo}
-              to={"/legal/tshepiemdev-website-blog-subscription-terms"}
+              to={"/legal/site-tshepiemdev-blog-subscription-terms"}
             >
               Subscription terms
             </Link>{" "}

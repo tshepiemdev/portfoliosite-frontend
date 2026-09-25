@@ -684,11 +684,11 @@ export default function ServiceRequestForm({ onResponseStatusChange }) {
         By submitting this form, you agree to be contacted regarding your
         inquiry and acknowledge that your information will be handled in
         accordance with our{" "}
-        <Link className={styles.termsLink} to="/legal/site-terms-of-use">
+        <Link className={styles.termsLink} to="/legal/site-tshepiemdev-terms-of-use">
           Terms
         </Link>{" "}
         and{" "}
-        <Link className={styles.termsLink} to="/legal/site-privacy-policy">
+        <Link className={styles.termsLink} to="/site-tshepiemdev-privacy-policy">
           Privacy Policy
         </Link>
         .

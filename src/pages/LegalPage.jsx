@@ -122,7 +122,6 @@ export default function LegalPage() {
           }
           textAlign="start"
           centerContent="start"
-          showNav
         />
 
         <div className={styles.markdownWrapper}>
