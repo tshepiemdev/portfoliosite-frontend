@@ -39,6 +39,8 @@ export default function BottomBar() {
     "/hire-me",
     "/services",
     "/projects",
+    "/cv",
+    "/resume",
   ];
 
   const shouldHideOnRoute = hiddenRoutes.some(

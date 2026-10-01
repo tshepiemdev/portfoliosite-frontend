@@ -94,17 +94,17 @@ export default function CvPage() {
 
     try {
       const downloadUrl = convertDriveToDownload(cv.cvLink);
-      const win = window.open(downloadUrl, "_blank");
 
-      if (win) {
-        showToast("success", "Download started", "Please wait");
-      } else {
-        showToast(
-          "error",
-          "Popup blocked",
-          "Please allow popups and try again",
-        );
-      }
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = "Tshepang-Kgaphola-CV.pdf";
+      link.target = "_self";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast("success", "Download started", "Please wait");
     } catch {
       showToast("error", "Download failed", "Unexpected error occurred");
     }
