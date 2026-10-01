@@ -37,7 +37,8 @@ export default function BottomBar() {
     "/blog",
     "/help-center",
     "/hire-me",
-    "/services"
+    "/services",
+    "/projects",
   ];
 
   const shouldHideOnRoute = hiddenRoutes.some(
