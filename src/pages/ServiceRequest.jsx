@@ -62,7 +62,7 @@ export function meta() {
     image: ogImages.request_service,
     url: "/service-request",
     keywords:
-      "request a service, software development services, website development, web application development, mobile app development, backend development, UI development, custom software solutions",
+      "request a service, request software development, request website development, request web development, request web application development, request custom software, request mobile app development, software development request, software development services, website development services, web application development services, mobile application development services, custom software development services, custom application development, frontend development services, backend development services, full-stack development services, API development services, REST API development, UI development services, responsive website development, SaaS development services, digital product development, software engineering services, application development services, database development, database integration, API integration, business software development, startup software development, small business software development, software solutions, digital solutions, website project request, software project request, developer project request, hire software developer, hire web developer, hire full-stack developer, freelance software development, independent software developer, South African software developer, South Africa software development, Pretoria software developer, Pretoria software development, Gauteng software developer, custom software developer Pretoria, web developer Pretoria, tshepiem.dev service request",
   });
 }
 

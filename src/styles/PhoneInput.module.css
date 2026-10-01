@@ -30,8 +30,6 @@
   opacity: 1;
 }
 
-
-
 .phoneSelect {
   font-weight: 500;
   font-size: 1rem;
@@ -73,6 +71,7 @@
   border-left: 1px solid #212121;
   text-decoration: none;
   transition: border-color 0.2s ease;
+  color: white;
 }
 
 .phoneInput:focus {

@@ -1,6 +1,6 @@
 .markdownTextContent {
-  background-color: #1a1a1a;
-  border: 1px solid #1f1f1f;
+  background-color: transparent;
+  border: none;
   width: 100%;
   max-width: 100%;
   font-size: 1rem;
@@ -9,7 +9,7 @@
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
-  padding: 1rem;
+  padding: 0rem;
 }
 
 .markdownTextContent > *:first-child {

@@ -27,6 +27,7 @@ import { getShareOptions } from "../utils/shareOptions";
 import { getVideoUrl } from "../utils/getVideoUrl";
 import SubscribeLabel from "../components/SubscribeLabel";
 import LikeButton from "../components/LikeButton";
+import ogImages from "../config/ogImages";
 import createMeta from "../config/seo";
 
 const SITE_URL = "https://tshepiem.dev";
@@ -83,6 +84,7 @@ export function meta({ data, params }) {
       title: "Blog",
       description:
         "Fresh tutorials, engineering insights, tech news and personal vlogs.",
+      image: ogImages.blog,
       url: `/blog/${params.slug}`,
       robots: "noindex, nofollow",
     });
@@ -93,9 +95,9 @@ export function meta({ data, params }) {
   return createMeta({
     title: blog.title,
     description: blog.excerpt,
-    image: blog.imageUrl,
+    image: blog.imageUrl || ogImages.blog_page,
     url: `/blog/${blog.slug || params.slug}`,
-    keywords: `${blog.category}, software development, programming, technology, coding`,
+    keywords: `${blog.title}, ${blog.category}, ${blog.author || ""}, software development, software engineering, programming, coding, web development, web development tutorials, programming tutorials, developer tutorials, technology, technology articles, tech news, developer blog, software developer blog, software engineering blog, programming blog, coding blog, web development blog, frontend development, backend development, full-stack development, React, React.js, JavaScript, TypeScript, Node.js, Express.js, C#, .NET, VB.NET, MongoDB, PostgreSQL, SQL, REST APIs, API development, database development, software architecture, system analysis, object-oriented programming, modern web development, modern JavaScript, modern TypeScript, developer tools, programming guides, engineering insights, software engineering insights, technology insights, developer insights, software projects, web applications, software applications, South African developer, South African software engineer, Pretoria developer, Pretoria software engineer, tshepiem.dev`,
     siteName: "Blog",
   });
 }

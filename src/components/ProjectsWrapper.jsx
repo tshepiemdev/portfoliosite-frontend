@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import styles from "../styles/ProjectsWrapper.module.css";
 import Project from "./Project";
 import LoaderView from "./Loader";
@@ -14,17 +14,17 @@ export default function ProjectsWrapper({
   limit,
 }) {
   const { settings } = useOutletContext();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorType, setErrorType] = useState(null);
 
+  const typeParam = searchParams.get("type");
+
   const projectsUnderMaintenance =
     import.meta.env.PROD && settings?.maintenancePages?.projects === true;
-
-  // const projectsUnderMaintenance =
-  //   settings?.maintenancePages?.projects === true;
 
   const fetchProjects = async () => {
     try {
@@ -50,7 +50,6 @@ export default function ProjectsWrapper({
       ).filter((p) => p.isActive === true);
 
       setProjects(projectsData);
-      setFilteredProjects(projectsData);
     } catch (err) {
       console.log("Fetch error:", err);
 
@@ -75,17 +74,49 @@ export default function ProjectsWrapper({
     ...new Set(projects.map((p) => p.projectType).filter(Boolean)),
   ];
 
-  const handleFilterChange = (category) => {
-    if (category === "All") {
+  const getCategoryFromParam = (param) => {
+    if (!param) {
+      return "All";
+    }
+
+    const normalizedParam = param.replace(/\s/g, "").toLowerCase();
+
+    return (
+      categories.find(
+        (category) =>
+          category.replace(/\s/g, "").toLowerCase() === normalizedParam,
+      ) || "All"
+    );
+  };
+
+  const selectedCategory = getCategoryFromParam(typeParam);
+
+  useEffect(() => {
+    if (selectedCategory === "All") {
       setFilteredProjects(projects);
       return;
     }
 
     setFilteredProjects(
       projects.filter(
-        (p) => p.projectType?.toLowerCase() === category.toLowerCase(),
+        (project) =>
+          project.projectType?.replace(/\s/g, "").toLowerCase() ===
+          selectedCategory.replace(/\s/g, "").toLowerCase(),
       ),
     );
+  }, [projects, selectedCategory]);
+
+  const handleFilterChange = (category) => {
+    const selectedCategory = category || "All";
+    const params = new URLSearchParams(searchParams);
+
+    if (selectedCategory === "All") {
+      params.delete("type");
+    } else {
+      params.set("type", selectedCategory.replace(/\s/g, "").toLowerCase());
+    }
+
+    setSearchParams(params);
   };
 
   return (
@@ -94,6 +125,7 @@ export default function ProjectsWrapper({
         <div className={styles.filterWrapper}>
           <FilterBar
             categories={categories}
+            defaultCategory={selectedCategory}
             onFilterChange={handleFilterChange}
             marginBottom={3}
           />
@@ -107,7 +139,12 @@ export default function ProjectsWrapper({
         {projectsUnderMaintenance && (
           <ErrorView
             errType="default"
-            errorText={<>Under maintenace. <br/>Please check back later.</>}
+            errorText={
+              <>
+                Under maintenace. <br />
+                Please check back later.
+              </>
+            }
           />
         )}
 

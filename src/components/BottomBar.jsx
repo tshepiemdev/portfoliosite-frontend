@@ -27,19 +27,22 @@ export default function BottomBar() {
   const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   const hiddenRoutes = [
-  "/contact",
-  "/get-in-touch",
-  "/service-request",
-  "/legal",
-  "/subscribe/verify",
-  "/subscribe/unsubscribe",
-  "/not-found",
-];
+    "/contact",
+    "/get-in-touch",
+    "/service-request",
+    "/legal",
+    "/subscribe/verify",
+    "/subscribe/unsubscribe",
+    "/not-found",
+    "/blog",
+    "/help-center",
+    "/hire-me",
+    "/services"
+  ];
 
   const shouldHideOnRoute = hiddenRoutes.some(
     (route) =>
-      location.pathname === route ||
-      location.pathname.startsWith(`${route}/`)
+      location.pathname === route || location.pathname.startsWith(`${route}/`),
   );
 
   function toggleMenu() {
@@ -72,8 +75,7 @@ export default function BottomBar() {
       }
 
       const rect = el.getBoundingClientRect();
-      const isVisible =
-        rect.top < window.innerHeight && rect.bottom > 200;
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 200;
 
       setShowProjects(!isVisible);
     }
@@ -101,7 +103,7 @@ export default function BottomBar() {
       },
       {
         threshold: 0.01,
-      }
+      },
     );
 
     observer.observe(footer);
@@ -177,19 +179,11 @@ export default function BottomBar() {
     try {
       await navigator.clipboard.writeText(siteUrl);
 
-      showToast(
-        "success",
-        "Page Link copied",
-        "Ready to share"
-      );
+      showToast("success", "Page Link copied", "Ready to share");
 
       setIsMenuOpen(false);
     } catch {
-      showToast(
-        "error",
-        "Failed to copy",
-        "Try again manually"
-      );
+      showToast("error", "Failed to copy", "Try again manually");
     }
   };
 
@@ -251,9 +245,7 @@ export default function BottomBar() {
       >
         <div
           ref={menuRef}
-          className={`${styles.BottomBar} ${
-            isMenuOpen ? styles.open : ""
-          }`}
+          className={`${styles.BottomBar} ${isMenuOpen ? styles.open : ""}`}
         >
           <div className={styles.listsWrapper}>
             <button
@@ -264,24 +256,16 @@ export default function BottomBar() {
 
             <ul className={styles.optionsUl}>
               {filteredMenuOptions.map((option) => (
-                <li
-                  key={option.name}
-                  className={styles.optionsLi}
-                >
+                <li key={option.name} className={styles.optionsLi}>
                   {option.link ? (
                     <Link
                       className={styles.linkTo}
                       to={option.link}
-                      onClick={() =>
-                        handleOptionClick(option)
-                      }
+                      onClick={() => handleOptionClick(option)}
                     >
                       <img
                         className={styles.icon}
-                        src={
-                          option.icon ||
-                          IconFallbackImg
-                        }
+                        src={option.icon || IconFallbackImg}
                         alt={option.name}
                       />
 
@@ -297,16 +281,11 @@ export default function BottomBar() {
                     <button
                       type="button"
                       className={styles.linkToButton}
-                      onClick={() =>
-                        handleOptionClick(option)
-                      }
+                      onClick={() => handleOptionClick(option)}
                     >
                       <img
                         className={styles.icon}
-                        src={
-                          option.icon ||
-                          IconFallbackImg
-                        }
+                        src={option.icon || IconFallbackImg}
                         alt={option.name}
                       />
 
@@ -319,23 +298,15 @@ export default function BottomBar() {
 
             <ul className={styles.contactOptionsUl}>
               {contactOptions.map((option) => (
-                <li
-                  key={option.name}
-                  className={styles.contactOptionsLi}
-                >
+                <li key={option.name} className={styles.contactOptionsLi}>
                   <a
                     className={styles.contactOptionsLinkTo}
                     href={option.href}
-                    onClick={() =>
-                      setIsMenuOpen(false)
-                    }
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     <img
                       className={styles.icon2}
-                      src={
-                        option.icon ||
-                        IconFallbackImg
-                      }
+                      src={option.icon || IconFallbackImg}
                       alt={option.name}
                     />
 
@@ -373,8 +344,7 @@ export default function BottomBar() {
                   <li
                     key={link.name}
                     className={`${styles.li} ${
-                      link.id === "projects" &&
-                      !showProjects
+                      link.id === "projects" && !showProjects
                         ? styles.hideLi
                         : ""
                     }`}
@@ -383,17 +353,12 @@ export default function BottomBar() {
                       <button
                         type="button"
                         className={styles.a}
-                        onClick={() =>
-                          handleScroll(link.id)
-                        }
+                        onClick={() => handleScroll(link.id)}
                       >
                         {link.name}
                       </button>
                     ) : (
-                      <NavLink
-                        to={link.path}
-                        className={styles.a}
-                      >
+                      <NavLink to={link.path} className={styles.a}>
                         {link.name}
                       </NavLink>
                     )}
@@ -403,16 +368,8 @@ export default function BottomBar() {
             </div>
 
             <ImgButton
-              buttonImgSrc={
-                isMenuOpen
-                  ? closeImg
-                  : toggleSidebarImg
-              }
-              altText={
-                isMenuOpen
-                  ? "close menu"
-                  : "open menu"
-              }
+              buttonImgSrc={isMenuOpen ? closeImg : toggleSidebarImg}
+              altText={isMenuOpen ? "close menu" : "open menu"}
               onClick={toggleMenu}
               setMarginLeft={"0.5rem"}
             />

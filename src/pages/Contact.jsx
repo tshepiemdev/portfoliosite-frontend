@@ -14,7 +14,7 @@ export function meta() {
     image: ogImages.contact,
     url: "/contact",
     keywords:
-      "contact developer, hire software developer, project collaboration, web development services, software development",
+      "contact developer, contact software developer, contact software engineer, contact web developer, contact full-stack developer, hire software developer, hire web developer, hire full-stack developer, hire React developer, hire TypeScript developer, hire Node.js developer, hire C# developer, software development services, web development services, website development services, web application development services, custom software development, custom software developer, software engineering services, application development, API development, backend development, frontend development, full-stack development, SaaS development, digital product development, project collaboration, software project collaboration, web development project, software development project, custom application development, business software development, developer services, IT services, freelance software developer, freelance web developer, independent software developer, software engineer for hire, web developer for hire, full-stack developer for hire, South African software developer, South African software engineer, Pretoria software developer, Pretoria software engineer, Gauteng software developer, Gauteng software engineer, tshepiem.dev contact",
   });
 }
 

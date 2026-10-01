@@ -29,6 +29,7 @@ import NoticeLbl from "../components/NoticeLbl";
 import liveprodImg from "../assets/icons/globe (1).svg";
 import ErrorMaxView from "../components/ErrorMaxView";
 import createMeta from "../config/seo";
+import ogImages from "../config/ogImages";
 
 export async function loader({ params }) {
   const { slug } = params;
@@ -84,6 +85,7 @@ export function meta({ data, params }) {
         "View project details, technologies, features, and resources.",
       url: `/projects/${params.slug}`,
       robots: "noindex, nofollow",
+      image: ogImages.project,
     });
   }
 
@@ -92,10 +94,11 @@ export function meta({ data, params }) {
   return createMeta({
     title: project.projectName,
     description: project.projectShortDescription,
-    image: project.projectIcon,
+    image: project.projectIcon || ogImages.project,
     url: `/projects/${project.slug || params.slug}`,
-    keywords: `${project.projectName}, ${project.projectType}, ${project.projectCategory}, software development, portfolio project`,
+    keywords: `${project.projectName}, ${project.projectType}, ${project.projectCategory}, ${project.projectStack?.join(", ") || ""}, ${project.keyFeatures?.join(", ") || ""}, software project, software development project, software engineering project, developer portfolio project, software development portfolio, developer portfolio, programming project, web development project, web application project, web application development, software application, custom software, custom software development, full-stack development, frontend development, backend development, API development, REST API, database development, application development, software architecture, system analysis, UI development, responsive web development, SaaS development, digital product development, React, React.js, JavaScript, TypeScript, Node.js, Express.js, C#, .NET, VB.NET, MongoDB, PostgreSQL, SQL, Git, GitHub, modern web development, software engineering, programming, source code, Git repository, live web application, deployed application, South African developer, South African software developer, Pretoria developer, Pretoria software developer, tshepiem.dev projects`,
     siteName: "Project",
+    titleSuffix: "Project",
   });
 }
 

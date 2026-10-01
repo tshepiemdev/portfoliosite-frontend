@@ -12,6 +12,7 @@ import MaintenanceView from "./MaintenanceView";
 import BottomBar from "./BottomBar";
 import AnalyticsTracker from "./AnalyticsTracker";
 import ScrollToTop from "./ScrollToTop";
+import ErrorMaxView from "./ErrorMaxView";
 import API_URL from "../config/api";
 
 const SETTINGS_CACHE_KEY = "site_settings";
@@ -23,26 +24,46 @@ let serverSettingsAt = 0;
 
 const getPageName = (pathname) => {
   if (pathname === "/") return "home";
-  if (pathname === "/contact" || pathname === "/get-in-touch") return "contact";
-  if (pathname === "/service-request") return "serviceRequest";
-  if (pathname === "/hire-me") return "hireMe";
+
+  if (pathname === "/contact" || pathname === "/get-in-touch") {
+    return "contact";
+  }
+
+  if (pathname === "/service-request") {
+    return "serviceRequest";
+  }
+
+  if (pathname === "/hire-me") {
+    return "hireMe";
+  }
+
   if (pathname === "/services" || pathname.startsWith("/services/")) {
     return "services";
   }
+
   if (pathname === "/projects" || pathname.startsWith("/projects/")) {
     return "projects";
   }
+
   if (pathname === "/legal" || pathname.startsWith("/legal/")) {
     return "legal";
   }
+
   if (pathname === "/blog" || pathname.startsWith("/blog/")) {
     return "blogs";
   }
+
   if (pathname === "/help-center" || pathname.startsWith("/help-center/")) {
     return "helpCenter";
   }
-  if (pathname === "/cv" || pathname === "/resume") return "cv";
-  if (pathname === "/pricing") return "pricing";
+
+  if (pathname === "/cv" || pathname === "/resume") {
+    return "cv";
+  }
+
+  if (pathname === "/pricing") {
+    return "pricing";
+  }
 
   if (
     pathname.startsWith("/subscribe/verify/") ||
@@ -55,10 +76,13 @@ const getPageName = (pathname) => {
 };
 
 const getCachedSettings = () => {
-  if (!isBrowser) return null;
+  if (!isBrowser) {
+    return null;
+  }
 
   try {
     const cached = localStorage.getItem(SETTINGS_CACHE_KEY);
+
     return cached ? JSON.parse(cached) : null;
   } catch {
     return null;
@@ -66,7 +90,9 @@ const getCachedSettings = () => {
 };
 
 const cacheSettings = (settings) => {
-  if (!isBrowser) return;
+  if (!isBrowser) {
+    return;
+  }
 
   try {
     localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(settings));
@@ -177,6 +203,7 @@ export default function Layout() {
     return (
       <div className={styles.layout}>
         <ScrollToTop />
+
         {!globalMaintenance && <Header />}
 
         <MaintenanceView data={settings} pageName={pageName} />
@@ -195,7 +222,9 @@ export default function Layout() {
   return (
     <div className={styles.layout}>
       <ScrollToTop />
+
       <AnalyticsTracker />
+
       <Header />
 
       <main className={styles.content}>
@@ -203,7 +232,9 @@ export default function Layout() {
       </main>
 
       <SectionDevider />
+
       <Footer />
+
       <BottomBar />
     </div>
   );

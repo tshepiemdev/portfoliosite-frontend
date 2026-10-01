@@ -49,7 +49,7 @@ export function meta() {
     image: ogImages.legal,
     url: "/legal",
     keywords:
-      "legal information, privacy policy, terms of service, business policies, tshepiem.dev",
+      "legal information, legal resources, privacy policy, privacy notice, terms of service, terms and conditions, terms of use, cookie policy, cookie information, data protection, data privacy, personal data, user privacy, website policies, business policies, service policies, software service terms, website terms, digital services terms, intellectual property, copyright information, acceptable use policy, disclaimer, liability information, user rights, data rights, tshepiem.dev legal, tshepiem.dev privacy policy, tshepiem.dev terms of service, tshepiem.dev policies",
   });
 }
 

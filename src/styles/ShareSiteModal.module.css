@@ -55,6 +55,7 @@
   justify-content: start;
   align-items: start;
   padding: 1rem;
+  
 }
 
 .lastWrapper {
@@ -67,7 +68,7 @@
 }
 
 .urlInput {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: #767676;
   background-color: transparent;
@@ -145,8 +146,12 @@
   font-size: 1rem;
   font-weight: 400;
   text-decoration: none;
-  color: inherit;
   cursor: pointer;
+  color: white;
+}
+
+.optionName {
+  font-size:0.8rem;
 }
 
 .iconWrapper {

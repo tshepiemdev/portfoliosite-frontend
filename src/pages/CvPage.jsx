@@ -66,7 +66,7 @@ export function meta({ data }) {
       "Your next developer could be one click away. Explore my resume and see what I can bring to your team.",
     image: ogImages.resume,
     url: "/cv",
-    keywords: `${cv?.fullName || ""}, CV, resume, software developer, developer portfolio`,
+    keywords: `${cv?.fullName || ""}, CV, resume, curriculum vitae, software engineer CV, software engineer resume, software developer CV, software developer resume, full-stack developer CV, full-stack developer resume, web developer CV, web developer resume, IT developer CV, IT professional CV, developer portfolio, software engineering portfolio, professional resume, professional CV, developer qualifications, developer skills, software development experience, software engineering experience, web development experience, full-stack development experience, frontend development experience, backend development experience, React developer, JavaScript developer, TypeScript developer, Node.js developer, C# developer, .NET developer, VB.NET developer, database development, API development, software projects, programming skills, technical skills, IT skills, information technology, South African software developer, South African software engineer, Pretoria software developer, Pretoria software engineer, Gauteng software developer, Gauteng software engineer, tshepiem.dev`,
   });
 }
 

@@ -30,6 +30,7 @@
   font-family: "Inter", interFont, sans-serif;
   text-decoration: none;
   transition: border-color 0.2s ease;
+  color: white;
 }
 
 .textareaField:focus {

@@ -3,6 +3,7 @@ import {
   useLoaderData,
   useOutletContext,
   useRevalidator,
+  useSearchParams,
 } from "react-router-dom";
 import styles from "../styles/Blogs.module.css";
 import BlogBox from "../components/BlogBox";
@@ -61,7 +62,7 @@ export function meta() {
       "Fresh tutorials, engineering insights, tech news and personal vlogs.",
     url: "/blog",
     keywords:
-      "developer blog, software development, programming tutorials, coding, web development, technology articles",
+      "developer blog, software developer blog, software engineering blog, software development blog, programming blog, coding blog, web development blog, technology blog, tech blog, programming tutorials, coding tutorials, software engineering tutorials, web development tutorials, frontend development, backend development, full-stack development, React tutorials, React.js tutorials, JavaScript tutorials, TypeScript tutorials, Node.js tutorials, Express.js tutorials, C# tutorials, .NET tutorials, database tutorials, API development tutorials, REST API tutorials, Git tutorials, GitHub tutorials, HTML tutorials, CSS tutorials, responsive web development, web application development, software architecture, system analysis, object-oriented programming, programming guides, developer guides, engineering insights, software engineering insights, technology insights, developer insights, tech news, software development news, web development news, programming news, developer tools, developer technologies, modern web development, modern JavaScript, modern TypeScript, React development, Node.js development, full-stack development, frontend engineering, backend engineering, software projects, coding practices, clean code, software architecture, performance optimization, web performance, SEO development, developer career, software engineering career, IT career, South African developer, South African software engineer, Pretoria developer, Pretoria software engineer, tshepiem.dev",
   });
 }
 
@@ -69,10 +70,29 @@ export default function Blogs() {
   const { settings } = useOutletContext();
   const { blogs: myBlogs, errorType } = useLoaderData();
   const revalidator = useRevalidator();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categoryParam = searchParams.get("category");
+
+  const getCategoryFromParam = (param, availableCategories) => {
+    if (!param) {
+      return "All";
+    }
+
+    const normalizedParam = param.replace(/\s/g, "").toLowerCase();
+
+    return (
+      availableCategories.find(
+        (category) =>
+          category.replace(/\s/g, "").toLowerCase() === normalizedParam,
+      ) || "All"
+    );
+  };
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [visibleMoreBlogs, setVisibleMoreBlogs] = useState(6);
 
   const loading = revalidator.state === "loading";
 
@@ -100,6 +120,10 @@ export default function Blogs() {
 
     return ["All", ...uniqueCategories.values()];
   }, [myBlogs]);
+
+  useMemo(() => {
+    setActiveCategory(getCategoryFromParam(categoryParam, categories));
+  }, [categoryParam, categories]);
 
   const filteredBlogs = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -152,14 +176,21 @@ export default function Blogs() {
   );
 
   const latestBlogs = useMemo(
-    () => nonFeaturedBlogs.slice(0, 3),
+    () => nonFeaturedBlogs.slice(0, 6),
     [nonFeaturedBlogs],
   );
 
   const moreBlogs = useMemo(
-    () => nonFeaturedBlogs.slice(3),
+    () => nonFeaturedBlogs.slice(6),
     [nonFeaturedBlogs],
   );
+
+  const visibleBlogs = useMemo(
+    () => moreBlogs.slice(0, visibleMoreBlogs),
+    [moreBlogs, visibleMoreBlogs],
+  );
+
+  const hasMoreBlogs = visibleMoreBlogs < moreBlogs.length;
 
   const hasNoBlogs =
     !blogsUnderMaintenance && !loading && !errorType && myBlogs.length === 0;
@@ -173,7 +204,20 @@ export default function Blogs() {
     (searchQuery.trim() !== "" || activeCategory !== "All");
 
   const handleFilterChange = (category) => {
-    setActiveCategory(category || "All");
+    const selectedCategory = category || "All";
+
+    setActiveCategory(selectedCategory);
+    setVisibleMoreBlogs(6);
+
+    const params = new URLSearchParams(searchParams);
+
+    if (selectedCategory === "All") {
+      params.delete("category");
+    } else {
+      params.set("category", selectedCategory.replace(/\s/g, "").toLowerCase());
+    }
+
+    setSearchParams(params);
   };
 
   const handleSearchChange = (value) => {
@@ -182,6 +226,11 @@ export default function Blogs() {
 
   const handleSearch = (value) => {
     setSearchQuery(typeof value === "string" ? value : searchInput);
+    setVisibleMoreBlogs(6);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleMoreBlogs((current) => current + 6);
   };
 
   return (
@@ -212,6 +261,7 @@ export default function Blogs() {
         {!blogsUnderMaintenance && myBlogs.length > 0 && (
           <FilterBar
             categories={categories}
+            defaultCategory={activeCategory}
             onFilterChange={handleFilterChange}
             marginTop={0}
             marginBottom={2}
@@ -336,10 +386,10 @@ export default function Blogs() {
                   </div>
                 )}
 
-                {moreBlogs.length > 0 && (
+                {visibleBlogs.length > 0 && (
                   <div className={styles.sectionBlock}>
                     <div className={styles.latestBlogsList}>
-                      {moreBlogs.map((blog) => (
+                      {visibleBlogs.map((blog) => (
                         <BlogBox
                           key={blog._id || blog.slug}
                           variant="compact"
@@ -353,6 +403,18 @@ export default function Blogs() {
                         />
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {hasMoreBlogs && (
+                  <div className={styles.loadMore}>
+                    <button
+                      type="button"
+                      onClick={handleLoadMore}
+                      className={styles.loadMoreButton}
+                    >
+                      Load more
+                    </button>
                   </div>
                 )}
               </>

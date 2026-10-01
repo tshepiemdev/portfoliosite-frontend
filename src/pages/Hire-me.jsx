@@ -177,7 +177,7 @@ export function meta() {
     image: ogImages.hireMe,
     url: "/hire-me",
     keywords:
-      "hire developer, software developer, web developer, React, Node.js, JavaScript, TypeScript, C#, South Africa",
+      "hire developer, hire software developer, hire software engineer, hire web developer, hire full-stack developer, hire frontend developer, hire backend developer, software developer for hire, software engineer for hire, web developer for hire, full-stack developer for hire, freelance software developer, freelance software engineer, freelance web developer, independent software developer, independent software engineer, software development services, software engineering services, web development services, website development, web application development, custom software development, custom software developer, custom application development, SaaS development, digital product development, API development, REST API development, frontend development, backend development, full-stack development, React developer, React.js developer, JavaScript developer, TypeScript developer, Node.js developer, Express.js developer, C# developer, .NET developer, VB.NET developer, MongoDB developer, PostgreSQL developer, SQL developer, responsive web development, modern web development, software solutions, digital solutions, business software development, software project development, South African software developer, South African software engineer, South Africa web developer, Pretoria software developer, Pretoria software engineer, Pretoria web developer, Pretoria full-stack developer, Gauteng software developer, Gauteng software engineer, developer collaboration, software project collaboration, technical development services, tshepiem.dev",
   });
 }
 

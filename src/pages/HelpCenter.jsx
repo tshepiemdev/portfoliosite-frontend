@@ -212,7 +212,8 @@ export function meta() {
       "Browse help content, documentation, and assistance resources.",
     image: ogImages.helpCenter,
     url: "/help-center",
-    keywords: "help center, documentation, support, tshepiem.dev",
+    keywords:
+      "help center, developer help center, software help center, technical support, developer support, software support, website support, documentation, developer documentation, software documentation, technical documentation, user documentation, help documentation, support resources, troubleshooting guide, software guides, web development help, web application help, account help, website help, service help, tshepiem.dev help, tshepiem.dev support, tshepiem.dev documentation, tshepiem.dev help center",
   });
 }
 
@@ -301,7 +302,12 @@ export default function HelpCenter() {
             ))}
           </div>
 
-          <div className={styles.box} id="helpArticles" tabIndex="">
+          <div
+            className={styles.box}
+            id="helpArticles"
+            tabIndex="-1"
+            style={{ scrollMarginTop: "80px" }}
+          >
             <div className={styles.helpCenterArticles}>
               <div className={styles.topWrapper}>
                 <h2 className={styles.sectionTitle}>Help Articles</h2>

@@ -21,6 +21,21 @@ export default function HelpOptionBox({
   hoverBg,
   options = [],
 }) {
+  const handleFocus = () => {
+    if (!focusTo) return;
+
+    const element = document.getElementById(focusTo);
+
+    if (!element) return;
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    element.focus({ preventScroll: true });
+  };
+
   return (
     <div
       className={`${styles.helpBox} ${isPopular ? styles.popular : ""}`}
@@ -94,12 +109,14 @@ export default function HelpOptionBox({
               focusTo={focusTo}
               buttonText={optionCTAText}
               hoverBg={hoverBg}
+              onClick={focusTo ? handleFocus : undefined}
             />
           ) : (
             <BtnCTABlackSmall
               href={focusTo ? undefined : optionCTALink}
               focusTo={focusTo}
               buttonText={optionCTAText}
+              onClick={focusTo ? handleFocus : undefined}
             />
           )}
         </div>

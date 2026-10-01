@@ -77,7 +77,7 @@ export function meta() {
     image: ogImages.pricing,
     url: "/pricing",
     keywords:
-      "software development pricing, website packages, web application pricing, mobile app development, developer services",
+      "software development pricing, software developer pricing, software engineering pricing, web development pricing, website development pricing, website design pricing, web application pricing, web app development pricing, custom software pricing, custom software development cost, software development cost, website development cost, web application development cost, mobile app development pricing, mobile application development cost, SaaS development pricing, API development pricing, backend development pricing, frontend development pricing, full-stack development pricing, developer services pricing, freelance developer rates, software developer rates, web developer rates, website packages, website development packages, web application packages, custom software packages, mobile app development packages, software maintenance pricing, website maintenance pricing, hosting and maintenance, software solutions pricing, digital product development pricing, UI development pricing, responsive website pricing, business website pricing, business software development pricing, startup software development, small business website development, enterprise software development, South African software development pricing, South Africa web development pricing, Pretoria software development pricing, Pretoria website development pricing, Gauteng software development, developer services South Africa, tshepiem.dev pricing",
   });
 }
 

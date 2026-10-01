@@ -63,6 +63,7 @@ export function meta({ data, params }) {
       title: "Legal",
       description:
         "Legal information, policies, notices, and documentation for tshepiem.dev.",
+      image: ogImages.legal,
       url: `/legal/${params.slug}`,
       robots: "noindex, nofollow",
     });
@@ -72,8 +73,8 @@ export function meta({ data, params }) {
 
   return createMeta({
     title: legal.name,
-    description: `Legal Information & Notices`,
-    image: ogImages.legal,
+    description: "Legal Information & Notices",
+    image: ogImages.legal_page,
     url: `/legal/${legal.slug || params.slug}`,
     keywords: `legal, ${legal.name}, ${legal.for}, tshepiem.dev policies`,
     siteName: "tshepiem.dev",
@@ -126,36 +127,38 @@ export default function LegalPage() {
 
         <div className={styles.markdownWrapper}>
           <MarkdownText text={legal.text} />
-        </div>
 
-        <div className={styles.sectionBlock}>
-          <p className={styles.miniHeader}>Feedback and Website Information</p>
+          <div className={styles.sectionBlock}>
+            <p className={styles.miniHeader}>
+              Feedback and Website Information
+            </p>
 
-          <p className={styles.text}>
-            Any feedback, suggestions, ideas, or other information submitted
-            through {legal.company} may be used to improve our website,
-            services, and user experience. Unless otherwise agreed in writing,
-            such feedback will not be considered confidential information.
-          </p>
+            <p className={styles.text}>
+              Any feedback, suggestions, ideas, or other information submitted
+              through {legal.company} may be used to improve our website,
+              services, and user experience. Unless otherwise agreed in writing,
+              such feedback will not be considered confidential information.
+            </p>
 
-          <p className={styles.text}>
-            We reserve the right to update, modify, or remove information,
-            services, features, or content on this website at any time without
-            prior notice. While we aim to provide accurate and current
-            information, we do not guarantee that all content will always be
-            complete, accurate, or up-to-date.
-          </p>
+            <p className={styles.text}>
+              We reserve the right to update, modify, or remove information,
+              services, features, or content on this website at any time without
+              prior notice. While we aim to provide accurate and current
+              information, we do not guarantee that all content will always be
+              complete, accurate, or up-to-date.
+            </p>
 
-          <p className={styles.text}>
-            Copyright &copy; {legal.copyright_start}–{new Date().getFullYear()}{" "}
-            {legal.company}. All rights reserved. {legal.company},{" "}
-            {legal.company_address}.
-          </p>
+            <p className={styles.text}>
+              Copyright &copy; {legal.copyright_start}–
+              {new Date().getFullYear()} {legal.company}. All rights reserved.{" "}
+              {legal.company}, {legal.company_address}.
+            </p>
 
-          <p className={styles.text}>
-            This document was last updated by {legal.company} on{" "}
-            {legal.last_update_date}.
-          </p>
+            <p className={styles.text}>
+              This document was last updated by {legal.company} on{" "}
+              {legal.last_update_date}.
+            </p>
+          </div>
         </div>
       </div>
     </div>

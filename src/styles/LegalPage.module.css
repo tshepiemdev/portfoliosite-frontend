@@ -25,9 +25,12 @@
 
 .markdownWrapper {
   width: 100%;
-  border-radius: 0.8rem;
   padding: 0;
   overflow: hidden;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
 }
 
 .sectionBlock {
@@ -36,11 +39,10 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  background-color: #1a1a1a;
-  border: 1px solid #1f1f1f;
   overflow: hidden;
-  padding: 1rem;
-  border-radius: 0.8rem;
+
+  padding-top: 2rem;
+  border-top: 0.15rem dotted #1a1a1a;
 }
 
 .miniHeader {
