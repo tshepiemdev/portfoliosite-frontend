@@ -1,4 +1,5 @@
 const SITE_URL = "https://tshepiem.dev";
+
 const ogFallbackImage = "/og-banner.png";
 
 const toAbsolute = (value) => {
@@ -25,7 +26,6 @@ const createMeta = ({
   titleSuffix = "",
 }) => {
   const baseTitle = title || siteName;
-
   const fullTitle = titleSuffix ? `${baseTitle} | ${titleSuffix}` : baseTitle;
 
   const metaImage = toAbsolute(image || ogFallbackImage);
@@ -79,6 +79,8 @@ const createMeta = ({
     { property: "og:locale", content: locale },
 
     { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: "@tshepiem_dev" },
+    { name: "twitter:creator", content: "@tshepiem_dev" },
     { name: "twitter:title", content: fullTitle },
 
     ...(description

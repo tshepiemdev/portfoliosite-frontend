@@ -39,22 +39,52 @@ export default function PricingCard({
       <div className={styles.price}>
         {nowPrice ? (
           <>
-            <span className={styles.now}>R{nowPrice}</span>
+            <span className={styles.now}>
+              <data value={nowPrice}>R{nowPrice}</data>
+            </span>
 
             {per && <span className={styles.per}>/{per}</span>}
 
-            {oldPrice && <span className={styles.old}>R{oldPrice}</span>}
+            {oldPrice && (
+              <span className={styles.old}>
+                <data value={oldPrice}>R{oldPrice}</data>
+              </span>
+            )}
           </>
         ) : (
           <span className={styles.custom}>Custom Pricing</span>
         )}
       </div>
 
-      <p className={styles.label}>Starting package price</p>
+      <p className={styles.label} data-nosnippet>
+        Starting package price
+      </p>
 
       <p className={styles.desc}>{description}</p>
 
+      <div className={styles.ctaWrapper}>
+        {isFeatured ? (
+          <BtnCTAWhite href={ctaLink} buttonText="Select package" fullWidth />
+        ) : (
+          <BtnCTABlack href={ctaLink} buttonText="Select package" fullWidth />
+        )}
+      </div>
+
       <hr className={styles.hr} />
+
+      <span className={styles.featuresLabel}>
+        {type === "tutoring"
+          ? packageType === "Starter"
+            ? "Session includes"
+            : packageType === "Business"
+              ? "Monthly support includes"
+              : "Support includes"
+          : packageType === "Starter"
+            ? "Key features"
+            : `Everything in ${
+                packageType === "Business" ? "Starter" : "Business"
+              }, plus:`}
+      </span>
 
       <ul className={styles.features}>
         {features.map((feature, index) => (
@@ -64,14 +94,6 @@ export default function PricingCard({
           </li>
         ))}
       </ul>
-
-      <div className={styles.ctaWrapper}>
-        {isFeatured ? (
-          <BtnCTAWhite href={ctaLink} buttonText="Select package" fullWidth />
-        ) : (
-          <BtnCTABlack href={ctaLink} buttonText="Select package" fullWidth />
-        )}
-      </div>
     </div>
   );
 }

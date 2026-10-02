@@ -240,6 +240,15 @@ export default function BlogPage() {
 
   const readTime = calculateReadTime(blog);
 
+  const categoryParam = String(blog.category || "")
+    .trim()
+    .replace(/\s/g, "")
+    .toLowerCase();
+
+  const categoryLink = categoryParam
+    ? `/blog?category=${encodeURIComponent(categoryParam)}`
+    : "/blog";
+
   const handleLike = async () => {
     if (!blog || isLiking) return;
 
@@ -389,6 +398,7 @@ export default function BlogPage() {
         <div className={styles.topSection}>
           <BlogPageTopTitlesView
             category={blog.category || "Unspecified"}
+            categoryLink={categoryLink}
             name={blog.title}
             publishedAt={blog.publishedAt}
             shortDescription={blog.excerpt}

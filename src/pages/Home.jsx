@@ -17,8 +17,7 @@ import LazySection from "../components/LazySection";
 
 export function meta() {
   return createMeta({
-    title:
-      "tshepiem.dev | Creative & Skilled Developer: Building Software Solutions",
+    title: "tshepiem.dev | Creative & Skilled Developer: Building Software",
     description:
       "Building ideas into efficient, scalable software through clean code, creative thinking, and engineering.",
     image: "/og-banner.png",

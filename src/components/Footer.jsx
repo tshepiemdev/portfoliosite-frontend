@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Footer.module.css";
-import LogoImg from "../assets/images/favicon.svg";
 import FooterLinksBox from "./FooterLinks";
-import SectionDevider from "./SectionDevider";
-import MyLogoImg from "../assets/images/favicon.svg";
-import myProfileImage from "../assets/images/tshepang.jpg";
-import StarImg from "../assets/icons/spark.svg";
-import DiamondImg from "../assets/icons/diamond.svg";
+import Logo from "./Logo";
 import ShareSiteModal from "./ShareSiteModal";
-import nextImg from "../assets/icons/chevron-down.svg";
 import contactInfo from "../config/contactInfo";
 import SocialIconsWrapper from "./SocialIconsWrapper";
-import Logo from "./Logo";
-import nextIcon from "../assets/icons/chevron-right.svg";
 import phoneImg from "../assets/icons/phone-flip.svg";
 import emailImg from "../assets/icons/envelope.svg";
 
@@ -22,13 +14,6 @@ export default function Footer({}) {
   const footer = contactInfo.footer;
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   const handleNavigate = (href) => {
     if (href.startsWith("/")) {
@@ -55,23 +40,33 @@ export default function Footer({}) {
     <footer className={styles.footer}>
       <div className={styles.content}>
         <div className={styles.logoWrapper}>
-          <Logo text="" isClickable={false}/>
+          <Logo text="" isClickable={false} />
         </div>
 
         <div className={styles.boxWrapper}>
           <div className={styles.wrapper}>
-            <p className={styles.wordmarkSubtext}>
-              Simply I don't just write code. <br />I build efficient solutions.
-              I’m Tshepang <br />
+            <p className={styles.wordmarkSubtext} data-nosnippet>
+              Simply I don't just write code. <br />
+              I build efficient solutions. I’m Tshepang <br />
               Mmathebe Kgaphola, a creative and skilled <br />
               developer based in South Africa, PTA.
             </p>
 
-            <ul className={styles.contactOptionsUl}>
+            <ul
+              className={styles.contactOptionsUl}
+              data-nosnippet
+            >
               {contactOptions.map((option) => (
                 <li key={option.link} className={styles.contactOptionsLi}>
-                  <a className={styles.contactOptionsLinkTo} href={option.link}>
-                    <img className={styles.icon} src={option.icon} alt="" />
+                  <a
+                    className={styles.contactOptionsLinkTo}
+                    href={option.link}
+                  >
+                    <img
+                      className={styles.icon}
+                      src={option.icon}
+                      alt=""
+                    />
                     {option.link.replace("mailto:", "").replace("tel:", "")}
                   </a>
                 </li>
@@ -105,9 +100,7 @@ export default function Footer({}) {
           </div>
         </div>
 
-        <h2 className={styles.title}>tshepiem.dev</h2>
-
-       
+        <p className={styles.title}>tshepiem.dev</p>
 
         <div className={styles.lastWrapper}>
           <SocialIconsWrapper
@@ -127,7 +120,7 @@ export default function Footer({}) {
             ]}
           />
 
-          <p className={styles.copyrightText}>
+          <p className={styles.copyrightText} data-nosnippet>
             <span>&copy;</span>
             {new Date().getFullYear()} tshepiem.dev. All rights reserved
           </p>
@@ -141,3 +134,4 @@ export default function Footer({}) {
     </footer>
   );
 }
+

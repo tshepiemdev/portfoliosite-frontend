@@ -7,6 +7,7 @@
   width: 100%;
   height: 100%;
   padding: 1rem;
+  padding-bottom: 2rem;
   background-color: black;
   border: none;
   position: relative;
@@ -16,17 +17,6 @@
 .featured {
   overflow: hidden;
   position: relative;
-}
-
-.featured::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  width: 100%;
-  height: 20%;
-  background: linear-gradient(to top, pink, orangered, blueviolet, transparent);
 }
 
 .topWrapper {
@@ -109,11 +99,27 @@
 
 .desc {
   font-family: "Instrument Serif", instrumentSerifFont;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   margin-top: 1rem;
   line-height: 1.1;
   font-weight: 400;
   opacity: 1;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  min-height: calc(1.6rem * 1.1 * 3);
+}
+
+.featuresLabel {
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+  z-index: 2;
 }
 
 .label {

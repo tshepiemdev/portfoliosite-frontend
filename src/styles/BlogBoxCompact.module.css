@@ -72,15 +72,19 @@
   justify-content: start;
   align-items: center;
   gap: 0.2rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .category {
   color: #828282;
   font-weight: 600;
   font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .date {
   color: white;
   font-size: 0.9rem;
+  white-space: nowrap;
 }

@@ -60,6 +60,20 @@
   gap: 0.2rem;
 }
 
+.typeLink {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: white;
+  text-decoration: none;
+}
+
+.typeLink:hover {
+  text-decoration: underline;
+}
+
 .wrapper {
   width: fit-content;
   margin-top: 0rem;

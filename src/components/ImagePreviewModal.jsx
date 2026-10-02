@@ -152,7 +152,6 @@ export default function ImagePreviewModal({
       e.stopPropagation();
 
       const origin = getOrigin(e.clientX, e.clientY);
-
       const direction = e.deltaY < 0 ? WHEEL_ZOOM_STEP : -WHEEL_ZOOM_STEP;
 
       zoomAtPoint(zoom + direction, origin.x, origin.y);
@@ -204,7 +203,6 @@ export default function ImagePreviewModal({
 
         const dx = points[0].x - points[1].x;
         const dy = points[0].y - points[1].y;
-
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         pinchRef.current = {
@@ -249,7 +247,6 @@ export default function ImagePreviewModal({
 
         const dx = points[0].x - points[1].x;
         const dy = points[0].y - points[1].y;
-
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (!pinchRef.current || !pinchRef.current.distance) {
@@ -262,7 +259,6 @@ export default function ImagePreviewModal({
         }
 
         const scale = distance / pinchRef.current.distance;
-
         const nextZoom = clampZoom(pinchRef.current.zoom * scale);
 
         setZoom(nextZoom);
@@ -459,7 +455,14 @@ export default function ImagePreviewModal({
   }
 
   return createPortal(
-    <div className={styles.overlay}>
+    <div
+      className={styles.overlay}
+      onClick={() => {
+        if (isMenuOpen) {
+          setIsMenuOpen(false);
+        }
+      }}
+    >
       <div
         ref={stageRef}
         className={styles.imageStage}
@@ -468,8 +471,6 @@ export default function ImagePreviewModal({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        onTouchStart={(e) => e.stopPropagation()}
-        onTouchMove={(e) => e.stopPropagation()}
         onWheel={(e) => e.stopPropagation()}
       >
         <img
@@ -486,6 +487,9 @@ export default function ImagePreviewModal({
           onError={handleMainImageError}
         />
       </div>
+
+      <div className={styles.topShadow} />
+      <div className={styles.bottomShadow} />
 
       <div
         className={styles.header}

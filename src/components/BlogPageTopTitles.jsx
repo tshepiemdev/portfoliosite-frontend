@@ -6,6 +6,7 @@ import BtnCTAWhiteSmall from "./BtnCTAWhiteSmall";
 import contactInfo from "../config/contactInfo";
 import verifiedIcon from "../assets/icons/ver-badge.svg";
 import chevronRight from "../assets/icons/chevron-right-var.svg";
+import { Link } from "react-router-dom";
 
 const twitterLink = contactInfo.social.find(
   (social) => social.name === "Twitter",
@@ -13,6 +14,7 @@ const twitterLink = contactInfo.social.find(
 
 export default function BlogPageTopTitlesView({
   category,
+  categoryLink,
   name,
   shortDescription,
   shareOptions,
@@ -71,7 +73,13 @@ export default function BlogPageTopTitlesView({
     <div className={styles.titlesWrapper}>
       <div className={styles.columnWrapper}>
         <div className={styles.rowWrapper}>
-          <p className={styles.type}>{capitalizeFirstLetter(category)}</p>
+          {categoryLink ? (
+            <Link to={categoryLink} className={styles.typeLink}>
+              {capitalizeFirstLetter(category)}
+            </Link>
+          ) : (
+            <p className={styles.type}>{capitalizeFirstLetter(category)}</p>
+          )}
 
           <p className={styles.label}>Blog</p>
         </div>

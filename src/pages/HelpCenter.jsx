@@ -312,7 +312,7 @@ export default function HelpCenter() {
               <div className={styles.topWrapper}>
                 <h2 className={styles.sectionTitle}>Help Articles</h2>
 
-                <h2 className={styles.bentoName}>
+                <h2 className={styles.bentoName} data-nosnippet>
                   Search help articles,
                   <br />
                   never get lost again
@@ -339,10 +339,10 @@ export default function HelpCenter() {
                 <SearchErrorView
                   icon={SearchErrorImg}
                   header={
-                    <>
+                    <span data-nosnippet>
                       Your search couldn't <br />
                       be found in articles
-                    </>
+                    </span>
                   }
                   subText="Try searching for something else."
                   bg="black"

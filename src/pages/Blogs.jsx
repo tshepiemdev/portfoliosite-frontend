@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useLoaderData,
   useOutletContext,
@@ -121,8 +121,9 @@ export default function Blogs() {
     return ["All", ...uniqueCategories.values()];
   }, [myBlogs]);
 
-  useMemo(() => {
+  useEffect(() => {
     setActiveCategory(getCategoryFromParam(categoryParam, categories));
+    setVisibleMoreBlogs(6);
   }, [categoryParam, categories]);
 
   const filteredBlogs = useMemo(() => {
