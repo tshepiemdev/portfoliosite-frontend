@@ -20,6 +20,22 @@
   position: relative;
 }
 
+.filterWrapper {
+  width: 100%;
+}
+
+.contentWrapper {
+  width: 100%;
+}
+
+.wrapAllProjects {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
 @media (max-width: 768px) {
   .projects {
     width: 100%;
@@ -29,6 +45,10 @@
   .projectsWrapper {
     width: 100%;
     max-width: 100%;
+  }
+
+  .wrapAllProjects {
+    grid-template-columns: 1fr;
   }
 }
 

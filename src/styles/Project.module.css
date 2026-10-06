@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%;
   background-color: #1a1a1a;
-  border: 1px solid #282828;
   border: none;
   border-radius: 1rem;
   display: flex;
@@ -16,10 +15,6 @@
   transition: all 0.2s ease-in-out;
   padding: 0rem;
 }
-
-/* .projectBox:last-child {
-  grid-column: 1 / -1;
-} */
 
 .projectBox:hover .chevronBox {
   opacity: 1;
@@ -129,7 +124,6 @@
   background-color: #121212;
   border: none;
   border-radius: 1rem;
-  overflow: hidden;
 }
 
 .projectIconWrapper::after {

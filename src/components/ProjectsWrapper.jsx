@@ -12,6 +12,7 @@ export default function ProjectsWrapper({
   showFilter = false,
   marginTop = 0,
   limit,
+  gridColumns = "auto-fit",
 }) {
   const { settings } = useOutletContext();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -119,6 +120,11 @@ export default function ProjectsWrapper({
     setSearchParams(params);
   };
 
+  const gridTemplateColumns =
+    gridColumns === "2"
+      ? "repeat(2, minmax(0, 1fr))"
+      : "repeat(auto-fit, minmax(300px, 1fr))";
+
   return (
     <div className={styles.projectsWrapper}>
       {showFilter && !projectsUnderMaintenance && projects.length > 0 && (
@@ -174,7 +180,10 @@ export default function ProjectsWrapper({
           !loading &&
           !errorType &&
           filteredProjects.length > 0 && (
-            <div className={styles.wrapAllProjects}>
+            <div
+              className={styles.wrapAllProjects}
+              style={{ gridTemplateColumns }}
+            >
               {filteredProjects
                 .slice(0, limit ?? filteredProjects.length)
                 .map((project, index) => (

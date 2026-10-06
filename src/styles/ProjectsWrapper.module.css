@@ -19,7 +19,6 @@
 .wrapAllProjects {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: stretch;
   gap: 1rem;
   overflow: hidden;
@@ -33,7 +32,7 @@
 }
 
 @media (max-width: 768px) {
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
+  .wrapAllProjects {
+    grid-template-columns: 1fr !important;
+  }
 }

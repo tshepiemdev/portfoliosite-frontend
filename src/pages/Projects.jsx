@@ -30,7 +30,12 @@ export default function Projects() {
           centerContent="center"
         />
 
-        <ProjectsWrapper marginTop={0} showBar={false} showFilter={true} />
+        <ProjectsWrapper
+          marginTop={0}
+          showBar={false}
+          showFilter={true}
+          gridColumns="2"
+        />
       </div>
     </div>
   );
